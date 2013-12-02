@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HistoryTaskActor">
+    <insert id="SAVE" parameterType="historytaskactor">
+    	insert into wf_hist_task_actor (task_Id, actor_Id) values (#{taskId, jdbcType=VARCHAR},#{actorId, jdbcType=VARCHAR})
+    </insert>
+</mapper>
