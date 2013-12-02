@@ -28,7 +28,9 @@ public class TestQueryTask extends TestSnakerBase {
 	@Test
 	public void test() {
 		System.out.println(queryService.getActiveTasks());
+		Page<WorkItem> page = new Page<WorkItem>();
 		System.out.println(queryService.getActiveTasks(new Page<Task>(), 1L));
-		System.out.println(queryService.getWorkItems(new Page<WorkItem>(), null));
+		System.out.println(queryService.getWorkItems(page, null));
+		System.out.println(page.getTotalCount());
 	}
 }
