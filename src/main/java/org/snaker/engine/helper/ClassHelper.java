@@ -15,6 +15,7 @@
 package org.snaker.engine.helper;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,6 +40,8 @@ public class ClassHelper {
 			return ((BigDecimal)count).longValue();
 		} else if(count instanceof Integer) {
 			return ((Integer)count).longValue();
+		} else if(count instanceof BigInteger) {
+			return ((BigInteger)count).longValue();
 		} else {
 			return -1L;
 		}
