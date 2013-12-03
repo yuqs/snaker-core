@@ -14,6 +14,7 @@
  */
 package org.snaker.engine.cfg;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -128,8 +129,10 @@ public class Configuration implements Serializable {
 		}
 		parser(config);
 		
-		for(Entry<String, Class<?>> entry : txClass.entrySet()) {
-			context.put(entry.getKey(), interceptor.getProxy(entry.getValue()));
+		if(interceptor != null) {
+			for(Entry<String, Class<?>> entry : txClass.entrySet()) {
+				context.put(entry.getKey(), interceptor.getProxy(entry.getValue()));
+			}
 		}
 		if(log.isDebugEnabled()) {
 			log.debug("ServiceContext load finish......");
@@ -145,7 +148,9 @@ public class Configuration implements Serializable {
 		DocumentBuilder documentBuilder = XmlHelper.createDocumentBuilder();
 		try {
 			if (documentBuilder != null) {
-				Document doc = documentBuilder.parse(StreamHelper.openStream(resource));
+				InputStream input = StreamHelper.openStream(resource);
+				if(input == null) return;
+				Document doc = documentBuilder.parse(input);
 				Element configElement = doc.getDocumentElement();
 				NodeList nodeList = configElement.getChildNodes();
 				int nodeSize = nodeList.getLength();

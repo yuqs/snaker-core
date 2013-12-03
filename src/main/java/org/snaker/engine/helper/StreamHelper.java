@@ -50,9 +50,6 @@ public class StreamHelper {
 			stream = StreamHelper.class.getClassLoader().getResourceAsStream(resource);
 		}
 
-		if (stream == null) {
-			throw new SnakerException("resource " + resource + " does not exist");
-		}
 		return stream;
 	}
 	
