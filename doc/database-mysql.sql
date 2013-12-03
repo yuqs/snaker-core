@@ -37,8 +37,8 @@ CREATE TABLE wf_task (
     perform_Type    TINYINT(1) comment '参与类型',
     operator       INT comment '任务处理人',
     create_Time     VARCHAR(50) comment '任务创建时间',
-    expire_Time     VARCHAR(50) comment '任务完成时间',
-    finish_Time     VARCHAR(50) comment '任务期望完成时间',
+    finish_Time     VARCHAR(50) comment '任务完成时间',
+    expire_Time     VARCHAR(50) comment '任务期望完成时间',
     action_Url      VARCHAR(200) comment '任务处理的url'
 )comment='任务表';
 
