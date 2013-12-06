@@ -39,7 +39,9 @@ create table wf_task (
     create_Time     nvarchar(50) not null,
     finish_Time     nvarchar(50),
     expire_Time     nvarchar(50),
-    action_Url      nvarchar(200)
+    action_Url      nvarchar(200),
+    parent_Task_Id  nvarchar(100),
+    variable        nvarchar(2000)
 );
 
 /**任务参与者表*/
@@ -76,7 +78,9 @@ create table wf_hist_task (
     create_Time     nvarchar(50) not null,
     finish_Time     nvarchar(50),
     expire_Time     nvarchar(50),
-    action_Url      nvarchar(200)
+    action_Url      nvarchar(200),
+    parent_Task_Id  nvarchar(100),
+    variable        nvarchar(2000)
 );
 
 /**历史任务参与者表*/
@@ -91,11 +95,13 @@ create index IDX_ORDER_PROCESSID on wf_order (process_Id);
 create index IDX_ORDER_NO on wf_order (order_No);
 create index IDX_TASK_ORDER on wf_task (order_Id);
 create index IDX_TASK_TASKNAME on wf_task (task_Name);
+create index IDX_TASK_PARENTTASK on wf_task (parent_Task_Id);
 create index IDX_TASKACTOR_TASK on wf_task_actor (task_Id);
 create index IDX_HIST_ORDER_PROCESSID on wf_hist_order (process_Id);
 create index IDX_HIST_ORDER_NO on wf_hist_order (order_No);
 create index IDX_HIST_TASK_ORDER on wf_hist_task (order_Id);
 create index IDX_HIST_TASK_TASKNAME on wf_hist_task (task_Name);
+create index IDX_HIST_TASK_PARENTTASK on wf_hist_task (parent_Task_Id);
 create index IDX_HIST_TASKACTOR_TASK on wf_hist_task_actor (task_Id);
 
 /**增加外键关联*/

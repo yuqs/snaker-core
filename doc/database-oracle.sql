@@ -62,7 +62,9 @@ create table wf_task (
     create_Time     varchar2(50) not null,
     finish_Time     varchar2(50),
     expire_Time     varchar2(50),
-    action_Url      varchar2(200)
+    action_Url      varchar2(200),
+    parent_Task_Id  varchar2(100),
+    variable        varchar2(2000)
 );
 comment on table wf_task is '任务表';
 comment on column wf_task.id is '主键ID';
@@ -76,6 +78,8 @@ comment on column wf_task.create_Time is '任务创建时间';
 comment on column wf_task.expire_Time is '任务期望完成时间';
 comment on column wf_task.finish_Time is '任务完成时间';
 comment on column wf_task.action_Url is '任务处理的url';
+comment on column wf_task.parent_Task_Id is '父任务ID';
+comment on column wf_task.variable is '附属变量json存储';
 
 /**任务参与者表*/
 create table wf_task_actor (
@@ -127,7 +131,9 @@ create table wf_hist_task (
     create_Time     varchar2(50) not null,
     finish_Time     varchar2(50),
     expire_Time     varchar2(50),
-    action_Url      varchar2(200)
+    action_Url      varchar2(200),
+    parent_Task_Id  varchar2(100),
+    variable        varchar2(2000)
 );
 comment on table wf_hist_task is '历史任务表';
 comment on column wf_hist_task.id is '主键ID';
@@ -142,6 +148,8 @@ comment on column wf_hist_task.create_Time is '任务创建时间';
 comment on column wf_hist_task.expire_Time is '任务期望完成时间';
 comment on column wf_hist_task.finish_Time is '任务完成时间';
 comment on column wf_hist_task.action_Url is '任务处理的url';
+comment on column wf_hist_task.parent_Task_Id is '父任务ID';
+comment on column wf_hist_task.variable is '附属变量json存储';
 
 /**历史任务参与者表*/
 create table wf_hist_task_actor (
@@ -158,11 +166,13 @@ create index IDX_ORDER_PROCESSID on wf_order (process_Id);
 create index IDX_ORDER_NO on wf_order (order_No);
 create index IDX_TASK_ORDER on wf_task (order_Id);
 create index IDX_TASK_TASKNAME on wf_task (task_Name);
+create index IDX_TASK_PARENTTASK on wf_task (parent_Task_Id);
 create index IDX_TASKACTOR_TASK on wf_task_actor (task_Id);
 create index IDX_HIST_ORDER_PROCESSID on wf_hist_order (process_Id);
 create index IDX_HIST_ORDER_NO on wf_hist_order (order_No);
 create index IDX_HIST_TASK_ORDER on wf_hist_task (order_Id);
 create index IDX_HIST_TASK_TASKNAME on wf_hist_task (task_Name);
+create index IDX_HIST_TASK_PARENTTASK on wf_hist_task (parent_Task_Id);
 create index IDX_HIST_TASKACTOR_TASK on wf_hist_task_actor (task_Id);
 
 /**增加外键关联*/

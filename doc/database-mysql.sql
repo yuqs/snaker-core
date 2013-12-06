@@ -39,7 +39,9 @@ CREATE TABLE wf_task (
     create_Time     VARCHAR(50) comment '任务创建时间',
     finish_Time     VARCHAR(50) comment '任务完成时间',
     expire_Time     VARCHAR(50) comment '任务期望完成时间',
-    action_Url      VARCHAR(200) comment '任务处理的url'
+    action_Url      VARCHAR(200) comment '任务处理的url',
+    parent_Task_Id  VARCHAR(100) comment '父任务ID',
+    variable        VARCHAR(2000) comment '附属变量json存储'
 )comment='任务表';
 
 /**任务参与者表*/
@@ -76,7 +78,9 @@ create table wf_hist_task (
     create_Time     VARCHAR(50) not null comment '任务创建时间',
     finish_Time     VARCHAR(50) comment '任务完成时间',
     expire_Time     VARCHAR(50) comment '任务期望完成时间',
-    action_Url      VARCHAR(200) comment '任务处理url'
+    action_Url      VARCHAR(200) comment '任务处理url',
+    parent_Task_Id  VARCHAR(100) comment '父任务ID',
+    variable        VARCHAR(2000) comment '附属变量json存储'
 )comment='历史任务表';
 
 /**历史任务参与者表*/
@@ -91,11 +95,13 @@ create index IDX_ORDER_PROCESSID on wf_order (process_Id);
 create index IDX_ORDER_NO on wf_order (order_No);
 create index IDX_TASK_ORDER on wf_task (order_Id);
 create index IDX_TASK_TASKNAME on wf_task (task_Name);
+create index IDX_TASK_PARENTTASK on wf_task (parent_Task_Id);
 create index IDX_TASKACTOR_TASK on wf_task_actor (task_Id);
 create index IDX_HIST_ORDER_PROCESSID on wf_hist_order (process_Id);
 create index IDX_HIST_ORDER_NO on wf_hist_order (order_No);
 create index IDX_HIST_TASK_ORDER on wf_hist_task (order_Id);
 create index IDX_HIST_TASK_TASKNAME on wf_hist_task (task_Name);
+create index IDX_HIST_TASK_PARENTTASK on wf_hist_task (parent_Task_Id);
 create index IDX_HIST_TASKACTOR_TASK on wf_hist_task_actor (task_Id);
 
 /**增加外键关联约束*/
