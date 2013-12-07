@@ -54,6 +54,7 @@ public abstract class TransactionInterceptor implements MethodInterceptor {
 		txMethods.add("complete*");
 		txMethods.add("assign*");
 		txMethods.add("withdrawTask*");
+		txMethods.add("add*");
 		txMethods.add("get*");
 	}
 	
