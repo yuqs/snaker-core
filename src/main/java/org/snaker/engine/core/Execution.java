@@ -69,9 +69,9 @@ public class Execution implements Serializable {
 	 */
 	private Long operator;
 	/**
-	 * 任务主键ID
+	 * 任务
 	 */
-	private String taskId;
+	private Task task;
 	/**
 	 * 返回的任务列表
 	 */
@@ -174,6 +174,14 @@ public class Execution implements Serializable {
 	public void addTasks(List<Task> tasks) {
 		this.tasks.addAll(tasks);
 	}
+	
+	/**
+	 * 添加任务
+	 * @param task
+	 */
+	public void addTask(Task task) {
+		this.tasks.add(task);
+	}
 
 	/**
 	 * 返回当前操作人ID
@@ -192,19 +200,19 @@ public class Execution implements Serializable {
 	}
 
 	/**
-	 * 返回任务ID
+	 * 返回任务
 	 * @return
 	 */
-	public String getTaskId() {
-		return taskId;
+	public Task getTask() {
+		return task;
 	}
 
 	/**
-	 * 设置任务ID
-	 * @param taskId
+	 * 设置任务
+	 * @param task
 	 */
-	public void setTaskId(String taskId) {
-		this.taskId = taskId;
+	public void setTask(Task task) {
+		this.task = task;
 	}
 
 	/**

@@ -15,101 +15,127 @@
 package org.snaker.engine;
 
 import java.util.List;
-import java.util.Map;
 
-import org.snaker.engine.entity.Order;
+import org.snaker.engine.core.Execution;
+import org.snaker.engine.entity.HistoryTask;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.entity.TaskActor;
 import org.snaker.engine.model.CustomModel;
+import org.snaker.engine.model.ProcessModel;
 import org.snaker.engine.model.TaskModel;
 
 /**
  * 任务业务类，包括以下服务：
  * 1、创建任务
- * 2、根据任务ID获取任务对象
+ * 2、根据任务ID获取活动、历史对象
  * 3、对指定任务分配参与者
  * 4、完成任务
+ * 5、撤回任务
+ * 6、回退任务
+ * 7、提取任务
  * @author yuqs
  * @version 1.0
  */
 public interface ITaskService {
 	/**
-	 * 完成指定的任务，主要更新任务状态、完成时间、处理人
-	 * @param task
-	 * @param operator
-	 * @return
+	 * 完成指定的任务，删除活动任务记录，创建历史任务
+	 * @param task 任务对象
+	 * @return Task
 	 */
 	Task completeTask(Task task);
 	/**
-	 * 完成指定的任务，主要更新任务状态、完成时间、处理人
-	 * @param task
-	 * @param operator
-	 * @return
+	 * 完成指定的任务，删除活动任务记录，创建历史任务
+	 * @param task 任务对象
+	 * @param operator 操作人
+	 * @return Task
 	 */
 	Task completeTask(Task task, Long operator);
 	
 	/**
-	 * 提取指定的任务，只更新处理人字段标识参与者
-	 * @param task
-	 * @param operator
-	 * @return
+	 * 提取指定的任务，只更新操作人字段标识参与者
+	 * @param task 任务对象
+	 * @param operator 操作人
+	 * @return Task
 	 */
 	Task takeTask(Task task, Long operator);
 	
 	/**
+	 * 根据任务主键id、操作人撤回任务
+	 * @param taskId 任务主键id
+	 * @param operator 操作人
+	 * @return Task
+	 */
+	Task withdrawTask(String taskId, Long operator);
+	
+	/**
+	 * 根据当前任务对象驳回至上一步处理
+	 * @param model 流程定义模型，用以获取上一步模型对象
+	 * @param currentTask 当前任务对象
+	 * @return Task
+	 */
+	Task rejectTask(ProcessModel model, Task currentTask);
+	
+	/**
 	 * 根据taskId获取所有该任务的参与者集合
-	 * @param taskId
-	 * @return
+	 * @param taskId 任务id
+	 * @return List<TaskActor>
 	 */
 	List<TaskActor> getTaskActorsByTaskId(String taskId);
 	
 	/**
 	 * 根据taskId、operator，判断操作人operator是否允许执行任务
-	 * @param taskId
-	 * @param operator
-	 * @return
+	 * @param taskId 任务id
+	 * @param operator 操作人
+	 * @return boolean
 	 */
 	boolean isAllowed(Task task, Long operator);
 
 	/**
 	 * 对指定的任务分配参与者。参与者可以为用户、部门、角色
-	 * @param taskId
-	 * @param actorId
+	 * @param taskId 任务id
+	 * @param actorIds 参与者id集合
 	 */
 	void assignTask(String taskId, Long... actorIds);
 	
 	/**
 	 * 根据任务编号获取任务实例
-	 * @param taskId
-	 * @return
+	 * @param taskId 任务id
+	 * @return Task
 	 */
 	Task getTask(String taskId);
 	
 	/**
-	 * 创建新的任务
-	 * @param taskModel
-	 * @param order
-	 * @param args
+	 * 根据任务编号获取历史任务实例
+	 * @param taskId 任务id
+	 * @return HistoryTask
 	 */
-	List<Task> createTask(TaskModel taskModel, Order order, Map<String, Object> args);
+	HistoryTask getHistoryTask(String taskId);
 	
 	/**
-	 * 创建新的任务 
-	 * @param customModel
-	 * @param order
-	 * @return
+	 * 根据任务模型、执行对象创建新的任务
+	 * @param taskModel 任务模型
+	 * @param execution 执行对象
+	 * @return List<Task>
 	 */
-	Task createTask(CustomModel customModel, Order order);
+	List<Task> createTask(TaskModel taskModel, Execution execution);
+	
+	/**
+	 * 根据自定义模型、执行对象创建新的任务 
+	 * @param customModel 自定义模型
+	 * @param execution 执行对象
+	 * @return List<Task>
+	 */
+	List<Task> createTask(CustomModel customModel, Execution execution);
 	
 	/**
 	 * 保存任务对象
-	 * @param task
+	 * @param task 任务对象
 	 */
 	void saveTask(Task task);
 	
 	/**
 	 * 创建新的任务对象
-	 * @return
+	 * @return Task
 	 */
 	Task newTask();
 }

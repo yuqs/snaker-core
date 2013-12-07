@@ -14,7 +14,6 @@
  */
 package org.snaker.engine.core;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -36,11 +35,13 @@ import org.snaker.engine.entity.Process;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.helper.AssertHelper;
 import org.snaker.engine.helper.DateHelper;
+import org.snaker.engine.helper.StringHelper;
 import org.snaker.engine.model.CustomModel;
 import org.snaker.engine.model.NodeModel;
 import org.snaker.engine.model.ProcessModel;
 import org.snaker.engine.model.StartModel;
 import org.snaker.engine.model.TaskModel;
+import org.snaker.engine.model.TransitionModel;
 import org.snaker.engine.model.WorkModel;
 
 /**
@@ -129,11 +130,17 @@ public class SnakerEngineImpl implements SnakerEngine {
 		ModelContainer.cascadeReference();
 	}
 
+	/**
+	 * 获取流程定义服务
+	 */
 	@Override
 	public IProcessService process() {
 		return this.processService;
 	}
 
+	/**
+	 * 获取查询服务
+	 */
 	@Override
 	public IQueryService query() {
 		return queryService;
@@ -162,27 +169,43 @@ public class SnakerEngineImpl implements SnakerEngine {
 	public Order startInstanceById(String id, Long operator, Map<String, Object> args) {
 		if(args == null) args = new HashMap<String, Object>();
 		Process process = ModelContainer.getEntity(id);
-		ProcessModel model = process.getModel();
-		StartModel start = model.getStart();
-		AssertHelper.notNull(start, "流程定义[id=" + id + "]没有开始节点");
-		Order order = orderService.createOrder(process, operator, args);
-		Execution execution = new Execution(this, process, order, args);
-		execution.setOperator(operator);
+		AssertHelper.notNull(process, "指定的流程定义[id=" + id + "]不存在");
+		StartModel start = process.getModel().getStart();
+		AssertHelper.notNull(start, "指定的流程定义[id=" + id + "]没有开始节点");
+		Execution execution = execute(process, operator, args, null, null);
 		start.execute(execution);
-		return order;
+		return execution.getOrder();
 	}
 	
+	/**
+	 * 根据父执行对象启动子流程实例（用于启动子流程）
+	 */
 	@Override
 	public Order startInstanceByExecution(Execution execution) {
 		Process process = execution.getProcess();
-		ProcessModel model = process.getModel();
-		StartModel start = model.getStart();
+		StartModel start = process.getModel().getStart();
 		AssertHelper.notNull(start, "流程定义[id=" + process.getId() + "]没有开始节点");
-		Order order = orderService.createOrder(process, execution.getOperator(), execution.getArgs(), execution.getParentOrder().getId(), execution.getParentNodeName());
-		Execution current = new Execution(this, process, order, execution.getArgs());
-		current.setOperator(execution.getOperator());
+		
+		Execution current = execute(process, execution.getOperator(), execution.getArgs(), 
+				execution.getParentOrder().getId(), execution.getParentNodeName());
 		start.execute(current);
-		return order;
+		return current.getOrder();
+	}
+	
+	/**
+	 * 创建流程实例，并返回执行对象
+	 * @param process 流程定义
+	 * @param operator 操作人
+	 * @param args 参数列表
+	 * @param parentId 父流程实例id
+	 * @param parentNodeName 启动子流程的父流程节点名称
+	 * @return Execution
+	 */
+	private Execution execute(Process process, Long operator, Map<String, Object> args, String parentId, String parentNodeName) {
+		Order order = orderService.createOrder(process, operator, args, parentId, parentNodeName);
+		Execution current = new Execution(this, process, order, args);
+		current.setOperator(operator);
+		return current;
 	}
 
 	/**
@@ -206,33 +229,78 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 */
 	@Override
 	public List<Task> executeTask(String taskId, Long operator, Map<String, Object> args) {
-		if(args == null) args = new HashMap<String, Object>();
-		Task task = taskService.getTask(taskId);
-		if(!taskService.isAllowed(task, operator)) {
-			throw new SnakerException("当前参与者[" + operator + "]不允许执行任务[taskId=" + taskId + "]");
-		}
-		Task lastTask = taskService.completeTask(task, operator);
-		String orderId = lastTask.getOrderId();
-		Order order = orderService.getOrder(orderId);
-		Process process = ModelContainer.getEntity(order.getProcessId());
-		ProcessModel model = process.getModel();
-		NodeModel nodeModel = model.getNode(lastTask.getTaskName());
-		order.setLastUpdator(operator);
-		order.setLastUpdateTime(DateHelper.getTime());
-		
-		Execution execution = new Execution(this, process, order, args);
-		execution.setOperator(operator);
-		execution.setTaskId(taskId);
+		/*
+		 * 完成任务，并且构造执行对象
+		 */
+		Execution execution = execute(taskId, operator, args);
+		ProcessModel model = execution.getProcess().getModel();
+		NodeModel nodeModel = model.getNode(execution.getTask().getTaskName());
+		/*
+		 * 将执行对象交给该任务对应的节点模型执行
+		 */
 		nodeModel.execute(execution);
 		return execution.getTasks();
 	}
-
+	
 	/**
-	 * 根据任务主键ID，操作人ID提取任务 提取任务相当于预受理操作，仅仅标识此任务只能由此操作人处理
+	 * 根据任务主键ID，操作人ID，参数列表执行任务，并且根据nodeName跳转到任意节点
+	 * 1、nodeName为null时，则驳回至上一步处理
+	 * 2、nodeName不为null时，则任意跳转，即动态创建转移
 	 */
+	@Override
+	public List<Task> executeAndJumpTask(String taskId, Long operator, Map<String, Object> args, String nodeName) {
+		Execution execution = execute(taskId, operator, args);
+		ProcessModel model = execution.getProcess().getModel();
+		if(StringHelper.isEmpty(nodeName)) {
+			Task newTask = taskService.rejectTask(model, execution.getTask());
+			execution.addTask(newTask);
+		} else {
+			NodeModel nodeModel = model.getNode(nodeName);
+			AssertHelper.notNull(nodeModel, "根据节点名称[" + nodeName + "]无法找到节点模型");
+			//动态创建转移对象，由转移对象执行execution实例
+			TransitionModel tm = new TransitionModel();
+			tm.setTarget(nodeModel);
+			tm.setEnabled(true);
+			tm.execute(execution);
+		}
+
+		return execution.getTasks();
+	}
+	
+	/**
+	 * 根据任务主键ID，操作人ID，参数列表完成任务，并且构造执行对象
+	 * @param taskId 任务id
+	 * @param operator 操作人
+	 * @param args 参数列表
+	 * @return Execution
+	 */
+	private Execution execute(String taskId, Long operator, Map<String, Object> args) {
+		if(args == null) args = new HashMap<String, Object>();
+		Task task = taskService.getTask(taskId);
+		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
+		if(!taskService.isAllowed(task, operator)) {
+			throw new SnakerException("当前参与者[" + operator + "]不允许执行任务[taskId=" + taskId + "]");
+		}
+		taskService.completeTask(task, operator);
+		Order order = orderService.getOrder(task.getOrderId());
+		order.setLastUpdator(operator);
+		order.setLastUpdateTime(DateHelper.getTime());
+		Process process = ModelContainer.getEntity(order.getProcessId());
+		Execution execution = new Execution(this, process, order, args);
+		execution.setOperator(operator);
+		execution.setTask(task);
+		return execution;
+	}
+	
+	@Override
+	public Task withdrawTask(String taskId, Long operator) {
+		return taskService.withdrawTask(taskId, operator);
+	}
+
 	@Override
 	public void takeTask(String taskId, Long operator) {
 		Task task = taskService.getTask(taskId);
+		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
 		if(!taskService.isAllowed(task, operator)) {
 			throw new SnakerException("当前参与者[" + operator + "]不允许提取任务[taskId=" + taskId + "]");
 		}
@@ -255,14 +323,11 @@ public class SnakerEngineImpl implements SnakerEngine {
 	}
 
 	@Override
-	public List<Task> createTask(WorkModel model, Order order, Map<String, Object> args) {
+	public List<Task> createTask(WorkModel model, Execution execution) {
 		if(model instanceof TaskModel) {
-			return taskService.createTask((TaskModel)model, order, args);
+			return taskService.createTask((TaskModel)model, execution);
 		} else if(model instanceof CustomModel) {
-			Task task = taskService.createTask((CustomModel)model, order);
-			List<Task> tasks = new ArrayList<Task>();
-			tasks.add(task);
-			return tasks;
+			return taskService.createTask((CustomModel)model, execution);
 		}
 		return Collections.emptyList();
 	}

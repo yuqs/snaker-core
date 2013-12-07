@@ -64,7 +64,7 @@
     
     <sql id="selectWorkItemsPart">
 	 	select o.process_Id, t.order_Id, t.id as task_Id, p.display_Name as process_Name, p.instanceUrl as instance_Url, o.parent_Id, o.creator, 
-	  	o.create_Time as order_Create_Time, o.expire_Time as order_Expire_Time, o.order_No as orderNo, variable
+	  	o.create_Time as order_Create_Time, o.expire_Time as order_Expire_Time, o.order_No as orderNo, variable,
 	   	t.display_Name as task_Name, t.task_Type, t.perform_Type, t.operator, t.action_Url, 
 	    t.create_Time as task_Create_Time, t.finish_Time as task_End_Time, t.expire_Time as task_Expire_Time 
     </sql>
@@ -140,6 +140,8 @@
             create_Time as createTime,
             finish_Time as finishTime,
             expire_Time as expireTime,
-            action_Url as actionUrl 
+            action_Url as actionUrl,
+            parent_Task_Id as parentTaskId,
+            variable
     </sql>
 </mapper>

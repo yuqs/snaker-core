@@ -21,12 +21,14 @@ import java.util.Map;
 import org.snaker.engine.ITaskService;
 import org.snaker.engine.SnakerException;
 import org.snaker.engine.entity.HistoryTask;
-import org.snaker.engine.entity.Order;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.entity.TaskActor;
 import org.snaker.engine.helper.DateHelper;
+import org.snaker.engine.helper.JsonHelper;
 import org.snaker.engine.helper.StringHelper;
 import org.snaker.engine.model.CustomModel;
+import org.snaker.engine.model.NodeModel;
+import org.snaker.engine.model.ProcessModel;
 import org.snaker.engine.model.TaskModel;
 import org.snaker.engine.model.TaskModel.PerformType;
 
@@ -80,6 +82,45 @@ public class TaskService extends AccessService implements ITaskService {
 		access().updateTask(task);
 		return task;
 	}
+	
+	@Override
+	public Task withdrawTask(String taskId, Long operator) {
+		List<Task> tasks = access().getTasks(taskId);
+		if(tasks == null || tasks.isEmpty()) {
+			return null;
+		}
+		for(Task task : tasks) {
+			access().deleteTask(task);
+		}
+		HistoryTask history = access().getHistoryTask(taskId);
+		Task task = history.undoTask();
+		task.setId(StringHelper.getPrimaryKey());
+		task.setCreateTime(DateHelper.getTime());
+		task.setOperator(operator);
+		saveTask(task);
+		return task;
+	}
+	
+	@Override
+	public Task rejectTask(ProcessModel model, Task currentTask) {
+		String parentTaskId = currentTask.getParentTaskId();
+		if(StringHelper.isEmpty(parentTaskId)) {
+			throw new SnakerException("上一步任务ID为空，无法驳回至上一步处理，");
+		}
+		NodeModel current = model.getNode(currentTask.getTaskName());
+		HistoryTask history = getHistoryTask(parentTaskId);
+		NodeModel parent = model.getNode(history.getTaskName());
+		if(!current.canRejected(parent)) {
+			throw new SnakerException("无法驳回至上一步处理，请确认上一步骤并非fork、join、suprocess以及会签任务");
+		}
+
+		Task task = history.undoTask();
+		task.setId(StringHelper.getPrimaryKey());
+		task.setCreateTime(DateHelper.getTime());
+		task.setOperator(history.getOperator());
+		saveTask(task);
+		return task;
+	}
 
 	/**
 	 * 由DBAccess实现类分派task的参与者。关联taskActor对象
@@ -102,7 +143,15 @@ public class TaskService extends AccessService implements ITaskService {
 	public Task getTask(String taskId) {
 		return access().getTask(taskId);
 	}
-
+	
+	/**
+	 * 由DBAccess实现类根据taskId获取historytask对象
+	 */
+	@Override
+	public HistoryTask getHistoryTask(String taskId) {
+		return access().getHistoryTask(taskId);
+	}
+	
 	/**
 	 * 由DBAccess实现类创建task，并根据model类型决定是否分配参与者
 	 * @param model 模型
@@ -111,9 +160,10 @@ public class TaskService extends AccessService implements ITaskService {
 	 * @return List<Task> 任务列表
 	 */
 	@Override
-	public List<Task> createTask(TaskModel taskModel, Order order, Map<String, Object> args) {
+	public List<Task> createTask(TaskModel taskModel, Execution execution) {
 		List<Task> tasks = new ArrayList<Task>();
 		Long[] actors = null;
+		Map<String, Object> args = execution.getArgs();
 		if(args != null && !args.isEmpty()) {
 			/**
 			 * 分配任务给相关参与者
@@ -126,12 +176,12 @@ public class TaskService extends AccessService implements ITaskService {
 		String type = taskModel.getPerformType();
 		if(type == null || type.equalsIgnoreCase(TaskModel.TYPE_ANY)) {
 			//任务执行方式为参与者中任何一个执行即可驱动流程继续流转，该方法只产生一个task
-			Task task = createTask(taskModel, order, PerformType.ANY.ordinal(), expireTime, actors);
+			Task task = createTask(taskModel, execution, PerformType.ANY.ordinal(), expireTime, actors);
 			tasks.add(task);
 		} else {
 			//任务执行方式为参与者中每个都要执行完才可驱动流程继续流转，该方法根据参与者个数产生对应的task数量
 			for(Long actor : actors) {
-				Task ftask = createTask(taskModel, order, PerformType.ALL.ordinal(), expireTime, actor);
+				Task ftask = createTask(taskModel, execution, PerformType.ALL.ordinal(), expireTime, actor);
 				tasks.add(ftask);
 			}
 		}
@@ -145,15 +195,19 @@ public class TaskService extends AccessService implements ITaskService {
 	 * @return
 	 */
 	@Override
-	public Task createTask(CustomModel customModel, Order order) {
+	public List<Task> createTask(CustomModel customModel, Execution execution) {
+		List<Task> tasks = new ArrayList<Task>();
 		Task task = newTask();
-		task.setOrderId(order.getId());
+		task.setOrderId(execution.getOrder().getId());
 		task.setTaskName(customModel.getName());
 		task.setDisplayName(customModel.getDisplayName());
 		task.setCreateTime(DateHelper.getTime());
 		task.setTaskType(TaskType.Custom.ordinal());
+		task.setVariable(JsonHelper.toJson(execution.getArgs()));
+		task.setParentTaskId(execution.getTask().getId());
 		saveTask(task);
-		return task;
+		tasks.add(task);
+		return tasks;
 	}
 	
 	/**
@@ -165,9 +219,9 @@ public class TaskService extends AccessService implements ITaskService {
 	 * @param actors 任务参与者集合
 	 * @return
 	 */
-	private Task createTask(TaskModel taskModel, Order order, int performType, String expireTime, Long... actors) {
+	private Task createTask(TaskModel taskModel, Execution execution, int performType, String expireTime, Long... actors) {
 		Task task = newTask();
-		task.setOrderId(order.getId());
+		task.setOrderId(execution.getOrder().getId());
 		task.setTaskName(taskModel.getName());
 		task.setDisplayName(taskModel.getDisplayName());
 		task.setCreateTime(DateHelper.getTime());
@@ -175,6 +229,8 @@ public class TaskService extends AccessService implements ITaskService {
 		task.setExpireTime(expireTime);
 		task.setPerformType(performType);
 		task.setTaskType(TaskType.Task.ordinal());
+		task.setVariable(JsonHelper.toJson(execution.getArgs()));
+		task.setParentTaskId(execution.getTask() == null ? null : execution.getTask().getId());
 		saveTask(task);
 		assignTask(task.getId(), actors);
 		task.setActorIds(actors);

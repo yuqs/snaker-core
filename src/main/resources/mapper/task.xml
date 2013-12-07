@@ -4,12 +4,13 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Task">
     <insert id="SAVE" parameterType="task">
-    	insert into wf_task (id,order_Id,task_Name,display_Name,task_Type,perform_Type,operator,create_Time,finish_Time,expire_Time,action_Url)
+    	insert into wf_task (id,order_Id,task_Name,display_Name,task_Type,perform_Type,operator,create_Time,finish_Time,expire_Time,action_Url,parent_Task_Id,variable)
     	values (#{id, jdbcType=VARCHAR},#{orderId, jdbcType=VARCHAR},#{taskName, jdbcType=VARCHAR},
     	#{displayName, jdbcType=VARCHAR},#{taskType, jdbcType=NUMERIC},
     	#{performType, jdbcType=NUMERIC},#{operator, jdbcType=NUMERIC},
     	#{createTime, jdbcType=VARCHAR},#{finishTime, jdbcType=VARCHAR},
-    	#{expireTime, jdbcType=VARCHAR},#{actionUrl, jdbcType=VARCHAR})
+    	#{expireTime, jdbcType=VARCHAR},#{actionUrl, jdbcType=VARCHAR},
+    	#{parentTaskId, jdbcType=VARCHAR},#{variable, jdbcType=VARCHAR})
     </insert>
     <update id="UPDATE" parameterType="task">
     	update wf_task set finish_Time=#{finishTime, jdbcType=VARCHAR}, operator=#{operator, jdbcType=NUMERIC} where id=#{id, jdbcType=VARCHAR}
@@ -29,9 +30,29 @@
             create_Time as createTime,
             finish_Time as finishTime,
             expire_Time as expireTime,
-            action_Url as actionUrl 
+            action_Url as actionUrl,
+            parent_Task_Id as parentTaskId,
+            variable
         from wf_task 
     	where id = #{id, jdbcType=VARCHAR}
+    </select>
+    <select id="SELECTBYPARENT" parameterType="string" resultType="task">
+        select 
+            id,
+            order_Id as orderId,
+            task_Name as taskName,
+            display_Name as displayName,
+            task_Type as taskType,
+            perform_Type as performType,
+            operator,
+            create_Time as createTime,
+            finish_Time as finishTime,
+            expire_Time as expireTime,
+            action_Url as actionUrl,
+            parent_Task_Id as parentTaskId,
+            variable
+        from wf_task  
+    	where parent_Task_Id = #{id, jdbcType=VARCHAR}
     </select>
     <select id="SELECTLIST" resultType="task">
         select 
@@ -45,7 +66,9 @@
             create_Time as createTime,
             finish_Time as finishTime,
             expire_Time as expireTime,
-            action_Url as actionUrl 
+            action_Url as actionUrl,
+            parent_Task_Id as parentTaskId,
+            variable
         from wf_task  
     </select>
 </mapper>

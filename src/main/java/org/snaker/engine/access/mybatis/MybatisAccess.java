@@ -98,6 +98,16 @@ public class MybatisAccess extends AbstractDBAccess {
 	public Task getTask(String taskId) {
 		return getSession().selectOne("Task.SELECTONE", taskId);
 	}
+	
+	@Override
+	public List<Task> getTasks(String parentTaskId) {
+		return getSession().selectList("Task.SELECTBYPARENT", parentTaskId);
+	}
+	
+	@Override
+	public HistoryTask getHistoryTask(String taskId) {
+		return getSession().selectOne("HistoryTask.SELECTONE", taskId);
+	}
 
 	@Override
 	public List<TaskActor> getTaskActorsByTaskId(String taskId) {

@@ -77,7 +77,31 @@ public class Task implements Serializable {
      * 任务参与者列表
      */
     private Long[] actorIds;
+    /**
+     * 父任务Id
+     */
+    private String parentTaskId;
+	/**
+     * 任务附属变量
+     */
+    private String variable;
     
+	public String getParentTaskId() {
+		return parentTaskId;
+	}
+
+	public void setParentTaskId(String parentTaskId) {
+		this.parentTaskId = parentTaskId;
+	}
+
+	public String getVariable() {
+		return variable;
+	}
+
+	public void setVariable(String variable) {
+		this.variable = variable;
+	}
+
 	public String getTaskName() {
 		return taskName;
 	}

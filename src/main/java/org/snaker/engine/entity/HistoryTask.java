@@ -81,8 +81,32 @@ public class HistoryTask implements Serializable {
      * 任务参与者列表
      */
     private Long[] actorIds;
+    /**
+     * 父任务Id
+     */
+    private String parentTaskId;
+	/**
+     * 任务附属变量
+     */
+    private String variable;
     
-    public HistoryTask() {
+    public String getParentTaskId() {
+		return parentTaskId;
+	}
+
+	public void setParentTaskId(String parentTaskId) {
+		this.parentTaskId = parentTaskId;
+	}
+
+	public String getVariable() {
+		return variable;
+	}
+
+	public void setVariable(String variable) {
+		this.variable = variable;
+	}
+
+	public HistoryTask() {
     	
     }
     
@@ -96,6 +120,27 @@ public class HistoryTask implements Serializable {
     	this.expireTime = task.getExpireTime();
     	this.actionUrl = task.getActionUrl();
     	this.actorIds = task.getActorIds();
+    	this.parentTaskId = task.getParentTaskId();
+    	this.variable = task.getVariable();
+    }
+    
+    /**
+     * 根据历史任务产生撤回的任务对象
+     * @param history
+     * @return
+     */
+    public Task undoTask() {
+    	Task task = new Task();
+    	task.setOrderId(this.getOrderId());;
+    	task.setTaskName(this.getTaskName());
+    	task.setDisplayName(this.getDisplayName());
+    	task.setTaskType(this.getTaskType());
+    	task.setExpireTime(this.getExpireTime());
+    	task.setActionUrl(this.getActionUrl());
+    	task.setParentTaskId(this.getParentTaskId());
+    	task.setVariable(this.getVariable());
+    	task.setPerformType(this.getPerformType());
+    	return task;
     }
     
 	public String getTaskName() {

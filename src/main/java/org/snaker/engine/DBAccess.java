@@ -116,6 +116,20 @@ public interface DBAccess {
 	public Task getTask(String taskId);
 	
 	/**
+	 * 根据父任务id查询所有子任务
+	 * @param parentTaskId
+	 * @return
+	 */
+	public List<Task> getTasks(String parentTaskId);
+	
+	/**
+	 * 根据任务id查询历史任务对象
+	 * @param taskId
+	 * @return
+	 */
+	public HistoryTask getHistoryTask(String taskId);
+	
+	/**
 	 * 根据任务id查询所有参与者集合
 	 * @param taskId
 	 * @return

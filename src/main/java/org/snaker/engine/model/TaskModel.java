@@ -46,7 +46,7 @@ public class TaskModel extends WorkModel {
 	 */
 	private String assignee;
 	/**
-	 * 参与方式：普通any方式；特殊的all方式
+	 * 参与方式
 	 * any：任何一个参与者处理完即执行下一步
 	 * all：所有参与者都完成，才可执行下一步
 	 */

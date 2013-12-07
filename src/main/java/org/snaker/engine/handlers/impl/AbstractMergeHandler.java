@@ -52,7 +52,7 @@ public abstract class AbstractMergeHandler implements IHandler {
 			}
 		}
 		if(!isMerged && model.containsNodeNames(TaskModel.class, activeNodes)) {
-			List<Task> tasks = queryService.getActiveTasks(order.getId(), execution.getTaskId(), activeNodes);
+			List<Task> tasks = queryService.getActiveTasks(order.getId(), execution.getTask().getId(), activeNodes);
 			if(tasks == null || tasks.isEmpty()) {
 				//如果所有task都已完成，则表示可合并
 				isMerged = true;

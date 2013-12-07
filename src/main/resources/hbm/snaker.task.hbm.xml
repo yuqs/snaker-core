@@ -15,7 +15,9 @@
         <property name="expireTime" type="java.lang.String" column="EXPIRE_TIME"/>
         <property name="actionUrl" type="java.lang.String" column="ACTION_URL"/>
         <property name="taskType" type="java.lang.Integer" column="TASK_TYPE"/>
-        <property name="performType" type="java.lang.Integer" column="PERFORM_TYPE"/>
+        <property name="performType" type="java.lang.Integer" column="PERFORM_TYPE"/> 
+        <property name="parentTaskId" type="java.lang.String" column="PARENT_TASK_ID"/>
+        <property name="variable" type="java.lang.String" column="VARIABLE"/>
     </class>
     
     <class name="org.snaker.engine.entity.HistoryTask" table="wf_hist_task">
@@ -33,5 +35,7 @@
         <property name="taskType" type="java.lang.Integer" column="TASK_TYPE"/>
         <property name="taskState" type="java.lang.Integer" column="TASK_STATE"/>
         <property name="performType" type="java.lang.Integer" column="PERFORM_TYPE"/>
+        <property name="parentTaskId" type="java.lang.String" column="PARENT_TASK_ID"/>
+        <property name="variable" type="java.lang.String" column="VARIABLE"/>
     </class>
 </hibernate-mapping>

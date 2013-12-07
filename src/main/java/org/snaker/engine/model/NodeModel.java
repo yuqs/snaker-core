@@ -52,6 +52,33 @@ public class NodeModel extends BaseModel implements Action {
 		}
 	}
 	
+	/**
+	 * 根据父节点模型、当前节点模型判断是否可退回。可退回条件：
+	 * 1、满足中间无fork、join、subprocess模型
+	 * 2、满足父节点模型如果为任务模型时，参与类型为any
+	 * @param parent
+	 * @param current
+	 * @return
+	 */
+	public boolean canRejected(NodeModel parent) {
+		if(parent instanceof TaskModel && ((TaskModel)parent).getPerformType().equals(TaskModel.TYPE_ALL)) {
+			return false;
+		}
+		for(TransitionModel tm : parent.getOutputs()) {
+			NodeModel target = tm.getTarget();
+			if(target.getName().equals(this.getName())) {
+				return true;
+			}
+			if(target instanceof ForkModel 
+					|| target instanceof JoinModel 
+					|| target instanceof SubProcessModel) {
+				continue;
+			}
+			return canRejected(target);
+		}
+		return false;
+	}
+	
 	public List<TransitionModel> getInputs() {
 		return inputs;
 	}
