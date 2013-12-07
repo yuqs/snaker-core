@@ -23,8 +23,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author yuqs
  * @version 1.0
  */
-public class Task implements Serializable {
-
+public class Task implements Serializable, Cloneable {
 	/**
 	 * 
 	 */
@@ -197,6 +196,12 @@ public class Task implements Serializable {
 	public void setPerformType(Integer performType) {
 		this.performType = performType;
 	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);

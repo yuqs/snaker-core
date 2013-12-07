@@ -151,6 +151,13 @@ public interface SnakerEngine {
 	public Task withdrawTask(String taskId, Long operator);
 	
 	/**
+	 * 向指定的任务id，添加参与者
+	 * @param taskId 任务主键id
+	 * @param actors 参与者
+	 */
+	public void addTaskActor(String taskId, Long... actors);
+	
+	/**
 	 * 完成指定执行对象的流程实例
 	 * @param execution 执行对象
 	 */

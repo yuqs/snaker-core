@@ -30,6 +30,7 @@ import org.snaker.engine.SnakerEngine;
 import org.snaker.engine.SnakerException;
 import org.snaker.engine.access.transaction.TransactionInterceptor;
 import org.snaker.engine.cfg.Configuration;
+import org.snaker.engine.core.TaskService.TaskType;
 import org.snaker.engine.entity.Order;
 import org.snaker.engine.entity.Process;
 import org.snaker.engine.entity.Task;
@@ -315,6 +316,15 @@ public class SnakerEngineImpl implements SnakerEngine {
 	@Override
 	public void terminateById(String orderId, Long operator) {
 		orderService.terminate(orderId, operator);
+	}
+	
+	@Override
+	public void addTaskActor(String taskId, Long... actors) {
+		Task task = taskService.getTask(taskId);
+		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
+		if(task.getTaskType().intValue() == TaskType.Task.ordinal()) {
+			taskService.addTaskActor(task, actors);
+		}
 	}
 	
 	@Override

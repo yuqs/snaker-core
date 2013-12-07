@@ -60,6 +60,13 @@ public interface ITaskService {
 	Task takeTask(Task task, Long operator);
 	
 	/**
+	 * 向指定的任务id添加参与者
+	 * @param taskId 任务id
+	 * @param actors 参与者
+	 */
+	void addTaskActor(Task task, Long... actors);
+	
+	/**
 	 * 根据任务主键id、操作人撤回任务
 	 * @param taskId 任务主键id
 	 * @param operator 操作人

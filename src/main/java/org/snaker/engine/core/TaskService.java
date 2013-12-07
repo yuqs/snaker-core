@@ -39,7 +39,7 @@ import org.snaker.engine.model.TaskModel.PerformType;
  */
 public class TaskService extends AccessService implements ITaskService {
 	/**
-	 * 参与类型
+	 * 任务类型
 	 */
 	public enum TaskType {
 		Task, Custom;
@@ -84,6 +84,32 @@ public class TaskService extends AccessService implements ITaskService {
 	}
 	
 	@Override
+	public void addTaskActor(Task task, Long... actors) {
+		int performType = task.getPerformType() == null ? -1 : task.getPerformType().intValue();
+		switch(performType) {
+		case -1:
+			break;
+		case 0:
+			assignTask(task.getId(), actors);
+			break;
+		case 1:
+			try {
+				for(Long actor : actors) {
+					Task newTask = (Task)task.clone();
+					newTask.setId(StringHelper.getPrimaryKey());
+					newTask.setCreateTime(DateHelper.getTime());
+					newTask.setOperator(actor);
+					saveTask(newTask);
+					assignTask(newTask.getId(), actor);
+				}
+			} catch(CloneNotSupportedException ex) {
+				throw new SnakerException("任务对象不支持复制");
+			}
+			break;
+		}
+	}
+	
+	@Override
 	public Task withdrawTask(String taskId, Long operator) {
 		List<Task> tasks = access().getTasks(taskId);
 		if(tasks == null || tasks.isEmpty()) {
@@ -98,6 +124,7 @@ public class TaskService extends AccessService implements ITaskService {
 		task.setCreateTime(DateHelper.getTime());
 		task.setOperator(operator);
 		saveTask(task);
+		assignTask(task.getId(), task.getOperator());
 		return task;
 	}
 	
@@ -119,6 +146,7 @@ public class TaskService extends AccessService implements ITaskService {
 		task.setCreateTime(DateHelper.getTime());
 		task.setOperator(history.getOperator());
 		saveTask(task);
+		assignTask(task.getId(), task.getOperator());
 		return task;
 	}
 
