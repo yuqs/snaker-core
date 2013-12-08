@@ -85,6 +85,14 @@ public class Task implements Serializable, Cloneable {
      */
     private String variable;
     
+    public Task() {
+    	
+    }
+    
+    public Task(String id) {
+    	this.id = id;
+    }
+    
 	public String getParentTaskId() {
 		return parentTaskId;
 	}

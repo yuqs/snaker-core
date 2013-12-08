@@ -107,8 +107,8 @@ public class Execution implements Serializable {
 	 * @param args
 	 */
 	public Execution(SnakerEngine engine, Process process, Order order, Map<String, Object> args) {
-		if(process == null || order == null || process.getModel() == null) {
-			throw new SnakerException("构造Execution对象失败，请检查process、order、model是否为空");
+		if(process == null || order == null) {
+			throw new SnakerException("构造Execution对象失败，请检查process、order是否为空");
 		}
 		this.engine = engine;
 		this.process = process;

@@ -26,6 +26,7 @@ import org.snaker.engine.entity.TaskActor;
 import org.snaker.engine.helper.DateHelper;
 import org.snaker.engine.helper.JsonHelper;
 import org.snaker.engine.helper.StringHelper;
+import org.snaker.engine.model.BaseModel;
 import org.snaker.engine.model.CustomModel;
 import org.snaker.engine.model.NodeModel;
 import org.snaker.engine.model.ProcessModel;
@@ -225,14 +226,7 @@ public class TaskService extends AccessService implements ITaskService {
 	@Override
 	public List<Task> createTask(CustomModel customModel, Execution execution) {
 		List<Task> tasks = new ArrayList<Task>();
-		Task task = newTask();
-		task.setOrderId(execution.getOrder().getId());
-		task.setTaskName(customModel.getName());
-		task.setDisplayName(customModel.getDisplayName());
-		task.setCreateTime(DateHelper.getTime());
-		task.setTaskType(TaskType.Custom.ordinal());
-		task.setVariable(JsonHelper.toJson(execution.getArgs()));
-		task.setParentTaskId(execution.getTask().getId());
+		Task task = createTask(customModel, execution, TaskType.Custom.ordinal());
 		saveTask(task);
 		tasks.add(task);
 		return tasks;
@@ -248,20 +242,32 @@ public class TaskService extends AccessService implements ITaskService {
 	 * @return
 	 */
 	private Task createTask(TaskModel taskModel, Execution execution, int performType, String expireTime, Long... actors) {
-		Task task = newTask();
-		task.setOrderId(execution.getOrder().getId());
-		task.setTaskName(taskModel.getName());
-		task.setDisplayName(taskModel.getDisplayName());
-		task.setCreateTime(DateHelper.getTime());
+		Task task = createTask(taskModel, execution, TaskType.Task.ordinal());
 		task.setActionUrl(taskModel.getUrl());
 		task.setExpireTime(expireTime);
 		task.setPerformType(performType);
-		task.setTaskType(TaskType.Task.ordinal());
-		task.setVariable(JsonHelper.toJson(execution.getArgs()));
-		task.setParentTaskId(execution.getTask() == null ? null : execution.getTask().getId());
 		saveTask(task);
 		assignTask(task.getId(), actors);
 		task.setActorIds(actors);
+		return task;
+	}
+	
+	/**
+	 * 根据模型、执行对象、任务类型构建基本的task对象
+	 * @param model
+	 * @param execution
+	 * @param taskType
+	 * @return
+	 */
+	private Task createTask(BaseModel model, Execution execution, int taskType) {
+		Task task = newTask();
+		task.setOrderId(execution.getOrder().getId());
+		task.setTaskName(model.getName());
+		task.setDisplayName(model.getDisplayName());
+		task.setCreateTime(DateHelper.getTime());
+		task.setTaskType(taskType);
+		task.setVariable(JsonHelper.toJson(execution.getArgs()));
+		task.setParentTaskId(execution.getTask() == null ? null : execution.getTask().getId());
 		return task;
 	}
 	

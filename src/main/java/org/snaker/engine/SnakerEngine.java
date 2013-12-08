@@ -115,11 +115,29 @@ public interface SnakerEngine {
 	
 	/**
 	 * 创建新的任务
-	 * @param taskModel 任务节点模型
+	 * @param model 节点模型
 	 * @param execution 执行对象
 	 * @return List<Task> 任务集合
 	 */
-	public List<Task> createTask(WorkModel taskModel, Execution execution);
+	public List<Task> createTask(WorkModel model, Execution execution);
+	
+	/**
+	 * 根据任务主键ID，操作人ID完成任务
+	 * @param taskId 任务id
+	 * @param operator 操作人id
+	 * @return
+	 */
+	public Task finishTask(String taskId, Long operator);
+	
+	/**
+	 * 根据流程实例ID，操作人ID，参数列表按照节点模型model创建新的自由任务
+	 * @param orderId 流程实例id
+	 * @param operator 操作人id
+	 * @param args 参数列表
+	 * @param model 节点模型
+	 * @return
+	 */
+	public List<Task> createFreeTask(String orderId, Long operator, Map<String, Object> args, WorkModel model);
 	
 	/**
 	 * 根据任务主键ID，操作人ID提取任务

@@ -171,10 +171,14 @@ public class SnakerEngineImpl implements SnakerEngine {
 		if(args == null) args = new HashMap<String, Object>();
 		Process process = ModelContainer.getEntity(id);
 		AssertHelper.notNull(process, "指定的流程定义[id=" + id + "]不存在");
-		StartModel start = process.getModel().getStart();
-		AssertHelper.notNull(start, "指定的流程定义[id=" + id + "]没有开始节点");
 		Execution execution = execute(process, operator, args, null, null);
-		start.execute(execution);
+		
+		if(process.getModel() != null) {
+			StartModel start = process.getModel().getStart();
+			AssertHelper.notNull(start, "指定的流程定义[id=" + id + "]没有开始节点");
+			start.execute(execution);
+		}
+		
 		return execution.getOrder();
 	}
 	
@@ -235,11 +239,13 @@ public class SnakerEngineImpl implements SnakerEngine {
 		 */
 		Execution execution = execute(taskId, operator, args);
 		ProcessModel model = execution.getProcess().getModel();
-		NodeModel nodeModel = model.getNode(execution.getTask().getTaskName());
-		/*
-		 * 将执行对象交给该任务对应的节点模型执行
-		 */
-		nodeModel.execute(execution);
+		if(model != null) {
+			NodeModel nodeModel = model.getNode(execution.getTask().getTaskName());
+			/*
+			 * 将执行对象交给该任务对应的节点模型执行
+			 */
+			nodeModel.execute(execution);
+		}
 		return execution.getTasks();
 	}
 	
@@ -252,6 +258,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	public List<Task> executeAndJumpTask(String taskId, Long operator, Map<String, Object> args, String nodeName) {
 		Execution execution = execute(taskId, operator, args);
 		ProcessModel model = execution.getProcess().getModel();
+		AssertHelper.notNull(model, "当前任务未找到流程定义模型");
 		if(StringHelper.isEmpty(nodeName)) {
 			Task newTask = taskService.rejectTask(model, execution.getTask());
 			execution.addTask(newTask);
@@ -269,6 +276,20 @@ public class SnakerEngineImpl implements SnakerEngine {
 	}
 	
 	/**
+	 * 根据流程实例ID，操作人ID，参数列表按照节点模型model创建新的自由任务
+	 */
+	@Override
+	public List<Task> createFreeTask(String orderId, Long operator, Map<String, Object> args, WorkModel model) {
+		Order order = orderService.getOrder(orderId);
+		order.setLastUpdator(operator);
+		order.setLastUpdateTime(DateHelper.getTime());
+		Process process = ModelContainer.getEntity(order.getProcessId());
+		Execution execution = new Execution(this, process, order, args);
+		execution.setOperator(operator);
+		return createTask(model, execution);
+	}
+	
+	/**
 	 * 根据任务主键ID，操作人ID，参数列表完成任务，并且构造执行对象
 	 * @param taskId 任务id
 	 * @param operator 操作人
@@ -277,12 +298,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 */
 	private Execution execute(String taskId, Long operator, Map<String, Object> args) {
 		if(args == null) args = new HashMap<String, Object>();
-		Task task = taskService.getTask(taskId);
-		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
-		if(!taskService.isAllowed(task, operator)) {
-			throw new SnakerException("当前参与者[" + operator + "]不允许执行任务[taskId=" + taskId + "]");
-		}
-		taskService.completeTask(task, operator);
+		Task task = finishTask(taskId, operator);
 		Order order = orderService.getOrder(task.getOrderId());
 		order.setLastUpdator(operator);
 		order.setLastUpdateTime(DateHelper.getTime());
@@ -291,6 +307,20 @@ public class SnakerEngineImpl implements SnakerEngine {
 		execution.setOperator(operator);
 		execution.setTask(task);
 		return execution;
+	}
+	
+	/**
+	 * 根据任务主键ID，操作人ID完成任务
+	 */
+	@Override
+	public Task finishTask(String taskId, Long operator) {
+		Task task = taskService.getTask(taskId);
+		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
+		if(!taskService.isAllowed(task, operator)) {
+			throw new SnakerException("当前参与者[" + operator + "]不允许执行任务[taskId=" + taskId + "]");
+		}
+		taskService.completeTask(task, operator);
+		return task;
 	}
 	
 	@Override
@@ -315,6 +345,10 @@ public class SnakerEngineImpl implements SnakerEngine {
 	
 	@Override
 	public void terminateById(String orderId, Long operator) {
+		List<Task> tasks = queryService.getActiveTasks(orderId);
+		for(Task task : tasks) {
+			taskService.completeTask(task, operator);
+		}
 		orderService.terminate(orderId, operator);
 	}
 	
