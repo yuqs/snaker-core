@@ -77,21 +77,23 @@ public class JdbcAccess extends AbstractDBAccess implements DBAccess {
 	@Override
 	public void saveProcess(Process process) {
 		super.saveProcess(process);
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(PROCESS_UPDATE_BLOB);
-			pstmt.setBytes(1, process.getBytes());
-			pstmt.setString(2, process.getId());
-			pstmt.execute();
-		} catch (Exception e) {
-			throw new SnakerException(e.getMessage(), e.getCause());
-		} finally {
+		if(process.getBytes() != null) {
+			Connection conn = null;
+			PreparedStatement pstmt = null;
 			try {
-				JdbcHelper.close(pstmt);
-			} catch (SQLException e) {
+				conn = getConnection();
+				pstmt = conn.prepareStatement(PROCESS_UPDATE_BLOB);
+				pstmt.setBytes(1, process.getBytes());
+				pstmt.setString(2, process.getId());
+				pstmt.execute();
+			} catch (Exception e) {
 				throw new SnakerException(e.getMessage(), e.getCause());
+			} finally {
+				try {
+					JdbcHelper.close(pstmt);
+				} catch (SQLException e) {
+					throw new SnakerException(e.getMessage(), e.getCause());
+				}
 			}
 		}
 	}
@@ -102,21 +104,23 @@ public class JdbcAccess extends AbstractDBAccess implements DBAccess {
 	@Override
 	public void updateProcess(Process process) {
 		super.updateProcess(process);
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(PROCESS_UPDATE_BLOB);
-			pstmt.setBytes(1, process.getBytes());
-			pstmt.setString(2, process.getId());
-			pstmt.execute();
-		} catch (Exception e) {
-			throw new SnakerException(e.getMessage(), e.getCause());
-		} finally {
+		if(process.getBytes() != null) {
+			Connection conn = null;
+			PreparedStatement pstmt = null;
 			try {
-				JdbcHelper.close(pstmt);
-			} catch (SQLException e) {
+				conn = getConnection();
+				pstmt = conn.prepareStatement(PROCESS_UPDATE_BLOB);
+				pstmt.setBytes(1, process.getBytes());
+				pstmt.setString(2, process.getId());
+				pstmt.execute();
+			} catch (Exception e) {
 				throw new SnakerException(e.getMessage(), e.getCause());
+			} finally {
+				try {
+					JdbcHelper.close(pstmt);
+				} catch (SQLException e) {
+					throw new SnakerException(e.getMessage(), e.getCause());
+				}
 			}
 		}
 	}

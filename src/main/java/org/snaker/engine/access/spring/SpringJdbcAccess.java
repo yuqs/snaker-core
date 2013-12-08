@@ -52,35 +52,39 @@ public class SpringJdbcAccess extends AbstractDBAccess implements DBAccess {
 	@Override
 	public void saveProcess(final Process process) {
 		super.saveProcess(process);
-		template.execute(PROCESS_UPDATE_BLOB, new AbstractLobCreatingPreparedStatementCallback(lobHandler) {
-			@Override
-			protected void setValues(PreparedStatement ps, LobCreator lobCreator)
-					throws SQLException, DataAccessException {
-				try {
-					lobCreator.setBlobAsBytes(ps, 1, process.getBytes());
-					StatementCreatorUtils.setParameterValue(ps, 2, Types.VARCHAR, process.getId());
-				} catch (Exception e) {
-					e.printStackTrace();
+		if(process.getBytes() != null) {
+			template.execute(PROCESS_UPDATE_BLOB, new AbstractLobCreatingPreparedStatementCallback(lobHandler) {
+				@Override
+				protected void setValues(PreparedStatement ps, LobCreator lobCreator)
+						throws SQLException, DataAccessException {
+					try {
+						lobCreator.setBlobAsBytes(ps, 1, process.getBytes());
+						StatementCreatorUtils.setParameterValue(ps, 2, Types.VARCHAR, process.getId());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	@Override
 	public void updateProcess(final Process process) {
 		super.updateProcess(process);
-		template.execute(PROCESS_UPDATE_BLOB, new AbstractLobCreatingPreparedStatementCallback(lobHandler) {
-			@Override
-			protected void setValues(PreparedStatement ps, LobCreator lobCreator)
-					throws SQLException, DataAccessException {
-				try {
-					lobCreator.setBlobAsBytes(ps, 1, process.getBytes());
-					StatementCreatorUtils.setParameterValue(ps, 2, Types.VARCHAR, process.getId());
-				} catch (Exception e) {
-					e.printStackTrace();
+		if(process.getBytes() != null) {
+			template.execute(PROCESS_UPDATE_BLOB, new AbstractLobCreatingPreparedStatementCallback(lobHandler) {
+				@Override
+				protected void setValues(PreparedStatement ps, LobCreator lobCreator)
+						throws SQLException, DataAccessException {
+					try {
+						lobCreator.setBlobAsBytes(ps, 1, process.getBytes());
+						StatementCreatorUtils.setParameterValue(ps, 2, Types.VARCHAR, process.getId());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	@Override

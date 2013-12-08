@@ -81,8 +81,10 @@ public class HibernateAccess extends AbstractDBAccess implements DBAccess {
 	@Override
 	public void saveProcess(Process process) {
 		try {
-			Blob blob = Hibernate.createBlob(process.getBytes(), getSession());
-			process.setContent(blob);
+			if(process.getBytes() != null) {
+				Blob blob = Hibernate.createBlob(process.getBytes(), getSession());
+				process.setContent(blob);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new SnakerException(e.getMessage(), e.getCause());
