@@ -176,8 +176,8 @@ public interface SnakerEngine {
 	public void addTaskActor(String taskId, Long... actors);
 	
 	/**
-	 * 完成指定执行对象的流程实例
-	 * @param execution 执行对象
+	 * 完成指定id的流程实例
+	 * @param orderId 执行对象
 	 */
-	public void finishByExecution(Execution execution);
+	public void finishInstanceById(String orderId);
 }

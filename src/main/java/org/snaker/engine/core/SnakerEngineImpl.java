@@ -353,17 +353,9 @@ public class SnakerEngineImpl implements SnakerEngine {
 	}
 	
 	@Override
-	public void addTaskActor(String taskId, Long... actors) {
-		Task task = taskService.getTask(taskId);
-		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
-		if(task.getTaskType().intValue() == TaskType.Task.ordinal()) {
-			taskService.addTaskActor(task, actors);
-		}
-	}
-	
-	@Override
-	public void finishByExecution(Execution execution) {
-		orderService.finish(execution);
+	public void finishInstanceById(String orderId) {
+		Order order = orderService.getOrder(orderId);
+		orderService.finish(order);
 	}
 
 	@Override
@@ -374,5 +366,14 @@ public class SnakerEngineImpl implements SnakerEngine {
 			return taskService.createTask((CustomModel)model, execution);
 		}
 		return Collections.emptyList();
+	}
+	
+	@Override
+	public void addTaskActor(String taskId, Long... actors) {
+		Task task = taskService.getTask(taskId);
+		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
+		if(task.getTaskType().intValue() == TaskType.Task.ordinal()) {
+			taskService.addTaskActor(task, actors);
+		}
 	}
 }

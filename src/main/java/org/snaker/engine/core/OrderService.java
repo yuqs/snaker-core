@@ -54,13 +54,13 @@ public class OrderService extends AccessService implements IOrderService {
 	 * 由DBAccess实现类更新order状态
 	 */
 	@Override
-	public void finish(Execution execution) {
-		HistoryOrder history = new HistoryOrder(execution.getOrder());
+	public void finish(Order order) {
+		HistoryOrder history = new HistoryOrder(order);
 		history.setOrderState(STATE_FINISH);
 		history.setEndTime(DateHelper.getTime());
 		
 		access().updateHistory(history);
-		access().deleteOrder(execution.getOrder());
+		access().deleteOrder(order);
 	}
 
 	/**

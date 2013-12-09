@@ -16,7 +16,6 @@ package org.snaker.engine;
 
 import java.util.Map;
 
-import org.snaker.engine.core.Execution;
 import org.snaker.engine.entity.Order;
 import org.snaker.engine.entity.Process;
 
@@ -61,9 +60,9 @@ public interface IOrderService {
 	
 	/**
 	 * 流程实例正常完成
-	 * @param execution
+	 * @param order
 	 */
-	void finish(Execution execution);
+	void finish(Order order);
 	
 	/**
 	 * 流程实例强制终止
