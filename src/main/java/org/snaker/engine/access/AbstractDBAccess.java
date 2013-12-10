@@ -49,18 +49,18 @@ public abstract class AbstractDBAccess implements DBAccess {
 	protected static final String SAVE = "SAVE";
 	protected static final String UPDATE = "UPDATE";
 	
-	protected static final String PROCESS_INSERT = "insert into wf_process (id,parent_Id,name,display_Name,type,instance_Url,query_Url,state) values (?,?,?,?,?,?,?,?)";
+	protected static final String PROCESS_INSERT = "insert into wf_process (id,parent_Id,name,display_Name,type,instance_Url,query_Url,state,version) values (?,?,?,?,?,?,?,?,0)";
 	protected static final String PROCESS_UPDATE = "update wf_process set name=?, display_Name=?,state=?,instance_Url=?,query_Url=? where id=?";
 	protected static final String PROCESS_UPDATE_BLOB = "update wf_process set content=? where id=?";
 	
-	protected static final String ORDER_INSERT = "insert into wf_order (id,process_Id,creator,create_Time,parent_Id,parent_Node_Name,expire_Time,last_Update_Time,last_Updator,order_No,variable) values (?,?,?,?,?,?,?,?,?,?,?)";
-	protected static final String ORDER_UPDATE = "update wf_order set last_Updator=?, last_Update_Time=? where id=?";
+	protected static final String ORDER_INSERT = "insert into wf_order (id,process_Id,creator,create_Time,parent_Id,parent_Node_Name,expire_Time,last_Update_Time,last_Updator,order_No,variable,version) values (?,?,?,?,?,?,?,?,?,?,?,0)";
+	protected static final String ORDER_UPDATE = "update wf_order set last_Updator=?, last_Update_Time=?, version = version + 1 where id=? and version = ?";
 	protected static final String ORDER_HISTORY_INSERT = "insert into wf_hist_order (id,process_Id,order_State,creator,create_Time,end_Time,parent_Id,expire_Time,order_No,variable) values (?,?,?,?,?,?,?,?,?,?)";
 	protected static final String ORDER_HISTORY_UPDATE = "update wf_hist_order set order_State = ?, end_Time = ? where id = ? ";
 	protected static final String ORDER_DELETE = "delete from wf_order where id = ?";
 	
-	protected static final String TASK_INSERT = "insert into wf_task (id,order_Id,task_Name,display_Name,task_Type,perform_Type,operator,create_Time,finish_Time,expire_Time,action_Url,parent_Task_Id,variable) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-	protected static final String TASK_UPDATE = "update wf_task set finish_Time=?, operator=? where id=?";
+	protected static final String TASK_INSERT = "insert into wf_task (id,order_Id,task_Name,display_Name,task_Type,perform_Type,operator,create_Time,finish_Time,expire_Time,action_Url,parent_Task_Id,variable,version) values (?,?,?,?,?,?,?,?,?,?,?,?,?,0)";
+	protected static final String TASK_UPDATE = "update wf_task set finish_Time=?, operator=?, version = version + 1 where id=? and version = ?";
 	protected static final String TASK_HISTORY_INSERT = "insert into wf_hist_task (id,order_Id,task_Name,display_Name,task_Type,perform_Type,task_State,operator,create_Time,finish_Time,expire_Time,action_Url,parent_Task_Id,variable) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	protected static final String TASK_DELETE = "delete from wf_task where id = ?";
 	
@@ -68,9 +68,9 @@ public abstract class AbstractDBAccess implements DBAccess {
 	protected static final String TASK_ACTOR_HISTORY_INSERT = "insert into wf_hist_task_actor (task_Id, actor_Id) values (?, ?)";
 	protected static final String TASK_ACTOR_DELETE = "delete from wf_task_actor where task_Id = ?";
 	
-	protected static final String QUERY_PROCESS = "select id,parent_Id,name,display_Name,type,instance_Url,query_Url,state, content from wf_process ";
-	protected static final String QUERY_ORDER = "select id,process_Id,creator,create_Time,parent_Id,parent_Node_Name,expire_Time,last_Update_Time,last_Updator,priority,order_No,variable from wf_order ";
-	protected static final String QUERY_TASK = "select id,order_Id,task_Name,display_Name,task_Type,perform_Type,operator,create_Time,finish_Time,expire_Time,action_Url,parent_Task_Id,variable from wf_task ";
+	protected static final String QUERY_PROCESS = "select id,parent_Id,name,display_Name,type,instance_Url,query_Url,state, content, version from wf_process ";
+	protected static final String QUERY_ORDER = "select id,process_Id,creator,create_Time,parent_Id,parent_Node_Name,expire_Time,last_Update_Time,last_Updator,priority,order_No,variable, version from wf_order ";
+	protected static final String QUERY_TASK = "select id,order_Id,task_Name,display_Name,task_Type,perform_Type,operator,create_Time,finish_Time,expire_Time,action_Url,parent_Task_Id,variable, version from wf_task ";
 	protected static final String QUERY_TASK_ACTOR = "select task_Id, actor_Id from wf_task_actor ";
 	
 	protected static final String QUERY_HIST_ORDER = "select id,process_Id,order_State,priority,creator,create_Time,end_Time,parent_Id,expire_Time,order_No,variable from wf_hist_order ";
@@ -222,8 +222,8 @@ public abstract class AbstractDBAccess implements DBAccess {
 		if(isORM()) {
 			saveOrUpdate(buildMap(task, UPDATE));
 		} else {
-			Object[] args = new Object[]{task.getFinishTime(), task.getOperator(), task.getId() };
-			int[] type = new int[]{Types.VARCHAR, Types.INTEGER, Types.VARCHAR};
+			Object[] args = new Object[]{task.getFinishTime(), task.getOperator(), task.getId(), task.getVersion() };
+			int[] type = new int[]{Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.INTEGER};
 			saveOrUpdate(buildMap(TASK_UPDATE, args, type));
 		}
 	}
@@ -233,8 +233,8 @@ public abstract class AbstractDBAccess implements DBAccess {
 		if(isORM()) {
 			saveOrUpdate(buildMap(order, UPDATE));
 		} else {
-			Object[] args = new Object[]{order.getLastUpdator(), order.getLastUpdateTime(), order.getId()};
-			int[] type = new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+			Object[] args = new Object[]{order.getLastUpdator(), order.getLastUpdateTime(), order.getId(), order.getVersion() };
+			int[] type = new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER};
 			saveOrUpdate(buildMap(ORDER_UPDATE, args, type));
 		}
 	}

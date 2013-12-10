@@ -8,7 +8,8 @@ create table wf_process (
     query_Url       varchar2(200),
     instance_Url    varchar2(200),
     state          number(1),
-    content             blob
+    content             blob,
+    version        number(1)
 );
 comment on table wf_process is '流程定义表';
 comment on column wf_process.id is '主键ID';
@@ -20,6 +21,7 @@ comment on column wf_process.query_Url is '查询url';
 comment on column wf_process.instance_Url is '实例url';
 comment on column wf_process.state is '流程是否可用';
 comment on column wf_process.content is '流程模型定义';
+comment on column wf_process.version is '版本';
 
 /**流程实例表*/
 create table wf_order (
@@ -34,7 +36,8 @@ create table wf_order (
     parent_Id       varchar2(100),
     parent_Node_Name varchar2(100),
     order_No         varchar2(100),
-    variable         varchar2(2000)
+    variable         varchar2(2000),
+    version        number(1)
 );
 comment on table wf_order is '流程实例表';
 comment on column wf_order.id is '主键ID';
@@ -49,6 +52,7 @@ comment on column wf_order.priority is '优先级';
 comment on column wf_order.parent_Node_Name is '父流程依赖的节点名称';
 comment on column wf_order.order_No is '流程实例编号';
 comment on column wf_order.variable is '流程实例附属变量';
+comment on column wf_order.version is '版本';
 
 /**任务表*/
 create table wf_task (
@@ -64,7 +68,8 @@ create table wf_task (
     expire_Time     varchar2(50),
     action_Url      varchar2(200),
     parent_Task_Id  varchar2(100),
-    variable        varchar2(2000)
+    variable        varchar2(2000),
+    version        number(1)
 );
 comment on table wf_task is '任务表';
 comment on column wf_task.id is '主键ID';
@@ -80,6 +85,7 @@ comment on column wf_task.finish_Time is '任务完成时间';
 comment on column wf_task.action_Url is '任务处理的url';
 comment on column wf_task.parent_Task_Id is '父任务ID';
 comment on column wf_task.variable is '附属变量json存储';
+comment on column wf_task.version is '版本';
 
 /**任务参与者表*/
 create table wf_task_actor (

@@ -126,7 +126,8 @@
     		last_Update_Time as lastUpdateTime,
     		last_Updator as lastUpdator,
     		order_No as orderNo,
-    		variable
+    		variable,
+    		version
     </sql>
     
     <sql id="selectActiveTasksPart">
@@ -143,7 +144,8 @@
             expire_Time as expireTime,
             action_Url as actionUrl,
             parent_Task_Id as parentTaskId,
-            variable
+            variable,
+            version
     </sql>
     
     <sql id="fromActiveTasksPart">

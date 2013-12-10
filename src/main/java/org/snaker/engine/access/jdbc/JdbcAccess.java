@@ -159,7 +159,8 @@ public class JdbcAccess extends AbstractDBAccess implements DBAccess {
         	if(log.isDebugEnabled()) {
         		log.debug("增删改数据(需手动提交事务)=\n" + sql);
         	}
-            runner.update(getConnection(), sql, args);
+            int row = runner.update(getConnection(), sql, args);
+            if(row == 0) throw new SnakerException("数据更新失败");
         } catch (SQLException e) {
         	log.error(e.getMessage(), e);
             throw new RuntimeException(e.getMessage(), e);

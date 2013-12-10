@@ -28,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 import org.snaker.engine.access.AbstractDBAccess;
 import org.snaker.engine.access.Page;
 import org.snaker.engine.DBAccess;
+import org.snaker.engine.SnakerException;
 import org.snaker.engine.entity.Process;
 import org.snaker.engine.helper.ClassHelper;
 import org.snaker.engine.helper.StringHelper;
@@ -100,7 +101,8 @@ public class SpringJdbcAccess extends AbstractDBAccess implements DBAccess {
 		if(log.isDebugEnabled()) {
 			log.debug("增删改数据(Spring托管事务)=\n" + sql);
 		}
-		template.update(sql, args, type);
+		int row = template.update(sql, args, type);
+		if(row == 0) throw new SnakerException("数据更新失败");
 	}
 
 	@Override

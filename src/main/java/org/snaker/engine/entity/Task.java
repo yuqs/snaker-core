@@ -32,6 +32,10 @@ public class Task implements Serializable, Cloneable {
 	 * 主键ID
 	 */
 	private String id;
+	/**
+	 * 版本
+	 */
+	private Integer version;
     /**
      * 流程实例ID
      */
@@ -213,5 +217,13 @@ public class Task implements Serializable, Cloneable {
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 }

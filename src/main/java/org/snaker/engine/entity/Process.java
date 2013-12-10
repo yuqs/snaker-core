@@ -37,7 +37,11 @@ public class Process implements Serializable {
 	 * 主键ID
 	 */
 	private String id;
-    /**
+	/**
+	 * 版本
+	 */
+	private Integer version;
+	/**
      * 存在父子流程时，需要设置父流程定义的ID
      */
 	private String parentId;
@@ -159,5 +163,11 @@ public class Process implements Serializable {
 	}
 	public void setBytes(byte[] bytes) {
 		this.bytes = bytes;
+	}
+    public Integer getVersion() {
+		return version;
+	}
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 }

@@ -8,7 +8,8 @@ CREATE TABLE wf_process (
     instance_Url    VARCHAR(200) comment '实例url',
     query_Url       VARCHAR(200) comment '查询url',
     state          TINYINT(1) comment '流程是否可用',
-    content             LONGBLOB comment '流程模型定义'
+    content             LONGBLOB comment '流程模型定义',
+    version        TINYINT(1) comment '版本'
 )comment='流程定义表';
 
 /**流程实例表*/
@@ -24,7 +25,8 @@ CREATE TABLE wf_order (
     priority       TINYINT(1) comment '优先级',
     parent_Node_Name VARCHAR(100) comment '父流程依赖的节点名称',
     order_No         VARCHAR(100) comment '流程实例编号',
-    variable         VARCHAR(2000) comment '附属变量json存储'
+    variable         VARCHAR(2000) comment '附属变量json存储',
+    version        TINYINT(1) comment '版本'
 )comment='流程实例表';
 
 /**任务表*/
@@ -41,7 +43,8 @@ CREATE TABLE wf_task (
     expire_Time     VARCHAR(50) comment '任务期望完成时间',
     action_Url      VARCHAR(200) comment '任务处理的url',
     parent_Task_Id  VARCHAR(100) comment '父任务ID',
-    variable        VARCHAR(2000) comment '附属变量json存储'
+    variable        VARCHAR(2000) comment '附属变量json存储',
+    version        TINYINT(1) comment '版本'
 )comment='任务表';
 
 /**任务参与者表*/

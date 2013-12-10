@@ -33,6 +33,10 @@ public class Order implements Serializable {
 	 */
 	private String id;
 	/**
+	 * 版本
+	 */
+	private Integer version;
+	/**
 	 * 流程定义ID
 	 */
     private String processId;
@@ -176,5 +180,13 @@ public class Order implements Serializable {
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 }

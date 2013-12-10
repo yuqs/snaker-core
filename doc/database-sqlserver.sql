@@ -8,7 +8,8 @@ create table wf_process (
     query_Url       nvarchar(200),
     instance_Url    nvarchar(200),
     state          tinyint,
-    content             varbinary(max)
+    content             varbinary(max),
+    version        tinyint
 );
 
 /**流程实例表*/
@@ -24,7 +25,8 @@ create table wf_order (
     parent_Id       nvarchar(100),
     parent_Node_Name nvarchar(100),
     order_No         nvarchar(100),
-    variable         nvarchar(2000)
+    variable         nvarchar(2000),
+    version        tinyint
 );
 
 /**任务表*/
@@ -41,7 +43,8 @@ create table wf_task (
     expire_Time     nvarchar(50),
     action_Url      nvarchar(200),
     parent_Task_Id  nvarchar(100),
-    variable        nvarchar(2000)
+    variable        nvarchar(2000),
+    version        tinyint
 );
 
 /**任务参与者表*/
