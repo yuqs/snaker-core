@@ -48,6 +48,9 @@ public interface NodeParser {
     public static final String ATTR_METHODNAME = "methodName";
     public static final String ATTR_ARGS = "args";
     public static final String ATTR_VAR = "var";
+    public static final String ATTR_LAYOUT = "layout";
+    public static final String ATTR_G = "g";
+    public static final String ATTR_OFFSET = "offset";
 	
 	/**
 	 * 节点dom元素解析方法，由实现类完成解析

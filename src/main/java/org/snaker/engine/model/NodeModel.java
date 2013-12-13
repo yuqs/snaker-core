@@ -38,6 +38,10 @@ public class NodeModel extends BaseModel implements Action {
 	 * 输出变迁集合
 	 */
 	private List<TransitionModel> outputs = new ArrayList<TransitionModel>();
+	/**
+	 * layout
+	 */
+	private String layout;
 	
 	/**
 	 * 默认执行方法，子类如无特殊情况，可直接使用该方法
@@ -90,5 +94,13 @@ public class NodeModel extends BaseModel implements Action {
 	}
 	public void setOutputs(List<TransitionModel> outputs) {
 		this.outputs = outputs;
+	}
+
+	public String getLayout() {
+		return layout;
+	}
+
+	public void setLayout(String layout) {
+		this.layout = layout;
 	}
 }

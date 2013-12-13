@@ -47,6 +47,14 @@ public class TransitionModel extends BaseModel implements Action {
 	 */
 	private String expr;
 	/**
+	 * 转折点图形数据
+	 */
+	private String g;
+	/**
+	 * 描述便宜位置
+	 */
+	private String offset;
+	/**
 	 * 当前变迁路径是否可用
 	 */
 	private boolean enabled = false;
@@ -97,5 +105,21 @@ public class TransitionModel extends BaseModel implements Action {
 
 	public void setExpr(String expr) {
 		this.expr = expr;
+	}
+
+	public String getG() {
+		return g;
+	}
+
+	public void setG(String g) {
+		this.g = g;
+	}
+
+	public String getOffset() {
+		return offset;
+	}
+
+	public void setOffset(String offset) {
+		this.offset = offset;
 	}
 }

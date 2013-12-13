@@ -41,6 +41,7 @@ public abstract class AbstractNodeParser implements NodeParser {
 		model = newModel();
 		model.setName(element.getAttribute(ATTR_NAME));
 		model.setDisplayName(element.getAttribute(ATTR_DISPLAYNAME));
+		model.setLayout(element.getAttribute(ATTR_LAYOUT));
 		
 		List<Element> transitions = XmlHelper.elements(element, NODE_TRANSITION);
 		for(Element te : transitions) {
@@ -49,6 +50,8 @@ public abstract class AbstractNodeParser implements NodeParser {
 			transition.setDisplayName(te.getAttribute(ATTR_DISPLAYNAME));
 			transition.setTo(te.getAttribute(ATTR_TO));
 			transition.setExpr(te.getAttribute(ATTR_EXPR));
+			transition.setG(te.getAttribute(ATTR_G));
+			transition.setOffset(te.getAttribute(ATTR_OFFSET));
 			transition.setSource(model);
 			model.getOutputs().add(transition);
 		}
