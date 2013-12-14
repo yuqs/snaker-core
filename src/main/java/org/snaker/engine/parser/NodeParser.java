@@ -51,6 +51,7 @@ public interface NodeParser {
     public static final String ATTR_LAYOUT = "layout";
     public static final String ATTR_G = "g";
     public static final String ATTR_OFFSET = "offset";
+    public static final String ATTR_INTERCEPTORS = "interceptors";
 	
 	/**
 	 * 节点dom元素解析方法，由实现类完成解析

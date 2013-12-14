@@ -105,7 +105,7 @@ public abstract class MybatisHelper {
 	    	log.info("found sqlSessionFactory:" + accessObject);
 	    	sqlSessionFactory = (SqlSessionFactory)accessObject;
     	} else {
-    		log.error("don't found available sqlSessionFactory");
+    		log.info("don't found available sqlSessionFactory");
     	}
 		return getSqlSessionFactory().openSession();
 	}

@@ -23,6 +23,7 @@ import org.snaker.engine.core.Execution;
 import org.snaker.engine.core.ServiceContext;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.handlers.IHandler;
+import org.snaker.engine.model.TaskModel;
 import org.snaker.engine.model.WorkModel;
 
 /**
@@ -56,6 +57,10 @@ public class CreateTaskHandler implements IHandler {
 		 * 从服务上下文中查找任务拦截器列表，依次对task集合进行拦截处理
 		 */
 		List<TaskInterceptor> interceptors = ServiceContext.getContext().findInterceptors();
+		if(model instanceof TaskModel) {
+			List<TaskInterceptor> localInterceptors = ((TaskModel)model).getInterceptorList();
+			interceptors.addAll(localInterceptors);
+		}
 		try {
 			for(TaskInterceptor interceptor : interceptors) {
 				interceptor.intercept(tasks);

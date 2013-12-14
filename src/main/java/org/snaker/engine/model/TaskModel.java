@@ -14,8 +14,14 @@
  */
 package org.snaker.engine.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.snaker.engine.TaskInterceptor;
 import org.snaker.engine.core.Execution;
 import org.snaker.engine.handlers.impl.MergeActorHandler;
+import org.snaker.engine.helper.ClassHelper;
+import org.snaker.engine.helper.StringHelper;
 
 /**
  * 任务定义task元素
@@ -55,6 +61,14 @@ public class TaskModel extends WorkModel {
 	 * 期望完成时间
 	 */
 	private String expireTime;
+	/**
+	 * 局部拦截器
+	 */
+	private String interceptors;
+	/**
+	 * 局部拦截器实例集合
+	 */
+	private List<TaskInterceptor> interceptorList = new ArrayList<TaskInterceptor>();
 	
 	/**
 	 * 所有task节点的transition子节点都会执行
@@ -98,5 +112,23 @@ public class TaskModel extends WorkModel {
 
 	public void setPerformType(String performType) {
 		this.performType = performType;
+	}
+
+	public String getInterceptors() {
+		return interceptors;
+	}
+
+	public void setInterceptors(String interceptors) {
+		this.interceptors = interceptors;
+		if(StringHelper.isNotEmpty(interceptors)) {
+			for(String interceptor : interceptors.split(",")) {
+				TaskInterceptor instance = (TaskInterceptor)ClassHelper.newInstance(interceptor);
+				if(instance != null) this.interceptorList.add(instance);
+			}
+		}
+	}
+
+	public List<TaskInterceptor> getInterceptorList() {
+		return interceptorList;
 	}
 }

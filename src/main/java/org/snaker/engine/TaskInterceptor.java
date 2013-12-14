@@ -20,7 +20,6 @@ import org.snaker.engine.entity.Task;
 
 /**
  * 任务拦截器，对产生的任务结果进行拦截
- * 实现类根据实际情况可对产生的任务进行短信提醒、邮件提醒、日志记录等
  * @author yuqs
  * @version 1.0
  */

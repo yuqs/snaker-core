@@ -20,7 +20,6 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.snaker.engine.SnakerException;
 import org.snaker.engine.access.AbstractDBAccess;
 import org.snaker.engine.access.Page;
 import org.snaker.engine.entity.HistoryOrder;
@@ -67,8 +66,7 @@ public class MybatisAccess extends AbstractDBAccess {
 		if(SAVE.equals(su)) {
 			getSession().insert(statement, object);
 		} else if(UPDATE.equals(su)) {
-			int row = getSession().update(statement, object);
-			if(row == 0) throw new SnakerException("数据更新失败");
+			getSession().update(statement, object);
 		}
 	}
 
