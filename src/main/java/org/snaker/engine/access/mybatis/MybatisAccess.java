@@ -174,7 +174,7 @@ public class MybatisAccess extends AbstractDBAccess {
 	}
 
 	@Override
-	public List<Task> getActiveTasks(Page<Task> page, Long... actorIds) {
+	public List<Task> getActiveTasks(Page<Task> page, String... actorIds) {
 		SqlSession session = getSession();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("actorIds", actorIds);
@@ -189,7 +189,7 @@ public class MybatisAccess extends AbstractDBAccess {
 
 	@Override
 	public List<WorkItem> getWorkItems(Page<WorkItem> page, String processId,
-			Long... actorIds) {
+			String... actorIds) {
 		SqlSession session = getSession();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("actorIds", actorIds);
@@ -233,7 +233,7 @@ public class MybatisAccess extends AbstractDBAccess {
 
 	@Override
 	public List<HistoryTask> getHistoryTasks(Page<HistoryTask> page,
-			Long... actorIds) {
+			String... actorIds) {
 		SqlSession session = getSession();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("actorIds", actorIds);
@@ -248,7 +248,7 @@ public class MybatisAccess extends AbstractDBAccess {
 
 	@Override
 	public List<WorkItem> getHistoryWorkItems(Page<WorkItem> page,
-			String processId, Long... actorIds) {
+			String processId, String... actorIds) {
 		SqlSession session = getSession();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("actorIds", actorIds);

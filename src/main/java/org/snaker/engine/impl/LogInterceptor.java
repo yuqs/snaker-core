@@ -41,7 +41,7 @@ public class LogInterceptor implements TaskInterceptor {
 				buffer.append(",创建时间=").append(task.getCreateTime());
 				buffer.append(",参与者={");
 				if(task.getActorIds() != null) {
-					for(Long actor : task.getActorIds()) {
+					for(String actor : task.getActorIds()) {
 						buffer.append(actor).append(";");
 					}
 				}

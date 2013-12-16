@@ -42,12 +42,12 @@ public class QueryService extends AccessService implements IQueryService {
 	}
 	
 	@Override
-	public List<Task> getActiveTasks(Long... actorIds) {
+	public List<Task> getActiveTasksByActors(String... actorIds) {
 		return access().getActiveTasks(null, actorIds);
 	}
 	
 	@Override
-	public List<Task> getActiveTasks(Page<Task> page, Long... actorIds) {
+	public List<Task> getActiveTasks(Page<Task> page, String... actorIds) {
 		if(actorIds == null || actorIds.length == 0) throw new SnakerException("查询任务列表，需要提供任务参与者ID");
 		return access().getActiveTasks(page, actorIds);
 	}
@@ -78,7 +78,7 @@ public class QueryService extends AccessService implements IQueryService {
 	}
 	
 	@Override
-	public List<WorkItem> getWorkItems(Page<WorkItem> page, String processId, Long... actorIds) {
+	public List<WorkItem> getWorkItems(Page<WorkItem> page, String processId, String... actorIds) {
 		return access().getWorkItems(page, processId, actorIds);
 	}
 
@@ -100,13 +100,13 @@ public class QueryService extends AccessService implements IQueryService {
 
 	@Override
 	public List<HistoryTask> getHistoryTasks(Page<HistoryTask> page,
-			Long... actorIds) {
+			String... actorIds) {
 		return access().getHistoryTasks(page, actorIds);
 	}
 
 	@Override
 	public List<WorkItem> getHistoryWorkItems(Page<WorkItem> page,
-			String processId, Long... actorIds) {
+			String processId, String... actorIds) {
 		return access().getHistoryWorkItems(page, processId, actorIds);
 	}
 }

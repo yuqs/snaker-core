@@ -5,7 +5,7 @@
 <mapper namespace="HistoryOrder">
     <insert id="SAVE" parameterType="historyorder">
     	insert into wf_hist_order (id,process_Id,creator,create_Time,parent_Id,order_State,expire_Time,end_Time,order_No,variable)
-    	values (#{id, jdbcType=VARCHAR},#{processId, jdbcType=VARCHAR},#{creator, jdbcType=NUMERIC},#{createTime, jdbcType=VARCHAR},#{parentId, jdbcType=VARCHAR},
+    	values (#{id, jdbcType=VARCHAR},#{processId, jdbcType=VARCHAR},#{creator, jdbcType=VARCHAR},#{createTime, jdbcType=VARCHAR},#{parentId, jdbcType=VARCHAR},
     	#{orderState, jdbcType=NUMERIC},#{expireTime, jdbcType=VARCHAR},#{endTime, jdbcType=VARCHAR},#{orderNo, jdbcType=VARCHAR},#{variable, jdbcType=VARCHAR})
     </insert>
     <update id="UPDATE" parameterType="historyorder">

@@ -8,7 +8,7 @@
     	values (#{id, jdbcType=VARCHAR},#{orderId, jdbcType=VARCHAR},#{taskName, jdbcType=VARCHAR},
     	#{displayName, jdbcType=VARCHAR},#{taskType, jdbcType=NUMERIC},
     	#{performType, jdbcType=NUMERIC},#{taskState, jdbcType=NUMERIC},
-    	#{operator, jdbcType=NUMERIC},#{createTime, jdbcType=VARCHAR},
+    	#{operator, jdbcType=VARCHAR},#{createTime, jdbcType=VARCHAR},
     	#{finishTime, jdbcType=VARCHAR},#{expireTime, jdbcType=VARCHAR},
     	#{actionUrl, jdbcType=VARCHAR},#{parentTaskId, jdbcType=VARCHAR},#{variable, jdbcType=VARCHAR})
     </insert>

@@ -7,13 +7,13 @@
     	insert into wf_task (id,order_Id,task_Name,display_Name,task_Type,perform_Type,operator,create_Time,finish_Time,expire_Time,action_Url,parent_Task_Id,variable,version)
     	values (#{id, jdbcType=VARCHAR},#{orderId, jdbcType=VARCHAR},#{taskName, jdbcType=VARCHAR},
     	#{displayName, jdbcType=VARCHAR},#{taskType, jdbcType=NUMERIC},
-    	#{performType, jdbcType=NUMERIC},#{operator, jdbcType=NUMERIC},
+    	#{performType, jdbcType=NUMERIC},#{operator, jdbcType=VARCHAR},
     	#{createTime, jdbcType=VARCHAR},#{finishTime, jdbcType=VARCHAR},
     	#{expireTime, jdbcType=VARCHAR},#{actionUrl, jdbcType=VARCHAR},
     	#{parentTaskId, jdbcType=VARCHAR},#{variable, jdbcType=VARCHAR},0)
     </insert>
     <update id="UPDATE" parameterType="task">
-    	update wf_task set finish_Time=#{finishTime, jdbcType=VARCHAR}, operator=#{operator, jdbcType=NUMERIC}, version = version + 1  
+    	update wf_task set finish_Time=#{finishTime, jdbcType=VARCHAR}, operator=#{operator, jdbcType=VARCHAR}, version = version + 1  
     	where id=#{id, jdbcType=VARCHAR} and version=#{version, jdbcType=NUMERIC}
     </update>
     <delete id="DELETE" parameterType="string">

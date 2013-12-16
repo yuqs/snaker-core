@@ -67,7 +67,7 @@ public class Execution implements Serializable {
 	/**
 	 * 操作人
 	 */
-	private Long operator;
+	private String operator;
 	/**
 	 * 任务
 	 */
@@ -187,7 +187,7 @@ public class Execution implements Serializable {
 	 * 返回当前操作人ID
 	 * @return
 	 */
-	public Long getOperator() {
+	public String getOperator() {
 		return operator;
 	}
 
@@ -195,7 +195,7 @@ public class Execution implements Serializable {
 	 * 设置当前操作人ID
 	 * @param operator
 	 */
-	public void setOperator(Long operator) {
+	public void setOperator(String operator) {
 		this.operator = operator;
 	}
 

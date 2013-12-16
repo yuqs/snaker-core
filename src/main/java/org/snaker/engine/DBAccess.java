@@ -185,7 +185,7 @@ public interface DBAccess {
 	 * @param actorIds
 	 * @return
 	 */
-	public List<Task> getActiveTasks(Page<Task> page, Long... actorIds);
+	public List<Task> getActiveTasks(Page<Task> page, String... actorIds);
 	
 	/**
 	 * 获取指定流程实例ID的任务列表
@@ -201,7 +201,7 @@ public interface DBAccess {
 	 * @param params
 	 * @return
 	 */
-	public List<WorkItem> getWorkItems(Page<WorkItem> page, String processId, Long... actorIds);
+	public List<WorkItem> getWorkItems(Page<WorkItem> page, String processId, String... actorIds);
 	
 	/**
 	 * 分页查询历史流程实例
@@ -231,7 +231,7 @@ public interface DBAccess {
 	 * @param actorIds
 	 * @return
 	 */
-	List<HistoryTask> getHistoryTasks(Page<HistoryTask> page, Long... actorIds);
+	List<HistoryTask> getHistoryTasks(Page<HistoryTask> page, String... actorIds);
 	
 	/**
 	 * 根据流程定义ID、参与者分页查询已完成的历史任务项
@@ -240,5 +240,5 @@ public interface DBAccess {
 	 * @param actorIds
 	 * @return
 	 */
-	List<WorkItem> getHistoryWorkItems(Page<WorkItem> page, String processId, Long... actorIds);
+	List<WorkItem> getHistoryWorkItems(Page<WorkItem> page, String processId, String... actorIds);
 }

@@ -49,7 +49,7 @@ public interface ITaskService {
 	 * @param operator 操作人
 	 * @return Task
 	 */
-	Task completeTask(Task task, Long operator);
+	Task completeTask(Task task, String operator);
 	
 	/**
 	 * 提取指定的任务，只更新操作人字段标识参与者
@@ -57,14 +57,14 @@ public interface ITaskService {
 	 * @param operator 操作人
 	 * @return Task
 	 */
-	Task takeTask(Task task, Long operator);
+	Task takeTask(Task task, String operator);
 	
 	/**
 	 * 向指定的任务id添加参与者
 	 * @param taskId 任务id
 	 * @param actors 参与者
 	 */
-	void addTaskActor(Task task, Long... actors);
+	void addTaskActor(Task task, String... actors);
 	
 	/**
 	 * 根据任务主键id、操作人撤回任务
@@ -72,7 +72,7 @@ public interface ITaskService {
 	 * @param operator 操作人
 	 * @return Task
 	 */
-	Task withdrawTask(String taskId, Long operator);
+	Task withdrawTask(String taskId, String operator);
 	
 	/**
 	 * 根据当前任务对象驳回至上一步处理
@@ -95,14 +95,14 @@ public interface ITaskService {
 	 * @param operator 操作人
 	 * @return boolean
 	 */
-	boolean isAllowed(Task task, Long operator);
+	boolean isAllowed(Task task, String operator);
 
 	/**
 	 * 对指定的任务分配参与者。参与者可以为用户、部门、角色
 	 * @param taskId 任务id
 	 * @param actorIds 参与者id集合
 	 */
-	void assignTask(String taskId, Long... actorIds);
+	void assignTask(String taskId, String... actorIds);
 	
 	/**
 	 * 根据任务编号获取任务实例

@@ -5,12 +5,12 @@
 <mapper namespace="Order">
     <insert id="SAVE" parameterType="order">
     	insert into wf_order (id,process_Id,creator,create_Time,parent_Id,parent_Node_Name,expire_Time,last_Update_Time,last_Updator,order_No,variable,version)
-    	values (#{id, jdbcType=VARCHAR},#{processId, jdbcType=VARCHAR},#{creator, jdbcType=NUMERIC},#{createTime, jdbcType=VARCHAR},#{parentId, jdbcType=VARCHAR},
-    	#{parentNodeName, jdbcType=VARCHAR},#{expireTime, jdbcType=VARCHAR},#{lastUpdateTime, jdbcType=VARCHAR},#{lastUpdator, jdbcType=NUMERIC},
+    	values (#{id, jdbcType=VARCHAR},#{processId, jdbcType=VARCHAR},#{creator, jdbcType=VARCHAR},#{createTime, jdbcType=VARCHAR},#{parentId, jdbcType=VARCHAR},
+    	#{parentNodeName, jdbcType=VARCHAR},#{expireTime, jdbcType=VARCHAR},#{lastUpdateTime, jdbcType=VARCHAR},#{lastUpdator, jdbcType=VARCHAR},
     	#{orderNo, jdbcType=VARCHAR},#{variable, jdbcType=VARCHAR},0)
     </insert>
     <update id="UPDATE" parameterType="order">
-    	update wf_order set last_Updator=#{lastUpdator, jdbcType=NUMERIC}, last_Update_Time=#{lastUpdateTime, jdbcType=VARCHAR}, version = version + 1 
+    	update wf_order set last_Updator=#{lastUpdator, jdbcType=VARCHAR}, last_Update_Time=#{lastUpdateTime, jdbcType=VARCHAR}, version = version + 1 
     	where id=#{id, jdbcType=VARCHAR} and version=#{version, jdbcType=NUMERIC}
     </update>
     <delete id="DELETE" parameterType="string">

@@ -44,7 +44,7 @@ public class HistoryOrder implements Serializable {
     /**
      * 流程实例创建者ID
      */
-    private Long creator;
+    private String creator;
     /**
      * 流程实例创建时间
      */
@@ -106,11 +106,11 @@ public class HistoryOrder implements Serializable {
 		this.orderState = orderState;
 	}
 
-	public Long getCreator() {
+	public String getCreator() {
 		return creator;
 	}
 
-	public void setCreator(Long creator) {
+	public void setCreator(String creator) {
 		this.creator = creator;
 	}
 

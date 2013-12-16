@@ -67,7 +67,7 @@ public class OrderService extends AccessService implements IOrderService {
 	 * 由DBAccess实现类更新order状态
 	 */
 	@Override
-	public void terminate(String orderId, Long operator) {
+	public void terminate(String orderId, String operator) {
 		Order order = getOrder(orderId);
 		HistoryOrder history = new HistoryOrder(order);
 		history.setOrderState(STATE_TERMINATION);
@@ -81,7 +81,7 @@ public class OrderService extends AccessService implements IOrderService {
 	 * 由DBAccess实现类持久化新建的order对象
 	 */
 	@Override
-	public Order createOrder(Process process, Long operator, Map<String, Object> args) {
+	public Order createOrder(Process process, String operator, Map<String, Object> args) {
 		return createOrder(process, operator, args, null, null);
 	}
 	
@@ -89,7 +89,7 @@ public class OrderService extends AccessService implements IOrderService {
 	 * 由DBAccess实现类持久化新建的order对象
 	 */
 	@Override
-	public Order createOrder(Process process, Long operator, Map<String, Object> args, String parentId, String parentNodeName) {
+	public Order createOrder(Process process, String operator, Map<String, Object> args, String parentId, String parentNodeName) {
 		Order order = new Order();
 		order.setId(StringHelper.getPrimaryKey());
 		order.setParentId(parentId);

@@ -60,7 +60,7 @@ public class HistoryTask implements Serializable {
     /**
      * 任务处理者ID
      */
-    private Long operator;
+    private String operator;
     /**
      * 任务创建时间
      */
@@ -80,7 +80,7 @@ public class HistoryTask implements Serializable {
     /**
      * 任务参与者列表
      */
-    private Long[] actorIds;
+    private String[] actorIds;
     /**
      * 父任务Id
      */
@@ -167,11 +167,11 @@ public class HistoryTask implements Serializable {
 		this.taskState = taskState;
 	}
 
-	public Long getOperator() {
+	public String getOperator() {
 		return operator;
 	}
 
-	public void setOperator(Long operator) {
+	public void setOperator(String operator) {
 		this.operator = operator;
 	}
 
@@ -244,11 +244,11 @@ public class HistoryTask implements Serializable {
 		return ToStringBuilder.reflectionToString(this);
 	}
 
-	public Long[] getActorIds() {
+	public String[] getActorIds() {
 		return actorIds;
 	}
 
-	public void setActorIds(Long[] actorIds) {
+	public void setActorIds(String[] actorIds) {
 		this.actorIds = actorIds;
 	}
 }

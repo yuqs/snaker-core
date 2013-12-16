@@ -59,7 +59,7 @@ public interface SnakerEngine {
 	 * @param operator 操作人ID
 	 * @return Order 流程实例
 	 */
-	public Order startInstanceById(String id, Long operator);
+	public Order startInstanceById(String id, String operator);
 	
 	/**
 	 * 根据流程定义ID，操作人ID，参数列表启动流程实例
@@ -68,7 +68,7 @@ public interface SnakerEngine {
 	 * @param args 参数列表
 	 * @return Order 流程实例
 	 */
-	public Order startInstanceById(String id, Long operator, Map<String, Object> args);
+	public Order startInstanceById(String id, String operator, Map<String, Object> args);
 	
 	/**
 	 * 根据父执行对象启动子流程实例
@@ -90,7 +90,7 @@ public interface SnakerEngine {
 	 * @param operator 操作人主键ID
 	 * @return List<Task> 任务集合
 	 */
-	public List<Task> executeTask(String taskId, Long operator);
+	public List<Task> executeTask(String taskId, String operator);
 	
 	/**
 	 * 根据任务主键ID，操作人ID，参数列表执行任务
@@ -99,7 +99,7 @@ public interface SnakerEngine {
 	 * @param args 参数列表
 	 * @return List<Task> 任务集合
 	 */
-	public List<Task> executeTask(String taskId, Long operator, Map<String, Object> args);
+	public List<Task> executeTask(String taskId, String operator, Map<String, Object> args);
 	
 	/**
 	 * 根据任务主键ID，操作人ID，参数列表执行任务，并且根据nodeName跳转到任意节点
@@ -111,7 +111,7 @@ public interface SnakerEngine {
 	 * @param nodeName 跳转的节点名称
 	 * @return List<Task> 任务集合
 	 */
-	public List<Task> executeAndJumpTask(String taskId, Long operator, Map<String, Object> args, String nodeName);
+	public List<Task> executeAndJumpTask(String taskId, String operator, Map<String, Object> args, String nodeName);
 	
 	/**
 	 * 创建新的任务
@@ -127,7 +127,7 @@ public interface SnakerEngine {
 	 * @param operator 操作人id
 	 * @return
 	 */
-	public Task finishTask(String taskId, Long operator);
+	public Task finishTask(String taskId, String operator);
 	
 	/**
 	 * 根据流程实例ID，操作人ID，参数列表按照节点模型model创建新的自由任务
@@ -137,7 +137,7 @@ public interface SnakerEngine {
 	 * @param model 节点模型
 	 * @return
 	 */
-	public List<Task> createFreeTask(String orderId, Long operator, Map<String, Object> args, WorkModel model);
+	public List<Task> createFreeTask(String orderId, String operator, Map<String, Object> args, WorkModel model);
 	
 	/**
 	 * 根据任务主键ID，操作人ID提取任务
@@ -145,7 +145,7 @@ public interface SnakerEngine {
 	 * @param taskId 任务主键ID
 	 * @param operator 操作人主键ID
 	 */
-	public void takeTask(String taskId, Long operator);
+	public void takeTask(String taskId, String operator);
 	
 	/**
 	 * 终止指定ID的流程实例
@@ -158,7 +158,7 @@ public interface SnakerEngine {
 	 * @param orderId 流程实例ID
 	 * @param operator 操作人主键ID
 	 */
-	public void terminateById(String orderId, Long operator);
+	public void terminateById(String orderId, String operator);
 	
 	/**
 	 * 根据任务主键id、处理人撤回任务
@@ -166,14 +166,14 @@ public interface SnakerEngine {
 	 * @param operator 操作人主键ID
 	 * @return Task
 	 */
-	public Task withdrawTask(String taskId, Long operator);
+	public Task withdrawTask(String taskId, String operator);
 	
 	/**
 	 * 向指定的任务id，添加参与者
 	 * @param taskId 任务主键id
 	 * @param actors 参与者
 	 */
-	public void addTaskActor(String taskId, Long... actors);
+	public void addTaskActor(String taskId, String... actors);
 	
 	/**
 	 * 完成指定id的流程实例

@@ -188,7 +188,7 @@ public abstract class AbstractDBAccess implements DBAccess {
 					task.getPerformType(), task.getOperator(), task.getCreateTime(), task.getFinishTime(), 
 					task.getExpireTime(), task.getActionUrl(), task.getParentTaskId(), task.getVariable()};
 			int[] type = new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER, 
-					Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
+					Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
 					Types.VARCHAR, Types.VARCHAR};
 			saveOrUpdate(buildMap(TASK_INSERT, args, type));
 		}
@@ -201,8 +201,8 @@ public abstract class AbstractDBAccess implements DBAccess {
 		} else {
 			Object[] args = new Object[]{order.getId(), order.getProcessId(), order.getCreator(), order.getCreateTime(), order.getParentId(), 
 					order.getParentNodeName(), order.getExpireTime(), order.getLastUpdateTime(), order.getLastUpdator(), order.getOrderNo(), order.getVariable()};
-			int[] type = new int[]{Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, 
-					Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.VARCHAR};
+			int[] type = new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, 
+					Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
 			saveOrUpdate(buildMap(ORDER_INSERT, args, type));
 		}
 	}
@@ -223,7 +223,7 @@ public abstract class AbstractDBAccess implements DBAccess {
 			saveOrUpdate(buildMap(task, UPDATE));
 		} else {
 			Object[] args = new Object[]{task.getFinishTime(), task.getOperator(), task.getId(), task.getVersion() };
-			int[] type = new int[]{Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.INTEGER};
+			int[] type = new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER};
 			saveOrUpdate(buildMap(TASK_UPDATE, args, type));
 		}
 	}
@@ -264,7 +264,7 @@ public abstract class AbstractDBAccess implements DBAccess {
 		} else {
 			Object[] args = new Object[]{order.getId(), order.getProcessId(), order.getOrderState(), order.getCreator(), 
 					order.getCreateTime(), order.getEndTime(), order.getParentId(), order.getExpireTime(), order.getOrderNo(), order.getVariable()};
-			int[] type = new int[]{Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.INTEGER, 
+			int[] type = new int[]{Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.VARCHAR, 
 					Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
 			saveOrUpdate(buildMap(ORDER_HISTORY_INSERT, args, type));
 		}
@@ -285,7 +285,7 @@ public abstract class AbstractDBAccess implements DBAccess {
 	public void saveHistory(HistoryTask task) {
 		if(isORM()) {
 			saveOrUpdate(buildMap(task, SAVE));
-			for(Long actorId : task.getActorIds()) {
+			for(String actorId : task.getActorIds()) {
 				HistoryTaskActor hist = new HistoryTaskActor();
 				hist.setActorId(actorId);
 				hist.setTaskId(task.getId());
@@ -296,9 +296,9 @@ public abstract class AbstractDBAccess implements DBAccess {
 					task.getPerformType(), task.getTaskState(), task.getOperator(), task.getCreateTime(), task.getFinishTime(), 
 					task.getExpireTime(), task.getActionUrl(), task.getParentTaskId(), task.getVariable()};
 			int[] type = new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER, 
-					Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+					Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
 			saveOrUpdate(buildMap(TASK_HISTORY_INSERT, args, type));
-			for(Long actorId : task.getActorIds()) {
+			for(String actorId : task.getActorIds()) {
 				saveOrUpdate(buildMap(TASK_ACTOR_HISTORY_INSERT, new Object[]{task.getId(), actorId}, new int[]{Types.VARCHAR, Types.VARCHAR}));
 			}
 		}
@@ -432,7 +432,7 @@ public abstract class AbstractDBAccess implements DBAccess {
 	}
 
 	@Override
-	public List<Task> getActiveTasks(Page<Task> page, Long... actorIds) {
+	public List<Task> getActiveTasks(Page<Task> page, String... actorIds) {
 		StringBuffer sql = new StringBuffer(QUERY_TASK);
 		sql.append(" left join wf_task_actor ta on ta.task_id = id ");
 		sql.append(" where 1=1 ");
@@ -454,7 +454,7 @@ public abstract class AbstractDBAccess implements DBAccess {
 	}
 
 	@Override
-	public List<WorkItem> getWorkItems(Page<WorkItem> page, String processId, Long... actorIds) {
+	public List<WorkItem> getWorkItems(Page<WorkItem> page, String processId, String... actorIds) {
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select o.process_Id, t.order_Id, t.id as task_Id, p.display_Name as process_Name, p.instance_Url, o.parent_Id, o.creator, ");
 		sql.append(" o.create_Time as order_Create_Time, o.expire_Time as order_Expire_Time, o.order_No, o.variable, ");
@@ -472,7 +472,7 @@ public abstract class AbstractDBAccess implements DBAccess {
 		List<Object> paramList = new ArrayList<Object>();
 		if(actorIds.length > 0) {
 			sql.append(" and ta.actor_Id in (");
-			for(Long actor : actorIds) {
+			for(String actor : actorIds) {
 				sql.append("?,");
 				paramList.add(actor);
 			}
@@ -528,7 +528,7 @@ public abstract class AbstractDBAccess implements DBAccess {
 	}
 	@Override
 	public List<HistoryTask> getHistoryTasks(Page<HistoryTask> page,
-			Long... actorIds) {
+			String... actorIds) {
 		StringBuffer sql = new StringBuffer(QUERY_HIST_TASK);
 		sql.append(" left join wf_hist_task_actor ta on ta.task_id = id ");
 		sql.append(" where 1=1 ");
@@ -550,7 +550,7 @@ public abstract class AbstractDBAccess implements DBAccess {
 	}
 	@Override
 	public List<WorkItem> getHistoryWorkItems(Page<WorkItem> page,
-			String processId, Long... actorIds) {
+			String processId, String... actorIds) {
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select o.process_Id, t.order_Id, t.id as task_Id, p.display_Name as process_Name, p.instance_Url, o.parent_Id, o.creator, ");
 		sql.append(" o.create_Time as order_Create_Time, o.expire_Time as order_Expire_Time, o.order_No, o.variable, ");
@@ -568,7 +568,7 @@ public abstract class AbstractDBAccess implements DBAccess {
 		List<Object> paramList = new ArrayList<Object>();
 		if(actorIds.length > 0) {
 			sql.append(" and ta.actor_Id in (");
-			for(Long actor : actorIds) {
+			for(String actor : actorIds) {
 				sql.append("?,");
 				paramList.add(actor);
 			}

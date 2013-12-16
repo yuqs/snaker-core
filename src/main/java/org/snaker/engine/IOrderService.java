@@ -32,7 +32,7 @@ public interface IOrderService {
 	 * @param expireTime 期望完成时间
 	 * @return
 	 */
-	Order createOrder(Process process, Long operator, Map<String, Object> args);
+	Order createOrder(Process process, String operator, Map<String, Object> args);
 	
 	/**
 	 * 根据流程、操作人员、父流程实例ID创建流程实例
@@ -43,7 +43,7 @@ public interface IOrderService {
 	 * @param parentNodeName 父流程节点模型
 	 * @return
 	 */
-	Order createOrder(Process process, Long operator, Map<String, Object> args, String parentId, String parentNodeName);
+	Order createOrder(Process process, String operator, Map<String, Object> args, String parentId, String parentNodeName);
 	
 	/**
 	 * 保存流程实例
@@ -68,5 +68,5 @@ public interface IOrderService {
 	 * 流程实例强制终止
 	 * @param order
 	 */
-	void terminate(String orderId, Long operator);
+	void terminate(String orderId, String operator);
 }

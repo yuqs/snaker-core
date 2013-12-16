@@ -14,14 +14,10 @@
  */
 package org.snaker.engine.test;
 
-import java.util.List;
-import java.util.Map;
-
 import org.snaker.engine.IProcessService;
 import org.snaker.engine.IQueryService;
 import org.snaker.engine.SnakerEngine;
 import org.snaker.engine.cfg.Configuration;
-import org.snaker.engine.entity.Task;
 
 /**
  * 测试辅助基类，提供execute的递归方法及SnakerEngine实例
@@ -36,11 +32,5 @@ public class TestSnakerBase {
 	
 	private SnakerEngine getEngine() {
 		return new Configuration().buildSnakerEngine();
-	}
-	
-	protected void execution(List<Task> tasks, Map<String, Object> args) {
-		for(Task task : tasks) {
-			execution(engine.executeTask(task.getId(), 1L, args), args);
-		}
 	}
 }

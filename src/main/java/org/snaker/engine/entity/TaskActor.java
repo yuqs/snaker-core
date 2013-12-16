@@ -34,17 +34,17 @@ public class TaskActor implements Serializable {
     /**
      * 关联的参与者ID（参与者可以为用户、部门、角色）
      */
-    private Long actorId;
+    private String actorId;
 	public String getTaskId() {
 		return taskId;
 	}
 	public void setTaskId(String taskId) {
 		this.taskId = taskId;
 	}
-	public Long getActorId() {
+	public String getActorId() {
 		return actorId;
 	}
-	public void setActorId(Long actorId) {
+	public void setActorId(String actorId) {
 		this.actorId = actorId;
 	}
 }

@@ -56,14 +56,14 @@ public class TaskService extends AccessService implements ITaskService {
 	 * 由DBAccess实现类更新task对象为完成状态
 	 */
 	@Override
-	public Task completeTask(Task task, Long operator) {
+	public Task completeTask(Task task, String operator) {
 		HistoryTask history = new HistoryTask(task);
 		history.setFinishTime(DateHelper.getTime());
 		history.setTaskState(STATE_FINISH);
 		history.setOperator(operator);
 		if(history.getActorIds() == null) {
 			List<TaskActor> actors = getTaskActorsByTaskId(task.getId());
-			Long[] actorIds = new Long[actors.size()];
+			String[] actorIds = new String[actors.size()];
 			for(int i = 0; i < actors.size(); i++) {
 				actorIds[i] = actors.get(i).getActorId();
 			}
@@ -77,7 +77,7 @@ public class TaskService extends AccessService implements ITaskService {
 	 * 由DBAccess实现类更新task对象为完成状态
 	 */
 	@Override
-	public Task takeTask(Task task, Long operator) {
+	public Task takeTask(Task task, String operator) {
 		task.setOperator(operator);
 		task.setFinishTime(DateHelper.getTime());
 		access().updateTask(task);
@@ -85,7 +85,7 @@ public class TaskService extends AccessService implements ITaskService {
 	}
 	
 	@Override
-	public void addTaskActor(Task task, Long... actors) {
+	public void addTaskActor(Task task, String... actors) {
 		int performType = task.getPerformType() == null ? -1 : task.getPerformType().intValue();
 		switch(performType) {
 		case -1:
@@ -95,7 +95,7 @@ public class TaskService extends AccessService implements ITaskService {
 			break;
 		case 1:
 			try {
-				for(Long actor : actors) {
+				for(String actor : actors) {
 					Task newTask = (Task)task.clone();
 					newTask.setId(StringHelper.getPrimaryKey());
 					newTask.setCreateTime(DateHelper.getTime());
@@ -111,7 +111,7 @@ public class TaskService extends AccessService implements ITaskService {
 	}
 	
 	@Override
-	public Task withdrawTask(String taskId, Long operator) {
+	public Task withdrawTask(String taskId, String operator) {
 		List<Task> tasks = access().getTasks(taskId);
 		if(tasks == null || tasks.isEmpty()) {
 			return null;
@@ -155,9 +155,9 @@ public class TaskService extends AccessService implements ITaskService {
 	 * 由DBAccess实现类分派task的参与者。关联taskActor对象
 	 */
 	@Override
-	public void assignTask(String taskId, Long... actorIds) {
-		if(actorIds == null) return;
-		for(Long actorId : actorIds) {
+	public void assignTask(String taskId, String... actorIds) {
+		if(actorIds == null || actorIds.length == 0) return;
+		for(String actorId : actorIds) {
 			TaskActor taskActor = new TaskActor();
 			taskActor.setTaskId(taskId);
 			taskActor.setActorId(actorId);
@@ -191,7 +191,7 @@ public class TaskService extends AccessService implements ITaskService {
 	@Override
 	public List<Task> createTask(TaskModel taskModel, Execution execution) {
 		List<Task> tasks = new ArrayList<Task>();
-		Long[] actors = null;
+		String[] actors = null;
 		Map<String, Object> args = execution.getArgs();
 		if(args != null && !args.isEmpty()) {
 			/**
@@ -209,7 +209,7 @@ public class TaskService extends AccessService implements ITaskService {
 			tasks.add(task);
 		} else {
 			//任务执行方式为参与者中每个都要执行完才可驱动流程继续流转，该方法根据参与者个数产生对应的task数量
-			for(Long actor : actors) {
+			for(String actor : actors) {
 				Task ftask = createTask(taskModel, execution, PerformType.ALL.ordinal(), expireTime, actor);
 				tasks.add(ftask);
 			}
@@ -241,7 +241,7 @@ public class TaskService extends AccessService implements ITaskService {
 	 * @param actors 任务参与者集合
 	 * @return
 	 */
-	private Task createTask(TaskModel taskModel, Execution execution, int performType, String expireTime, Long... actors) {
+	private Task createTask(TaskModel taskModel, Execution execution, int performType, String expireTime, String... actors) {
 		Task task = createTask(taskModel, execution, TaskType.Task.ordinal());
 		task.setActionUrl(taskModel.getUrl());
 		task.setExpireTime(expireTime);
@@ -291,37 +291,37 @@ public class TaskService extends AccessService implements ITaskService {
 
 	/**
 	 * 根据taskmodel指定的assignee属性，从args中取值
-	 * 将取到的值处理为Long[]类型。
+	 * 将取到的值处理为String[]类型。
 	 * @param actors
 	 * @param key
 	 * @return
 	 */
-	private Long[] getTaskActors(Object actors, String key) {
+	private String[] getTaskActors(Object actors, String key) {
 		if(actors == null) return null;
-		Long[] results = null;
+		String[] results = null;
 		if(actors instanceof String) {
 			//如果值为字符串类型，则使用逗号,分隔，并解析为Long类型
 			String[] actorStrs = ((String)actors).split(",");
-			results = new Long[actorStrs.length];
+			results = new String[actorStrs.length];
 			try {
 				for(int i = 0; i < actorStrs.length; i++) {
-					results[i] = Long.parseLong(actorStrs[i]);
+					results[i] = actorStrs[i];
 				}
 			} catch(RuntimeException e) {
 				throw new SnakerException("任务参与者ID解析失败，请检查参数是否合法[" + key + "].", e.getCause());
 			}
 			return results;
 		} else if(actors instanceof Long) {
-			//如果为Long类型，则返回1个元素的Long[]
-			results = new Long[1];
-			results[0] = (Long)actors;
+			//如果为Long类型，则返回1个元素的String[]
+			results = new String[1];
+			results[0] = String.valueOf((Long)actors);
 			return results;
-		} else if(actors instanceof Long[]) {
-			//如果为Long[]类型，则直接返回
-			return (Long[])actors;
+		} else if(actors instanceof String[]) {
+			//如果为String[]类型，则直接返回
+			return (String[])actors;
 		} else {
 			//其它类型，抛出不支持的类型异常
-			throw new SnakerException("任务参与者对象[" + actors + "]类型不支持.合法参数示例:Long,new Long[]{},'10000,20000'");
+			throw new SnakerException("任务参与者对象[" + actors + "]类型不支持.合法参数示例:Long,new String[]{},'10000,20000'");
 		}
 	}
 
@@ -337,16 +337,17 @@ public class TaskService extends AccessService implements ITaskService {
 	 * 判断当前操作人operator是否允许执行taskId指定的任务
 	 */
 	@Override
-	public boolean isAllowed(Task task, Long operator) {
-		if(task.getOperator() != null && task.getOperator().longValue() > 0L && operator != null) {
-			return operator.longValue() == task.getOperator().longValue();
+	public boolean isAllowed(Task task, String operator) {
+		if(StringHelper.isNotEmpty(task.getOperator())
+				&& StringHelper.isNotEmpty(operator)) {
+			return operator.equals(task.getOperator());
 		}
 		List<TaskActor> actors = getTaskActorsByTaskId(task.getId());
 		if(actors == null || actors.isEmpty()) return true;
-		if(operator == null) return false;
+		if(StringHelper.isEmpty(operator)) return false;
 		boolean isAllowed = false;
 		for(TaskActor actor : actors) {
-			if(actor.getActorId().longValue() == operator.longValue()) {
+			if(actor.getActorId().equals(operator)) {
 				isAllowed = true;
 				break;
 			}

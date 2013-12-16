@@ -43,7 +43,7 @@ public class Order implements Serializable {
     /**
      * 流程实例创建者ID
      */
-    private Long creator;
+    private String creator;
     /**
      * 流程实例创建时间
      */
@@ -67,7 +67,7 @@ public class Order implements Serializable {
     /**
      * 流程实例上一次更新人员ID
      */
-    private Long lastUpdator;
+    private String lastUpdator;
     /**
      * 流程实例优先级
      */
@@ -89,11 +89,11 @@ public class Order implements Serializable {
 		this.processId = processId;
 	}
 
-	public Long getCreator() {
+	public String getCreator() {
 		return creator;
 	}
 
-	public void setCreator(Long creator) {
+	public void setCreator(String creator) {
 		this.creator = creator;
 	}
 
@@ -129,11 +129,11 @@ public class Order implements Serializable {
 		this.lastUpdateTime = lastUpdateTime;
 	}
 
-	public Long getLastUpdator() {
+	public String getLastUpdator() {
 		return lastUpdator;
 	}
 
-	public void setLastUpdator(Long lastUpdator) {
+	public void setLastUpdator(String lastUpdator) {
 		this.lastUpdator = lastUpdator;
 	}
 

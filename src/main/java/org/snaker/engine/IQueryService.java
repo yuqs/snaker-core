@@ -46,7 +46,7 @@ public interface IQueryService {
 	 * @param actorIds
 	 * @return
 	 */
-	List<Task> getActiveTasks(Long... actorIds);
+	List<Task> getActiveTasksByActors(String... actorIds);
 	
 	/**
 	 * 根据流程实例ID、任务名称查询所有活动任务列表
@@ -70,7 +70,7 @@ public interface IQueryService {
 	 * @param actorIds
 	 * @return
 	 */
-	List<Task> getActiveTasks(Page<Task> page, Long... actorIds);
+	List<Task> getActiveTasks(Page<Task> page, String... actorIds);
 	
 	/**
 	 * 根据流程定义ID查询流程实例列表
@@ -101,7 +101,7 @@ public interface IQueryService {
 	 * @param actorIds
 	 * @return
 	 */
-	List<WorkItem> getWorkItems(Page<WorkItem> page, String processId, Long... actorIds);
+	List<WorkItem> getWorkItems(Page<WorkItem> page, String processId, String... actorIds);
 	
 	/**
 	 * 分页查询历史流程实例
@@ -131,7 +131,7 @@ public interface IQueryService {
 	 * @param actorIds
 	 * @return
 	 */
-	List<HistoryTask> getHistoryTasks(Page<HistoryTask> page, Long... actorIds);
+	List<HistoryTask> getHistoryTasks(Page<HistoryTask> page, String... actorIds);
 	
 	/**
 	 * 根据流程定义ID、参与者分页查询已完成的历史任务项
@@ -140,5 +140,5 @@ public interface IQueryService {
 	 * @param actorIds
 	 * @return
 	 */
-	List<WorkItem> getHistoryWorkItems(Page<WorkItem> page, String processId, Long... actorIds);
+	List<WorkItem> getHistoryWorkItems(Page<WorkItem> page, String processId, String... actorIds);
 }

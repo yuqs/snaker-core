@@ -159,7 +159,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 * 根据流程定义ID，操作人ID启动流程实例
 	 */
 	@Override
-	public Order startInstanceById(String id, Long operator) {
+	public Order startInstanceById(String id, String operator) {
 		return startInstanceById(id, operator, null);
 	}
 
@@ -167,7 +167,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 * 根据流程定义ID，操作人ID，参数列表启动流程实例
 	 */
 	@Override
-	public Order startInstanceById(String id, Long operator, Map<String, Object> args) {
+	public Order startInstanceById(String id, String operator, Map<String, Object> args) {
 		if(args == null) args = new HashMap<String, Object>();
 		Process process = ModelContainer.getEntity(id);
 		AssertHelper.notNull(process, "指定的流程定义[id=" + id + "]不存在");
@@ -206,7 +206,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 * @param parentNodeName 启动子流程的父流程节点名称
 	 * @return Execution
 	 */
-	private Execution execute(Process process, Long operator, Map<String, Object> args, String parentId, String parentNodeName) {
+	private Execution execute(Process process, String operator, Map<String, Object> args, String parentId, String parentNodeName) {
 		Order order = orderService.createOrder(process, operator, args, parentId, parentNodeName);
 		Execution current = new Execution(this, process, order, args);
 		current.setOperator(operator);
@@ -225,7 +225,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 * 根据任务主键ID，操作人ID执行任务
 	 */
 	@Override
-	public List<Task> executeTask(String taskId, Long operator) {
+	public List<Task> executeTask(String taskId, String operator) {
 		return executeTask(taskId, operator, null);
 	}
 
@@ -233,7 +233,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 * 根据任务主键ID，操作人ID，参数列表执行任务
 	 */
 	@Override
-	public List<Task> executeTask(String taskId, Long operator, Map<String, Object> args) {
+	public List<Task> executeTask(String taskId, String operator, Map<String, Object> args) {
 		/*
 		 * 完成任务，并且构造执行对象
 		 */
@@ -255,7 +255,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 * 2、nodeName不为null时，则任意跳转，即动态创建转移
 	 */
 	@Override
-	public List<Task> executeAndJumpTask(String taskId, Long operator, Map<String, Object> args, String nodeName) {
+	public List<Task> executeAndJumpTask(String taskId, String operator, Map<String, Object> args, String nodeName) {
 		Execution execution = execute(taskId, operator, args);
 		ProcessModel model = execution.getProcess().getModel();
 		AssertHelper.notNull(model, "当前任务未找到流程定义模型");
@@ -279,7 +279,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 * 根据流程实例ID，操作人ID，参数列表按照节点模型model创建新的自由任务
 	 */
 	@Override
-	public List<Task> createFreeTask(String orderId, Long operator, Map<String, Object> args, WorkModel model) {
+	public List<Task> createFreeTask(String orderId, String operator, Map<String, Object> args, WorkModel model) {
 		Order order = orderService.getOrder(orderId);
 		order.setLastUpdator(operator);
 		order.setLastUpdateTime(DateHelper.getTime());
@@ -296,7 +296,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 * @param args 参数列表
 	 * @return Execution
 	 */
-	private Execution execute(String taskId, Long operator, Map<String, Object> args) {
+	private Execution execute(String taskId, String operator, Map<String, Object> args) {
 		if(args == null) args = new HashMap<String, Object>();
 		Task task = finishTask(taskId, operator);
 		Order order = orderService.getOrder(task.getOrderId());
@@ -313,7 +313,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 * 根据任务主键ID，操作人ID完成任务
 	 */
 	@Override
-	public Task finishTask(String taskId, Long operator) {
+	public Task finishTask(String taskId, String operator) {
 		Task task = taskService.getTask(taskId);
 		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
 		if(!taskService.isAllowed(task, operator)) {
@@ -324,12 +324,12 @@ public class SnakerEngineImpl implements SnakerEngine {
 	}
 	
 	@Override
-	public Task withdrawTask(String taskId, Long operator) {
+	public Task withdrawTask(String taskId, String operator) {
 		return taskService.withdrawTask(taskId, operator);
 	}
 
 	@Override
-	public void takeTask(String taskId, Long operator) {
+	public void takeTask(String taskId, String operator) {
 		Task task = taskService.getTask(taskId);
 		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
 		if(!taskService.isAllowed(task, operator)) {
@@ -344,7 +344,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	}
 	
 	@Override
-	public void terminateById(String orderId, Long operator) {
+	public void terminateById(String orderId, String operator) {
 		List<Task> tasks = queryService.getActiveTasks(orderId);
 		for(Task task : tasks) {
 			taskService.completeTask(task, operator);
@@ -369,7 +369,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	}
 	
 	@Override
-	public void addTaskActor(String taskId, Long... actors) {
+	public void addTaskActor(String taskId, String... actors) {
 		Task task = taskService.getTask(taskId);
 		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
 		if(task.getTaskType().intValue() == TaskType.Task.ordinal()) {
