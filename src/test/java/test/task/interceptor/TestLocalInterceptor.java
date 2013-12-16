@@ -36,11 +36,11 @@ public class TestLocalInterceptor extends TestSnakerBase {
 	
 	@Test
 	public void test() {
-		Order order = engine.startInstanceById(processId, 2L);
+		Order order = engine.startInstanceById(processId, "2");
 		System.out.println("order=" + order);
 		List<Task> tasks = queryService.getActiveTasks(order.getId());
 		for(Task task : tasks) {
-			engine.executeTask(task.getId(), 1L);
+			engine.executeTask(task.getId(), "1");
 		}
 	}
 }

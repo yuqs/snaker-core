@@ -27,7 +27,7 @@ import org.snaker.engine.test.TestSnakerBase;
 public class TestQueryHistTask extends TestSnakerBase {
 	@Test
 	public void test() {
-		System.out.println(queryService.getHistoryTasks(new Page<HistoryTask>(), 1L));
-		System.out.println(queryService.getHistoryWorkItems(new Page<WorkItem>(), null, 1L));
+		System.out.println(queryService.getHistoryTasks(new Page<HistoryTask>(), "1"));
+		System.out.println(queryService.getHistoryWorkItems(new Page<WorkItem>(), null, "1"));
 	}
 }

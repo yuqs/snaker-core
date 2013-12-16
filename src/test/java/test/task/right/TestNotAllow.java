@@ -38,8 +38,8 @@ public class TestNotAllow extends TestSnakerBase {
 	@Test
 	public void test() {
 		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("task1.operator", new Long[]{2L});
-		Order order = engine.startInstanceById(processId, 2L, args);
+		args.put("task1.operator", new String[]{"2"});
+		Order order = engine.startInstanceById(processId, "2", args);
 		System.out.println(order);
 	}
 }

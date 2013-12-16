@@ -39,9 +39,9 @@ public class TestExpireTime extends TestSnakerBase {
 	public void test() {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("process.expireTime", new Date());
-		args.put("task1.operator", new Long[]{1L});
+		args.put("task1.operator", new String[]{"1"});
 		args.put("task1.expireTime", new Date());
-		Order order = engine.startInstanceById(processId, 2L, args);
+		Order order = engine.startInstanceById(processId, "2", args);
 		System.out.println(order);
 	}
 }

@@ -38,11 +38,11 @@ public class TestLeave extends TestSnakerBase {
 	@Test
 	public void test() {
 		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("apply.operator", 1L);
-		args.put("approveDept.operator", 1L);
-		args.put("approveBoss.operator", 1L);
+		args.put("apply.operator", "1");
+		args.put("approveDept.operator", "1");
+		args.put("approveBoss.operator", "1");
 		args.put("day", new Integer(3));
-		Order order = engine.startInstanceById(processId, 1L, args);
+		Order order = engine.startInstanceById(processId, "1", args);
 		System.out.println(order);
 	}
 }

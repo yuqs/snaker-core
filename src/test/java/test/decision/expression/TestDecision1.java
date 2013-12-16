@@ -38,11 +38,11 @@ public class TestDecision1 extends TestSnakerBase {
 	@Test
 	public void test() {
 		Map<String, Object> args = new HashMap<String, Object>();
-		//args.put("task1.operator", new Long[]{1l,2l});
-		args.put("task2.operator", new Long[]{1L});
-		//args.put("task3.operator", new Long[]{1l,2l});
+		//args.put("task1.operator", new String[]{"1","2"});
+		args.put("task2.operator", new String[]{"1"});
+		//args.put("task3.operator", new String[]{"1","2"});
 		args.put("content", "toTask2");
-		Order order = engine.startInstanceById(processId, 2L, args);
+		Order order = engine.startInstanceById(processId, "2", args);
 		System.out.println(order);
 	}
 }

@@ -38,12 +38,12 @@ public class TestGenerator extends TestSnakerBase {
 	@Test
 	public void test() {
 		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("task1.operator", new Long[]{1L});
-		Order order = engine.startInstanceById(processId, 2L, args);
+		args.put("task1.operator", new String[]{"1"});
+		Order order = engine.startInstanceById(processId, "2", args);
 		System.out.println("order=" + order);
 		List<Task> tasks = queryService.getActiveTasks(order.getId());
 		for(Task task : tasks) {
-			engine.executeTask(task.getId(), 1L);
+			engine.executeTask(task.getId(), "1");
 		}
 	}
 }

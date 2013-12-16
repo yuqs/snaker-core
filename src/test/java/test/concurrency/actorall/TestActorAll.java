@@ -37,8 +37,8 @@ public class TestActorAll extends TestSnakerBase {
 	@Test
 	public void test() {
 		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("task1.operator", new Long[]{1L, 2L});
-		Order order = engine.startInstanceById(processId, 2L, args);
+		args.put("task1.operator", new String[]{"1", "2"});
+		Order order = engine.startInstanceById(processId, "2", args);
 		System.out.println(order);
 		//Assert.assertEquals(2, tasks.size());
 		//execute(tasks, args);

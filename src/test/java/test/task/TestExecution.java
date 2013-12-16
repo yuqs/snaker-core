@@ -28,7 +28,7 @@ public class TestExecution extends TestSnakerBase {
 	@Test
 	public void test() {
 		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("task1.operator", new Long[]{1L});
-		//engine.executeTask("ad0857146f6145549c36c1264474b8e1", 1L, args);
+		args.put("task1.operator", new String[]{"1"});
+		//engine.executeTask("ad0857146f6145549c36c1264474b8e1", "1", args);
 	}
 }
