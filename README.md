@@ -17,7 +17,7 @@ Contact
 
 Wiki
 ----
-* [snaker-参考手册](http://pan.baidu.com/s/1vMx4H)
+* [snaker-参考手册](http://pan.baidu.com/s/1xPxqA)
 * [snaker-数据库设计](http://git.oschina.net/yuqs/snaker-core/wikis/database)
 
 Example
