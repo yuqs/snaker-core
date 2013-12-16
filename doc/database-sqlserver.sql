@@ -1,95 +1,95 @@
 /**流程定义表*/
 create table wf_process (
-    id             nvarchar(100) primary key not null,
-    parent_Id       nvarchar(100),
-    name           nvarchar(100),
-    display_Name    nvarchar(200),
-    type           tinyint,
-    query_Url       nvarchar(200),
-    instance_Url    nvarchar(200),
-    state          tinyint,
-    content             varbinary(max),
-    version        tinyint
+    id               nvarchar(100) primary key not null,
+    parent_Id        nvarchar(100),
+    name             nvarchar(100),
+    display_Name     nvarchar(200),
+    type             tinyint,
+    query_Url        nvarchar(200),
+    instance_Url     nvarchar(200),
+    state            tinyint,
+    content          varbinary(max),
+    version          tinyint
 );
 
 /**流程实例表*/
 create table wf_order (
-    id             nvarchar(100) not null primary key,
-    process_Id      nvarchar(100) not null,
-    creator        int,
-    create_Time     nvarchar(50) not null,
-    expire_Time     nvarchar(50),
+    id               nvarchar(100) not null primary key,
+    process_Id       nvarchar(100) not null,
+    creator          nvarchar(100),
+    create_Time      nvarchar(50) not null,
+    expire_Time      nvarchar(50),
     last_Update_Time nvarchar(50),
-    last_Updator    int,
-    priority       tinyint,
-    parent_Id       nvarchar(100),
+    last_Updator     nvarchar(100),
+    priority         tinyint,
+    parent_Id        nvarchar(100),
     parent_Node_Name nvarchar(100),
     order_No         nvarchar(100),
     variable         nvarchar(2000),
-    version        tinyint
+    version          tinyint
 );
 
 /**任务表*/
 create table wf_task (
-    id             nvarchar(100) not null primary key,
-    order_Id        nvarchar(100) not null,
-    task_Name       nvarchar(100) not null,
-    display_Name    nvarchar(200) not null,
-    task_Type       tinyint not null,
-    perform_Type       tinyint,
-    operator       int,
-    create_Time     nvarchar(50) not null,
-    finish_Time     nvarchar(50),
-    expire_Time     nvarchar(50),
-    action_Url      nvarchar(200),
-    parent_Task_Id  nvarchar(100),
-    variable        nvarchar(2000),
-    version        tinyint
+    id               nvarchar(100) not null primary key,
+    order_Id         nvarchar(100) not null,
+    task_Name        nvarchar(100) not null,
+    display_Name     nvarchar(200) not null,
+    task_Type        tinyint not null,
+    perform_Type     tinyint,
+    operator         nvarchar(100),
+    create_Time      nvarchar(50) not null,
+    finish_Time      nvarchar(50),
+    expire_Time      nvarchar(50),
+    action_Url       nvarchar(200),
+    parent_Task_Id   nvarchar(100),
+    variable         nvarchar(2000),
+    version          tinyint
 );
 
 /**任务参与者表*/
 create table wf_task_actor (
-    task_Id         nvarchar(100) not null,
-    actor_Id        int not null
+    task_Id          nvarchar(100) not null,
+    actor_Id         nvarchar(100) not null
 );
 
 /**历史流程实例表*/
 create table wf_hist_order (
-    id             nvarchar(100) not null primary key,
-    process_Id      nvarchar(100) not null,
-    order_State     tinyint not null,
-    creator        int,
-    create_Time     nvarchar(50) not null,
-    end_Time        nvarchar(50),
-    expire_Time     nvarchar(50),
-    priority       tinyint,
-    parent_Id       nvarchar(100),
+    id               nvarchar(100) not null primary key,
+    process_Id       nvarchar(100) not null,
+    order_State      tinyint not null,
+    creator          nvarchar(100),
+    create_Time      nvarchar(50) not null,
+    end_Time         nvarchar(50),
+    expire_Time      nvarchar(50),
+    priority         tinyint,
+    parent_Id        nvarchar(100),
     order_No         nvarchar(100),
     variable         nvarchar(2000)
 );
 
 /**历史任务表*/
 create table wf_hist_task (
-    id             nvarchar(100) not null primary key,
-    order_Id        nvarchar(100) not null,
-    task_Name       nvarchar(100) not null,
-    display_Name    nvarchar(200) not null,
-    task_Type       tinyint not null,
-    perform_Type    tinyint,
-    task_State      tinyint not null,
-    operator       int,
-    create_Time     nvarchar(50) not null,
-    finish_Time     nvarchar(50),
-    expire_Time     nvarchar(50),
-    action_Url      nvarchar(200),
-    parent_Task_Id  nvarchar(100),
-    variable        nvarchar(2000)
+    id               nvarchar(100) not null primary key,
+    order_Id         nvarchar(100) not null,
+    task_Name        nvarchar(100) not null,
+    display_Name     nvarchar(200) not null,
+    task_Type        tinyint not null,
+    perform_Type     tinyint,
+    task_State       tinyint not null,
+    operator         nvarchar(100),
+    create_Time      nvarchar(50) not null,
+    finish_Time      nvarchar(50),
+    expire_Time      nvarchar(50),
+    action_Url       nvarchar(200),
+    parent_Task_Id   nvarchar(100),
+    variable         nvarchar(2000)
 );
 
 /**历史任务参与者表*/
 create table wf_hist_task_actor (
-    task_Id         nvarchar(100) not null,
-    actor_Id        int not null
+    task_Id          nvarchar(100) not null,
+    actor_Id         nvarchar(100) not null
 );
 
 /**创建索引*/

@@ -1,15 +1,15 @@
 /**流程定义表*/
 create table wf_process (
-    id             varchar2(100) primary key not null,
-    parent_Id       varchar2(100),
-    name           varchar2(100),
-    display_Name    varchar2(200),
-    type           number(1),
-    query_Url       varchar2(200),
-    instance_Url    varchar2(200),
-    state          number(1),
-    content             blob,
-    version        number(1)
+    id               varchar2(100) primary key not null,
+    parent_Id        varchar2(100),
+    name             varchar2(100),
+    display_Name     varchar2(200),
+    type             number(1),
+    query_Url        varchar2(200),
+    instance_Url     varchar2(200),
+    state            number(1),
+    content          blob,
+    version          number(1)
 );
 comment on table wf_process is '流程定义表';
 comment on column wf_process.id is '主键ID';
@@ -25,19 +25,19 @@ comment on column wf_process.version is '版本';
 
 /**流程实例表*/
 create table wf_order (
-    id             varchar2(100) not null primary key,
-    process_Id      varchar2(100) not null,
-    creator        number,
-    create_Time     varchar2(50) not null,
-    expire_Time     varchar2(50),
+    id               varchar2(100) not null primary key,
+    process_Id       varchar2(100) not null,
+    creator          varchar2(100),
+    create_Time      varchar2(50) not null,
+    expire_Time      varchar2(50),
     last_Update_Time varchar2(50),
-    last_Updator    number,
-    priority       number(1),
-    parent_Id       varchar2(100),
+    last_Updator     varchar2(100),
+    priority         number(1),
+    parent_Id        varchar2(100),
     parent_Node_Name varchar2(100),
     order_No         varchar2(100),
     variable         varchar2(2000),
-    version        number(1)
+    version          number(1)
 );
 comment on table wf_order is '流程实例表';
 comment on column wf_order.id is '主键ID';
@@ -56,20 +56,20 @@ comment on column wf_order.version is '版本';
 
 /**任务表*/
 create table wf_task (
-    id             varchar2(100) not null primary key,
-    order_Id        varchar2(100) not null,
-    task_Name       varchar2(100) not null,
-    display_Name    varchar2(200) not null,
-    task_Type       number(1) not null,
-    perform_Type    number(1),
-    operator       number,
-    create_Time     varchar2(50) not null,
-    finish_Time     varchar2(50),
-    expire_Time     varchar2(50),
-    action_Url      varchar2(200),
-    parent_Task_Id  varchar2(100),
-    variable        varchar2(2000),
-    version        number(1)
+    id               varchar2(100) not null primary key,
+    order_Id         varchar2(100) not null,
+    task_Name        varchar2(100) not null,
+    display_Name     varchar2(200) not null,
+    task_Type        number(1) not null,
+    perform_Type     number(1),
+    operator         varchar2(100),
+    create_Time      varchar2(50) not null,
+    finish_Time      varchar2(50),
+    expire_Time      varchar2(50),
+    action_Url       varchar2(200),
+    parent_Task_Id   varchar2(100),
+    variable         varchar2(2000),
+    version          number(1)
 );
 comment on table wf_task is '任务表';
 comment on column wf_task.id is '主键ID';
@@ -89,8 +89,8 @@ comment on column wf_task.version is '版本';
 
 /**任务参与者表*/
 create table wf_task_actor (
-    task_Id         varchar2(100) not null,
-    actor_Id        number not null
+    task_Id          varchar2(100) not null,
+    actor_Id         varchar2(100) not null
 );
 comment on table wf_task_actor is '任务参与者表';
 comment on column wf_task_actor.task_Id is '任务ID';
@@ -99,15 +99,15 @@ comment on column wf_task_actor.actor_Id is '参与者ID';
 
 /**历史流程实例表*/
 create table wf_hist_order (
-    id             varchar2(100) not null primary key,
-    process_Id      varchar2(100) not null,
-    order_State     number(1) not null,
-    creator        number,
-    create_Time     varchar2(50) not null,
-    end_Time        varchar2(50),
-    expire_Time     varchar2(50),
-    priority       number(1),
-    parent_Id       varchar2(100),
+    id               varchar2(100) not null primary key,
+    process_Id       varchar2(100) not null,
+    order_State      number(1) not null,
+    creator          varchar2(100),
+    create_Time      varchar2(50) not null,
+    end_Time         varchar2(50),
+    expire_Time      varchar2(50),
+    priority         number(1),
+    parent_Id        varchar2(100),
     order_No         varchar2(100),
     variable         varchar2(2000)
 );
@@ -121,25 +121,25 @@ comment on column wf_hist_order.creator is '发起人';
 comment on column wf_hist_order.create_Time is '发起时间';
 comment on column wf_hist_order.expire_Time is '期望完成时间';
 comment on column wf_hist_order.end_Time is '完成时间';
-comment on column wf_order.order_No is '流程实例编号';
-comment on column wf_order.variable is '流程实例附属变量';
+comment on column wf_hist_order.order_No is '流程实例编号';
+comment on column wf_hist_order.variable is '流程实例附属变量';
 
 /**历史任务表*/
 create table wf_hist_task (
-    id             varchar2(100) not null primary key,
-    order_Id        varchar2(100) not null,
-    task_Name       varchar2(100) not null,
-    display_Name    varchar2(200) not null,
-    task_Type       number(1) not null,
-    perform_Type    number(1),
-    task_State      number(1) not null,
-    operator       number,
-    create_Time     varchar2(50) not null,
-    finish_Time     varchar2(50),
-    expire_Time     varchar2(50),
-    action_Url      varchar2(200),
-    parent_Task_Id  varchar2(100),
-    variable        varchar2(2000)
+    id               varchar2(100) not null primary key,
+    order_Id         varchar2(100) not null,
+    task_Name        varchar2(100) not null,
+    display_Name     varchar2(200) not null,
+    task_Type        number(1) not null,
+    perform_Type     number(1),
+    task_State       number(1) not null,
+    operator         varchar2(100),
+    create_Time      varchar2(50) not null,
+    finish_Time      varchar2(50),
+    expire_Time      varchar2(50),
+    action_Url       varchar2(200),
+    parent_Task_Id   varchar2(100),
+    variable         varchar2(2000)
 );
 comment on table wf_hist_task is '历史任务表';
 comment on column wf_hist_task.id is '主键ID';
@@ -159,8 +159,8 @@ comment on column wf_hist_task.variable is '附属变量json存储';
 
 /**历史任务参与者表*/
 create table wf_hist_task_actor (
-    task_Id         varchar2(100) not null,
-    actor_Id        number not null
+    task_Id          varchar2(100) not null,
+    actor_Id         varchar2(100) not null
 );
 comment on table wf_hist_task_actor is '历史任务参与者表';
 comment on column wf_hist_task_actor.task_Id is '任务ID';
