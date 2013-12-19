@@ -36,6 +36,7 @@ import org.snaker.engine.entity.Process;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.helper.AssertHelper;
 import org.snaker.engine.helper.DateHelper;
+import org.snaker.engine.helper.JsonHelper;
 import org.snaker.engine.helper.StringHelper;
 import org.snaker.engine.model.CustomModel;
 import org.snaker.engine.model.NodeModel;
@@ -298,7 +299,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 */
 	private Execution execute(String taskId, String operator, Map<String, Object> args) {
 		if(args == null) args = new HashMap<String, Object>();
-		Task task = finishTask(taskId, operator);
+		Task task = finishTask(taskId, operator, args);
 		Order order = orderService.getOrder(task.getOrderId());
 		order.setLastUpdator(operator);
 		order.setLastUpdateTime(DateHelper.getTime());
@@ -313,8 +314,9 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 * 根据任务主键ID，操作人ID完成任务
 	 */
 	@Override
-	public Task finishTask(String taskId, String operator) {
+	public Task finishTask(String taskId, String operator, Map<String, Object> args) {
 		Task task = taskService.getTask(taskId);
+		task.setVariable(JsonHelper.toJson(args));
 		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
 		if(!taskService.isAllowed(task, operator)) {
 			throw new SnakerException("当前参与者[" + operator + "]不允许执行任务[taskId=" + taskId + "]");

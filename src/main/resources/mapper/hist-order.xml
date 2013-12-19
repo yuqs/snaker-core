@@ -26,7 +26,7 @@
     		order_No as orderNo,
     		variable
     	from wf_hist_order 
-    	where parent_Id = #{parentId, jdbcType=VARCHAR}
+    	where id = #{id, jdbcType=VARCHAR}
     </select>
     <select id="SELECTLIST" resultType="order">
      	select 

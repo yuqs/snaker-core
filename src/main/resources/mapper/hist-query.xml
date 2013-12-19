@@ -60,6 +60,7 @@
         		order_Id = #{orderId}
       		</if>
       	</where>
+      	order by create_Time desc 
     </select>
     
     <sql id="selectWorkItemsPart">
@@ -88,14 +89,13 @@
     <sql id="fromWorkItemsPart">
 	    from wf_hist_task t 
 	    left join wf_hist_order o on t.order_id = o.id 
-	    left join wf_hist_task_actor ta on ta.task_id=t.id 
 	    left join wf_process p on p.id = o.process_id 
 		<where>
       		<if test="processId != null">
         		o.process_Id = #{processId}
       		</if>
 	        <if test="actorIds.length > 0">
-	            and ta.actor_Id in
+	            and t.operator in
 				<foreach collection="actorIds" index="index" item="item" open="(" separator="," close=")">
 					#{item, jdbcType=VARCHAR}
 				</foreach>

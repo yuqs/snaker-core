@@ -125,9 +125,10 @@ public interface SnakerEngine {
 	 * 根据任务主键ID，操作人ID完成任务
 	 * @param taskId 任务id
 	 * @param operator 操作人id
+	 * @param args 参数集合
 	 * @return
 	 */
-	public Task finishTask(String taskId, String operator);
+	public Task finishTask(String taskId, String operator, Map<String, Object> args);
 	
 	/**
 	 * 根据流程实例ID，操作人ID，参数列表按照节点模型model创建新的自由任务

@@ -36,11 +36,23 @@ public interface IQueryService {
 	 */
 	Order getOrder(String orderId);
 	/**
+	 * 根据流程实例ID获取历史流程实例对象
+	 * @param orderId
+	 * @return
+	 */
+	HistoryOrder getHistOrder(String orderId);
+	/**
 	 * 根据任务ID获取任务对象
 	 * @param taskId
 	 * @return
 	 */
 	Task getTask(String taskId);
+	/**
+	 * 根据任务ID获取历史任务对象
+	 * @param taskId
+	 * @return
+	 */
+	HistoryTask getHistTask(String taskId);
 	/**
 	 * 根据参与者获取任务集合
 	 * @param actorIds

@@ -105,8 +105,13 @@ public class MybatisAccess extends AbstractDBAccess {
 	}
 	
 	@Override
-	public HistoryTask getHistoryTask(String taskId) {
+	public HistoryTask getHistTask(String taskId) {
 		return getSession().selectOne("HistoryTask.SELECTONE", taskId);
+	}
+	
+	@Override
+	public HistoryOrder getHistOrder(String orderId) {
+		return getSession().selectOne("HistoryOrder.SELECTONE", orderId);
 	}
 
 	@Override

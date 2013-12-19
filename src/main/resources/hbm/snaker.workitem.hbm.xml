@@ -13,12 +13,12 @@
 		<property name="processName" type="java.lang.String" column="process_Name"/>
 		<property name="instanceUrl" type="java.lang.String" column="instance_Url"/>
         <property name="parentId" type="java.lang.String" column="parent_Id"/>
-        <property name="creator" type="java.lang.Long" column="creator" />
+        <property name="creator" type="java.lang.String" column="creator" />
         <property name="orderCreateTime" type="java.lang.String" column="order_Create_Time"/>
         <property name="orderExpireTime" type="java.lang.String" column="order_Expire_Time"/>
         
         <property name="taskName" type="java.lang.String" column="task_Name"/>
-        <property name="operator" type="java.lang.Long" column="operator" />
+        <property name="operator" type="java.lang.String" column="operator" />
         <property name="taskCreateTime" type="java.lang.String" column="task_Create_Time"/>
         <property name="taskEndTime" type="java.lang.String" column="task_End_Time"/>
         <property name="taskExpireTime" type="java.lang.String" column="task_Expire_Time"/>

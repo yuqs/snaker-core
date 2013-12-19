@@ -116,18 +116,18 @@ public interface DBAccess {
 	public Task getTask(String taskId);
 	
 	/**
+	 * 根据任务ID获取历史任务对象
+	 * @param taskId
+	 * @return
+	 */
+	HistoryTask getHistTask(String taskId);
+	
+	/**
 	 * 根据父任务id查询所有子任务
 	 * @param parentTaskId
 	 * @return
 	 */
 	public List<Task> getTasks(String parentTaskId);
-	
-	/**
-	 * 根据任务id查询历史任务对象
-	 * @param taskId
-	 * @return
-	 */
-	public HistoryTask getHistoryTask(String taskId);
 	
 	/**
 	 * 根据任务id查询所有参与者集合
@@ -142,6 +142,13 @@ public interface DBAccess {
 	 * @return
 	 */
 	public Order getOrder(String orderId);
+	
+	/**
+	 * 根据流程实例ID获取历史流程实例对象
+	 * @param orderId
+	 * @return
+	 */
+	HistoryOrder getHistOrder(String orderId);
 	
 	/**
 	 * 根据流程定义id、或name查询流程定义对象

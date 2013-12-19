@@ -24,7 +24,6 @@ import org.snaker.engine.entity.HistoryTask;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.entity.TaskActor;
 import org.snaker.engine.helper.DateHelper;
-import org.snaker.engine.helper.JsonHelper;
 import org.snaker.engine.helper.StringHelper;
 import org.snaker.engine.model.BaseModel;
 import org.snaker.engine.model.CustomModel;
@@ -119,7 +118,7 @@ public class TaskService extends AccessService implements ITaskService {
 		for(Task task : tasks) {
 			access().deleteTask(task);
 		}
-		HistoryTask history = access().getHistoryTask(taskId);
+		HistoryTask history = access().getHistTask(taskId);
 		Task task = history.undoTask();
 		task.setId(StringHelper.getPrimaryKey());
 		task.setCreateTime(DateHelper.getTime());
@@ -178,7 +177,7 @@ public class TaskService extends AccessService implements ITaskService {
 	 */
 	@Override
 	public HistoryTask getHistoryTask(String taskId) {
-		return access().getHistoryTask(taskId);
+		return access().getHistTask(taskId);
 	}
 	
 	/**
@@ -266,7 +265,6 @@ public class TaskService extends AccessService implements ITaskService {
 		task.setDisplayName(model.getDisplayName());
 		task.setCreateTime(DateHelper.getTime());
 		task.setTaskType(taskType);
-		task.setVariable(JsonHelper.toJson(execution.getArgs()));
 		task.setParentTaskId(execution.getTask() == null ? null : execution.getTask().getId());
 		return task;
 	}

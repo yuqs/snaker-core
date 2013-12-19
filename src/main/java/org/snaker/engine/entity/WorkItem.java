@@ -55,7 +55,7 @@ public class WorkItem implements Serializable {
     /**
      * 流程实例创建者ID
      */
-    private Long creator;
+    private String creator;
     /**
      * 流程实例创建时间
      */
@@ -99,7 +99,7 @@ public class WorkItem implements Serializable {
     /**
      * 任务处理者ID
      */
-    private Long operator;
+    private String operator;
     /**
      * 任务关联的表单url
      */
@@ -107,7 +107,7 @@ public class WorkItem implements Serializable {
     /**
      * 任务参与者列表
      */
-    private Long[] actorIds;
+    private String[] actorIds;
     /**
      * 流程实例编号
      */
@@ -164,10 +164,10 @@ public class WorkItem implements Serializable {
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
-	public Long getCreator() {
+	public String getCreator() {
 		return creator;
 	}
-	public void setCreator(Long creator) {
+	public void setCreator(String creator) {
 		this.creator = creator;
 	}
 	public String getOrderCreateTime() {
@@ -230,10 +230,10 @@ public class WorkItem implements Serializable {
 	public void setTaskExpireTime(String taskExpireTime) {
 		this.taskExpireTime = taskExpireTime;
 	}
-	public Long getOperator() {
+	public String getOperator() {
 		return operator;
 	}
-	public void setOperator(Long operator) {
+	public void setOperator(String operator) {
 		this.operator = operator;
 	}
 	public String getActionUrl() {
@@ -242,10 +242,10 @@ public class WorkItem implements Serializable {
 	public void setActionUrl(String actionUrl) {
 		this.actionUrl = actionUrl;
 	}
-	public Long[] getActorIds() {
+	public String[] getActorIds() {
 		return actorIds;
 	}
-	public void setActorIds(Long[] actorIds) {
+	public void setActorIds(String[] actorIds) {
 		this.actorIds = actorIds;
 	}
 	

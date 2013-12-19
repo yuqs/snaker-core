@@ -317,9 +317,15 @@ public abstract class AbstractDBAccess implements DBAccess {
 	}
 	
 	@Override
-	public HistoryTask getHistoryTask(String taskId) {
+	public HistoryTask getHistTask(String taskId) {
 		String where = " where id = ?";
 		return queryObject(HistoryTask.class, QUERY_HIST_TASK + where, taskId);
+	}
+	
+	@Override
+	public HistoryOrder getHistOrder(String orderId) {
+		String where = " where id = ?";
+		return queryObject(HistoryOrder.class, QUERY_HIST_ORDER + where, orderId);
 	}
 
 	@Override
@@ -523,7 +529,7 @@ public abstract class AbstractDBAccess implements DBAccess {
 	@Override
 	public List<HistoryTask> getHistoryTasks(String orderId) {
 		StringBuffer sql = new StringBuffer(QUERY_HIST_TASK);
-		sql.append(" where order_Id = ? ");
+		sql.append(" where order_Id = ? order by create_Time desc ");
 		return queryList(HistoryTask.class, sql.toString(), new Object[]{orderId });
 	}
 	@Override
@@ -558,7 +564,6 @@ public abstract class AbstractDBAccess implements DBAccess {
 		sql.append(" t.create_Time as task_Create_Time, t.finish_Time as task_End_Time, t.expire_Time as task_Expire_Time ");
 		sql.append(" from wf_hist_task t ");
 		sql.append(" left join wf_hist_order o on t.order_id = o.id ");
-		sql.append(" left join wf_hist_task_actor ta on ta.task_id=t.id ");
 		sql.append(" left join wf_process p on p.id = o.process_id ");
 		sql.append(" where 1=1 ");
 		
@@ -567,7 +572,7 @@ public abstract class AbstractDBAccess implements DBAccess {
 		 */
 		List<Object> paramList = new ArrayList<Object>();
 		if(actorIds.length > 0) {
-			sql.append(" and ta.actor_Id in (");
+			sql.append(" and t.operator in (");
 			for(String actor : actorIds) {
 				sql.append("?,");
 				paramList.add(actor);
@@ -584,5 +589,4 @@ public abstract class AbstractDBAccess implements DBAccess {
 		page.setOrderBy("t.create_Time");
 		return queryList(page, WorkItem.class, sql.toString(), paramList.toArray());
 	}
-
 }

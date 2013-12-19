@@ -40,6 +40,16 @@ public class QueryService extends AccessService implements IQueryService {
 	public Task getTask(String taskId) {
 		return access().getTask(taskId);
 	}
+
+	@Override
+	public HistoryOrder getHistOrder(String orderId) {
+		return access().getHistOrder(orderId);
+	}
+
+	@Override
+	public HistoryTask getHistTask(String taskId) {
+		return access().getHistTask(taskId);
+	}
 	
 	@Override
 	public List<Task> getActiveTasksByActors(String... actorIds) {
