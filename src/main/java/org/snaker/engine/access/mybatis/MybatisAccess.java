@@ -48,6 +48,14 @@ public class MybatisAccess extends AbstractDBAccess {
 		this.sqlSessionFactory = sqlSessionFactory;
 	}
 	
+	@Override
+	public void initialize(Object accessObject) {
+		if(accessObject == null) return;
+		if(accessObject instanceof SqlSessionFactory) {
+			this.sqlSessionFactory = (SqlSessionFactory)accessObject;
+		}
+	}
+	
 	private SqlSession getSession() {
 		return MybatisHelper.getSession(sqlSessionFactory);
 	}

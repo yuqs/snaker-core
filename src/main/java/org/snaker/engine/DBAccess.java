@@ -36,7 +36,7 @@ public interface DBAccess {
 	 * 根据访问对象，设置具体的实现类
 	 * @param accessObject
 	 */
-	//public void initialize(Object accessObject);
+	public void initialize(Object accessObject);
 	/**
 	 * 保存任务对象
 	 * @param task

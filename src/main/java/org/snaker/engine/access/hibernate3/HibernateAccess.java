@@ -58,6 +58,14 @@ public class HibernateAccess extends AbstractDBAccess implements DBAccess {
 		this.sessionFactory = sessionFactory;
 	}
 	
+	@Override
+	public void initialize(Object accessObject) {
+		if(accessObject == null) return;
+		if(accessObject instanceof SessionFactory) {
+			this.sessionFactory = (SessionFactory)accessObject;
+		}
+	}
+	
 	/**
 	 * 取得hibernate当前Session对象
 	 */

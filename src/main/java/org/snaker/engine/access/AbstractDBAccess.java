@@ -115,6 +115,11 @@ public abstract class AbstractDBAccess implements DBAccess {
 	 */
 	public abstract <T> List<T> queryList(Page<T> page, Class<T> T, String sql, Object... args);
 	
+	@Override
+	public void initialize(Object accessObject) {
+		
+	}
+	
 	/**
 	 * isORM为false，需要构造map传递给实现类
 	 * @param sql

@@ -98,12 +98,12 @@ public abstract class MybatisHelper {
 		sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
 	}
 	
-	public static SqlSession getSession(Object accessObject) {
+	public static SqlSession getSession(SqlSessionFactory sqlSessionFactory) {
 		SqlSession session = (SqlSession)TransactionObjectHolder.get();
 		if(session != null) return session;
-    	if(accessObject != null && accessObject instanceof SqlSessionFactory) {
-	    	log.info("found sqlSessionFactory:" + accessObject);
-	    	sqlSessionFactory = (SqlSessionFactory)accessObject;
+    	if(sqlSessionFactory != null) {
+	    	log.info("found sqlSessionFactory:" + sqlSessionFactory);
+	    	return sqlSessionFactory.openSession();
     	} else {
     		log.info("don't found available sqlSessionFactory");
     	}

@@ -61,6 +61,14 @@ public class JdbcAccess extends AbstractDBAccess implements DBAccess {
     public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
+    
+	@Override
+	public void initialize(Object accessObject) {
+		if(accessObject == null) return;
+		if(accessObject instanceof DataSource) {
+			this.dataSource = (DataSource)accessObject;
+		}
+	}
 
 	/**
      * 返回数据库连接对象

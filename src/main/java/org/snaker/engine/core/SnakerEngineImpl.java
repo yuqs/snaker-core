@@ -95,12 +95,14 @@ public class SnakerEngineImpl implements SnakerEngine {
 		if(this.configuration.getApplicationContext() == null) {
 			DBAccess access = context.find(DBAccess.class);
 			AssertHelper.notNull(access);
-			setDBAccess(access);
+			
 			TransactionInterceptor interceptor = context.find(TransactionInterceptor.class);
 			//如果初始化配置时提供了访问对象，就对DBAccess进行初始化
 			if(this.configuration.getAccessDBObject() != null) {
 				interceptor.initialize(this.configuration.getAccessDBObject());
+				access.initialize(this.configuration.getAccessDBObject());
 			}
+			setDBAccess(access);
 		}
 		return this;
 	}
@@ -316,8 +318,8 @@ public class SnakerEngineImpl implements SnakerEngine {
 	@Override
 	public Task finishTask(String taskId, String operator, Map<String, Object> args) {
 		Task task = taskService.getTask(taskId);
-		task.setVariable(JsonHelper.toJson(args));
 		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
+		task.setVariable(JsonHelper.toJson(args));
 		if(!taskService.isAllowed(task, operator)) {
 			throw new SnakerException("当前参与者[" + operator + "]不允许执行任务[taskId=" + taskId + "]");
 		}

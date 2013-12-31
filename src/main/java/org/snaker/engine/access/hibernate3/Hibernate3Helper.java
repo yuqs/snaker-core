@@ -86,7 +86,7 @@ public abstract class Hibernate3Helper {
 			 * 此处的执行路径一般是ioc容器提前注入了sessionFactory，所以直接从当前线程中获取session
 			 * 否则openSession需要手动提交事务
 			 */
-			if(sf != null) return sf.getCurrentSession();
+			if(sf != null) return sf.openSession();
 			if(log.isDebugEnabled()) {
 				log.debug("could not found sessionFactory.");
 			}

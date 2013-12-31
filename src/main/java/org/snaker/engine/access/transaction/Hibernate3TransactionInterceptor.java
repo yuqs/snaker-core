@@ -84,8 +84,10 @@ public class Hibernate3TransactionInterceptor extends TransactionInterceptor {
             	if(log.isInfoEnabled()) {
             		log.info("rollback transaction=" + session.hashCode());
             	}
-            	session.getTransaction().rollback();
-            	session.close();
+            	if(session.isOpen()) {
+            		session.getTransaction().rollback();
+            		session.close();
+            	}
             } catch (Exception e) {
             	log.error(e.getMessage(), e);
                 throw new RuntimeException(e.getMessage(), e);
