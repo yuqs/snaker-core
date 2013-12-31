@@ -59,7 +59,7 @@ public abstract class TransactionInterceptor implements MethodInterceptor {
 		txMethods.add("add*");
 		txMethods.add("get*");
 		
-		String isSupport = ConfigHelper.getProperty("jdbc.tx");
+		String isSupport = ConfigHelper.getProperty("tx.support");
 		if(StringHelper.isNotEmpty(isSupport) && isSupport.equalsIgnoreCase("false")) {
 			isSupportTx = false;
 		}

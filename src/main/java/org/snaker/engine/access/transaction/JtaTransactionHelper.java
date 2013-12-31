@@ -32,9 +32,9 @@ import org.snaker.engine.helper.ConfigHelper;
  */
 public class JtaTransactionHelper {
 	private static String userTransactionJndiName = ConfigHelper
-			.getProperty("jta.userTransaction");
+			.getProperty("tx.jta.userTransaction");
 	private static String transactionManagerJndiName = ConfigHelper
-			.getProperty("jta.transactionManager");
+			.getProperty("tx.jta.transactionManager");
 
 	public static UserTransaction lookupJeeUserTransaction() {
 		return (UserTransaction) lookupFromJndi(userTransactionJndiName);

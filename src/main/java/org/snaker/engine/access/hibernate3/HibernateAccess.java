@@ -73,11 +73,12 @@ public class HibernateAccess extends AbstractDBAccess implements DBAccess {
 		return Hibernate3Helper.getSession(sessionFactory);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void updateProcess(Process process) {
 		try {
 			if(process.getBytes() != null) {
-				Blob blob = Hibernate.createBlob(process.getBytes(), getSession());
+				Blob blob = Hibernate.createBlob(process.getBytes());
 				process.setContent(blob);
 			}
 		} catch (Exception e) {
@@ -86,11 +87,12 @@ public class HibernateAccess extends AbstractDBAccess implements DBAccess {
 		getSession().saveOrUpdate(process);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void saveProcess(Process process) {
 		try {
 			if(process.getBytes() != null) {
-				Blob blob = Hibernate.createBlob(process.getBytes(), getSession());
+				Blob blob = Hibernate.createBlob(process.getBytes());
 				process.setContent(blob);
 			}
 		} catch (Exception e) {
