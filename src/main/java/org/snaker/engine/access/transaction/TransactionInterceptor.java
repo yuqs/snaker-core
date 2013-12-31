@@ -88,7 +88,6 @@ public abstract class TransactionInterceptor implements MethodInterceptor {
 			if(log.isDebugEnabled()) {
 				log.debug("intercept method is[name="  + method.getName() + "]");
 			}
-			log.info("intercept method is[name="  + method.getName() + "]");
 			try {
 				status = getTransaction();
 				AssertHelper.notNull(status);
