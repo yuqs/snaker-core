@@ -18,6 +18,8 @@ import javax.transaction.Status;
 import javax.transaction.Transaction;
 import javax.transaction.UserTransaction;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.snaker.engine.SnakerException;
 
 /**
@@ -26,6 +28,7 @@ import org.snaker.engine.SnakerException;
  * @version 1.0
  */
 public class JtaTransactionInterceptor extends TransactionInterceptor {
+	private static final Log log = LogFactory.getLog(JtaTransactionInterceptor.class);
 	@Override
 	public void initialize(Object accessObject) {
 		//ignore
@@ -37,7 +40,9 @@ public class JtaTransactionInterceptor extends TransactionInterceptor {
 				.lookupJeeUserTransaction();
 		int status = JtaTransactionHelper
 				.getUserTransactionStatus(userTransaction);
-
+    	if(log.isInfoEnabled()) {
+    		log.info("begin transaction=" + status);
+    	}
 		if (status == Status.STATUS_ACTIVE) {
 			return new TransactionStatus(null, false);
 		}
@@ -69,11 +74,25 @@ public class JtaTransactionInterceptor extends TransactionInterceptor {
 
 	@Override
 	protected void commit(TransactionStatus status) {
+    	if(log.isInfoEnabled()) {
+    		log.info("commit transaction=");
+    	}
 		JtaTransactionHelper.commit();
 	}
 
 	@Override
 	protected void rollback(TransactionStatus status) {
-		JtaTransactionHelper.rollback();
+		UserTransaction userTransaction = JtaTransactionHelper
+				.lookupJeeUserTransaction();
+		int txStatus = JtaTransactionHelper
+				.getUserTransactionStatus(userTransaction);
+    	if(log.isInfoEnabled()) {
+    		log.info("rollback transaction=" + txStatus);
+    	}
+		if ((txStatus != Status.STATUS_NO_TRANSACTION)
+				&& (txStatus != Status.STATUS_COMMITTED)
+				&& (txStatus != Status.STATUS_ROLLEDBACK)) {
+			JtaTransactionHelper.rollback();
+		}
 	}
 }
