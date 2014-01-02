@@ -19,8 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.snaker.engine.DBAccess;
 import org.snaker.engine.IOrderService;
 import org.snaker.engine.IProcessService;
@@ -52,7 +52,7 @@ import org.snaker.engine.model.WorkModel;
  * @version 1.0
  */
 public class SnakerEngineImpl implements SnakerEngine {
-	private static final Log log = LogFactory.getLog(SnakerEngineImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(SnakerEngineImpl.class);
 	/**
 	 * Snaker配置对象
 	 */

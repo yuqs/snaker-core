@@ -21,8 +21,8 @@ import java.util.Map.Entry;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.io.Resources;
@@ -41,7 +41,7 @@ import org.snaker.engine.helper.ConfigHelper;
  * @version 1.0
  */
 public abstract class MybatisHelper {
-	private static final Log log = LogFactory.getLog(MybatisHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(MybatisHelper.class);
 	private static final String SCAN_PACKAGE = "org.snaker.engine.entity";
 	private static SqlSessionFactory sqlSessionFactory = null;
 	private static final String[] resources = new String[] {

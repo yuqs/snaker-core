@@ -18,8 +18,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.snaker.engine.SnakerException;
 import org.snaker.engine.helper.AssertHelper;
 import org.snaker.engine.helper.ConfigHelper;
@@ -35,7 +35,7 @@ import net.sf.cglib.proxy.MethodProxy;
  * @version 1.0
  */
 public abstract class TransactionInterceptor implements MethodInterceptor {
-	private static final Log log = LogFactory.getLog(TransactionInterceptor.class);
+	private static final Logger log = LoggerFactory.getLogger(TransactionInterceptor.class);
 	/**
 	 * 需要拦截的事务方法集合
 	 */

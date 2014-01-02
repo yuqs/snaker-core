@@ -19,8 +19,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.Hibernate;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -44,7 +44,7 @@ import org.snaker.engine.helper.StringHelper;
  * @version 1.0
  */
 public class HibernateAccess extends AbstractDBAccess implements DBAccess {
-	private static final Log log = LogFactory.getLog(HibernateAccess.class);
+	private static final Logger log = LoggerFactory.getLogger(HibernateAccess.class);
 	/**
 	 * hibernate的session工厂
 	 */

@@ -18,8 +18,8 @@ import javax.transaction.Status;
 import javax.transaction.Transaction;
 import javax.transaction.UserTransaction;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.snaker.engine.SnakerException;
 
 /**
@@ -28,7 +28,7 @@ import org.snaker.engine.SnakerException;
  * @version 1.0
  */
 public class JtaTransactionInterceptor extends TransactionInterceptor {
-	private static final Log log = LogFactory.getLog(JtaTransactionInterceptor.class);
+	private static final Logger log = LoggerFactory.getLogger(JtaTransactionInterceptor.class);
 	@Override
 	public void initialize(Object accessObject) {
 		//ignore

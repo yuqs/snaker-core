@@ -14,8 +14,8 @@
  */
 package org.snaker.engine.access.hibernate3;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -30,7 +30,7 @@ import org.snaker.engine.helper.StringHelper;
  * @version 1.0
  */
 public abstract class Hibernate3Helper {
-	private static final Log log = LogFactory.getLog(Hibernate3Helper.class);
+	private static final Logger log = LoggerFactory.getLogger(Hibernate3Helper.class);
 	/**
 	 * hibernate的session工厂
 	 */

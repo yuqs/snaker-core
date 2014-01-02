@@ -14,8 +14,8 @@
  */
 package org.snaker.engine.access.transaction;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.snaker.engine.access.hibernate3.Hibernate3Helper;
@@ -27,7 +27,7 @@ import org.snaker.engine.helper.AssertHelper;
  * @version 1.0
  */
 public class Hibernate3TransactionInterceptor extends TransactionInterceptor {
-	private static final Log log = LogFactory.getLog(Hibernate3TransactionInterceptor.class);
+	private static final Logger log = LoggerFactory.getLogger(Hibernate3TransactionInterceptor.class);
 	private SessionFactory sessionFactory;
 	@Override
 	public void initialize(Object accessObject) {

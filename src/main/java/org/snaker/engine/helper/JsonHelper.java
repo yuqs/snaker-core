@@ -14,8 +14,8 @@
  */
 package org.snaker.engine.helper;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 
 /**
@@ -24,7 +24,7 @@ import org.codehaus.jackson.map.ObjectMapper;
  * @version 1.0
  */
 public class JsonHelper {
-	private static final Log log = LogFactory.getLog(JsonHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(JsonHelper.class);
 	/**
 	 * jackson的ObjectMapper对象
 	 */

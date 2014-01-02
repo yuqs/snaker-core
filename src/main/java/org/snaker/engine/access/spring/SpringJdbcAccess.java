@@ -23,8 +23,8 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.snaker.engine.access.AbstractDBAccess;
 import org.snaker.engine.access.Page;
 import org.snaker.engine.DBAccess;
@@ -45,7 +45,7 @@ import org.springframework.jdbc.support.lob.LobHandler;
  * @version 1.0
  */
 public class SpringJdbcAccess extends AbstractDBAccess implements DBAccess {
-	private static final Log log = LogFactory.getLog(SpringJdbcAccess.class);
+	private static final Logger log = LoggerFactory.getLogger(SpringJdbcAccess.class);
 	private LobHandler lobHandler;
 	private JdbcTemplate template;
 

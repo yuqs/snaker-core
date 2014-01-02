@@ -17,8 +17,8 @@ package org.snaker.engine.helper;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 类操作帮助类
@@ -26,7 +26,7 @@ import org.apache.commons.logging.LogFactory;
  * @version 1.0
  */
 public class ClassHelper {
-    private static final Log log = LogFactory.getLog(ClassHelper.class);
+    private static final Logger log = LoggerFactory.getLogger(ClassHelper.class);
 	/**
 	 * 查询结果总记录数的类型转换
 	 * @param count

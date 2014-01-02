@@ -14,8 +14,8 @@
  */
 package org.snaker.engine.model;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.snaker.engine.DecisionHandler;
 import org.snaker.engine.core.Execution;
 import org.snaker.engine.helper.ClassHelper;
@@ -28,7 +28,7 @@ import org.snaker.engine.helper.StringHelper;
  * @version 1.0
  */
 public class DecisionModel extends NodeModel {
-	private static final Log log = LogFactory.getLog(DecisionModel.class);
+	private static final Logger log = LoggerFactory.getLogger(DecisionModel.class);
 	/**
 	 * 
 	 */

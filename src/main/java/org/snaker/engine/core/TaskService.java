@@ -157,6 +157,8 @@ public class TaskService extends AccessService implements ITaskService {
 	public void assignTask(String taskId, String... actorIds) {
 		if(actorIds == null || actorIds.length == 0) return;
 		for(String actorId : actorIds) {
+			//修复当actorId为null的bug
+			if(StringHelper.isEmpty(actorId)) continue;
 			TaskActor taskActor = new TaskActor();
 			taskActor.setTaskId(taskId);
 			taskActor.setActorId(actorId);

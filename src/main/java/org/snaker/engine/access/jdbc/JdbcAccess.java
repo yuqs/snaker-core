@@ -25,8 +25,8 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.snaker.engine.SnakerException;
 import org.snaker.engine.access.AbstractDBAccess;
 import org.snaker.engine.access.Page;
@@ -43,7 +43,7 @@ import org.snaker.engine.helper.StringHelper;
  * @version 1.0
  */
 public class JdbcAccess extends AbstractDBAccess implements DBAccess {
-	private static final Log log = LogFactory.getLog(JdbcAccess.class);
+	private static final Logger log = LoggerFactory.getLogger(JdbcAccess.class);
     /**
      * dbutils的QueryRunner对象
      */

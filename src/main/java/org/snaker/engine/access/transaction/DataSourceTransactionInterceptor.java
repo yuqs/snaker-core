@@ -18,8 +18,8 @@ import java.sql.Connection;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.snaker.engine.access.jdbc.JdbcHelper;
 import org.snaker.engine.helper.AssertHelper;
 
@@ -29,7 +29,7 @@ import org.snaker.engine.helper.AssertHelper;
  * @version 1.0
  */
 public class DataSourceTransactionInterceptor extends TransactionInterceptor {
-	private static final Log log = LogFactory.getLog(DataSourceTransactionInterceptor.class);
+	private static final Logger log = LoggerFactory.getLogger(DataSourceTransactionInterceptor.class);
 	private DataSource dataSource;
 
 	@Override

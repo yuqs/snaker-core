@@ -22,8 +22,8 @@ import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilder;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.snaker.engine.SnakerEngine;
 import org.snaker.engine.SnakerException;
 import org.snaker.engine.access.transaction.TransactionInterceptor;
@@ -48,7 +48,7 @@ public class Configuration implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -2382396111199755386L;
-	private static final Log log = LogFactory.getLog(Configuration.class);
+	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 	private final static String DEFAULT_CONFIG_FILE = "default.config.xml";
 	private final static String SPRING_CONFIG_FILE = "spring.config.xml";
 	private final static String USER_CONFIG_FILE = "snaker.xml";

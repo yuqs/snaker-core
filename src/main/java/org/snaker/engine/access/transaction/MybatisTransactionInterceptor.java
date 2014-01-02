@@ -14,8 +14,8 @@
  */
 package org.snaker.engine.access.transaction;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.snaker.engine.access.mybatis.MybatisHelper;
@@ -29,7 +29,7 @@ import org.snaker.engine.helper.AssertHelper;
  * @version 1.0
  */
 public class MybatisTransactionInterceptor extends TransactionInterceptor {
-	private static final Log log = LogFactory.getLog(MybatisTransactionInterceptor.class);
+	private static final Logger log = LoggerFactory.getLogger(MybatisTransactionInterceptor.class);
 	private SqlSessionFactory sqlSessionFactory;
 
 	@Override

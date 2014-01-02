@@ -16,8 +16,8 @@ package org.snaker.engine.handlers.impl;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.snaker.engine.TaskInterceptor;
 import org.snaker.engine.core.Execution;
 import org.snaker.engine.core.ServiceContext;
@@ -32,7 +32,7 @@ import org.snaker.engine.model.WorkModel;
  * @version 1.0
  */
 public class CreateTaskHandler implements IHandler {
-	private static final Log log = LogFactory.getLog(CreateTaskHandler.class);
+	private static final Logger log = LoggerFactory.getLogger(CreateTaskHandler.class);
 	/**
 	 * 任务模型
 	 */

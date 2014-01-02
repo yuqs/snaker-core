@@ -19,8 +19,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 配置属性帮助类
@@ -29,7 +29,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ConfigHelper
 {
-    private static final transient Log log = LogFactory.getLog(ConfigHelper.class);
+    private static final transient Logger log = LoggerFactory.getLogger(ConfigHelper.class);
     
     /**
      * 常用配置属性文件名称.

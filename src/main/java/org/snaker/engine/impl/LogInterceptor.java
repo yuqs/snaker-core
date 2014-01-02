@@ -16,8 +16,8 @@ package org.snaker.engine.impl;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.snaker.engine.TaskInterceptor;
 import org.snaker.engine.entity.Task;
 
@@ -27,7 +27,7 @@ import org.snaker.engine.entity.Task;
  * @version 1.0
  */
 public class LogInterceptor implements TaskInterceptor {
-	private static final Log log = LogFactory.getLog(LogInterceptor.class);
+	private static final Logger log = LoggerFactory.getLogger(LogInterceptor.class);
 	/**
 	 * 拦截产生的任务对象，打印日志
 	 */
