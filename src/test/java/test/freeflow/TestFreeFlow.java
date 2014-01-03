@@ -60,12 +60,12 @@ public class TestFreeFlow extends TestSnakerBase {
 		List<Task> tasks = null;
 		tasks = engine.createFreeTask(order.getId(), "1", args, tm1);
 		for(Task task : tasks) {
-			engine.finishTask(task.getId(), "1");
+			engine.finishTask(task.getId(), "1", null);
 		}
 		
 		tasks = engine.createFreeTask(order.getId(), "1", args, tm2);
 		for(Task task : tasks) {
-			engine.finishTask(task.getId(), "1");
+			engine.finishTask(task.getId(), "1", null);
 		}
 		engine.terminateById(order.getId());
 	}

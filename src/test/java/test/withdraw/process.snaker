@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="GBK" standalone="no"?>
+<process displayName="forkjoinname" name="forkjoin">
+<start displayName="start1" layout="59,114,-1,-1" name="start1">
+<transition g="" name="transition1" offset="0,0" to="task1"/>
+</start>
+<end displayName="end1" layout="454,110,-1,-1" name="end1"/>
+<task assignee="task1.assignee" displayName="task1" layout="152,110,-1,-1" name="task1" performType="ALL">
+<transition g="" name="transition2" offset="0,0" to="task3"/>
+</task>
+<task assignee="task3.assignee" displayName="task3" layout="303,109,-1,-1" name="task3" performType="ANY">
+<transition g="" name="transition3" offset="0,0" to="end1"/>
+</task>
+</process>
