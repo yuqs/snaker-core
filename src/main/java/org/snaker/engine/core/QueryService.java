@@ -23,6 +23,7 @@ import org.snaker.engine.entity.HistoryOrder;
 import org.snaker.engine.entity.HistoryTask;
 import org.snaker.engine.entity.Order;
 import org.snaker.engine.entity.Task;
+import org.snaker.engine.entity.TaskActor;
 import org.snaker.engine.entity.WorkItem;
 
 /**
@@ -39,6 +40,18 @@ public class QueryService extends AccessService implements IQueryService {
 	@Override
 	public Task getTask(String taskId) {
 		return access().getTask(taskId);
+	}
+	
+	@Override
+	public String[] getTaskActorsByTaskId(String taskId) {
+		List<TaskActor> actors = access().getTaskActorsByTaskId(taskId);
+		if(actors == null || actors.isEmpty()) return null;
+		String[] actorIds = new String[actors.size()];
+		for(int i = 0; i < actors.size(); i++) {
+			TaskActor ta = actors.get(i);
+			actorIds[i] = ta.getActorId();
+		}
+		return actorIds;
 	}
 
 	@Override
