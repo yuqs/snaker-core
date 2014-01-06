@@ -67,6 +67,13 @@ public interface ITaskService {
 	void addTaskActor(Task task, String... actors);
 	
 	/**
+	 * 对指定的任务id删除参与者
+	 * @param taskId 任务id
+	 * @param actors 参与者
+	 */
+	void removeTaskActor(Task task, String... actors);
+	
+	/**
 	 * 根据任务主键id、操作人撤回任务
 	 * @param taskId 任务主键id
 	 * @param operator 操作人

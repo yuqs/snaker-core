@@ -380,4 +380,13 @@ public class SnakerEngineImpl implements SnakerEngine {
 			taskService.addTaskActor(task, actors);
 		}
 	}
+
+	@Override
+	public void removeTaskActor(String taskId, String... actors) {
+		Task task = taskService.getTask(taskId);
+		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
+		if(task.getTaskType().intValue() == TaskType.Task.ordinal()) {
+			taskService.removeTaskActor(task, actors);
+		}
+	}
 }

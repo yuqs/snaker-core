@@ -170,6 +170,12 @@ public interface SnakerEngine {
 	public Task withdrawTask(String taskId, String operator);
 	
 	/**
+	 * 完成指定id的流程实例
+	 * @param orderId 执行对象
+	 */
+	public void finishInstanceById(String orderId);
+	
+	/**
 	 * 向指定的任务id，添加参与者
 	 * @param taskId 任务主键id
 	 * @param actors 参与者
@@ -177,8 +183,9 @@ public interface SnakerEngine {
 	public void addTaskActor(String taskId, String... actors);
 	
 	/**
-	 * 完成指定id的流程实例
-	 * @param orderId 执行对象
+	 * 对指定的任务id，删除参与者
+	 * @param taskId
+	 * @param actors
 	 */
-	public void finishInstanceById(String orderId);
+	public void removeTaskActor(String taskId, String... actors);
 }

@@ -9,6 +9,15 @@
     <delete id="DELETE" parameterType="string">
     	delete from wf_task_actor where task_Id = #{taskId, jdbcType=VARCHAR}
     </delete>
+    <delete id="REDUCE" parameterType="hashmap">
+        delete from wf_task_actor where task_Id = #{taskId, jdbcType=VARCHAR}
+	        <if test="actorIds.length > 0">
+	            and actor_Id in
+				<foreach collection="actorIds" index="index" item="item" open="(" separator="," close=")">
+					#{item, jdbcType=VARCHAR}
+				</foreach>
+			</if>
+    </delete>
     <select id="SELECTLIST" resultType="taskactor">
         select task_Id as taskId, actor_Id as actorId from wf_task_actor where task_Id = #{id, jdbcType=VARCHAR}
     </select>

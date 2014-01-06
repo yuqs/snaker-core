@@ -116,6 +116,16 @@ public class HibernateAccess extends AbstractDBAccess implements DBAccess {
 	public void deleteOrder(Order order) {
 		getSession().delete(order);
 	}
+	
+	@Override
+	public void removeTaskActor(String taskId, String... actors) {
+		for(String actorId : actors) {
+			TaskActor ta = new TaskActor();
+			ta.setTaskId(taskId);
+			ta.setActorId(actorId);
+			getSession().delete(ta);
+		}
+	}
 
 	@Override
 	public boolean isORM() {

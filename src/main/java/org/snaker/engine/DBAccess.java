@@ -19,6 +19,7 @@ import java.util.List;
 import org.snaker.engine.access.Page;
 import org.snaker.engine.entity.HistoryOrder;
 import org.snaker.engine.entity.HistoryTask;
+import org.snaker.engine.entity.HistoryTaskActor;
 import org.snaker.engine.entity.Order;
 import org.snaker.engine.entity.Process;
 import org.snaker.engine.entity.Task;
@@ -90,6 +91,14 @@ public interface DBAccess {
 	 * @param orderId
 	 */
 	public void deleteOrder(Order order);
+	
+	/**
+	 * 删除参与者
+	 * @param task
+	 * @param actors
+	 */
+	public void removeTaskActor(String taskId, String... actors);
+	
 	/**
 	 * 迁移活动任务
 	 * @param task
@@ -130,11 +139,18 @@ public interface DBAccess {
 	public List<Task> getTasks(String parentTaskId);
 	
 	/**
-	 * 根据任务id查询所有参与者集合
+	 * 根据任务id查询所有活动任务参与者集合
 	 * @param taskId
 	 * @return
 	 */
 	public List<TaskActor> getTaskActorsByTaskId(String taskId);
+	
+	/**
+	 * 根据任务id查询所有历史任务参与者集合
+	 * @param taskId
+	 * @return
+	 */
+	public List<HistoryTaskActor> getHistTaskActorsByTaskId(String taskId);
 	
 	/**
 	 * 根据流程实例id查询实例对象

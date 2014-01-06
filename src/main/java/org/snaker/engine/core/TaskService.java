@@ -110,6 +110,11 @@ public class TaskService extends AccessService implements ITaskService {
 	}
 	
 	@Override
+	public void removeTaskActor(Task task, String... actors) {
+		access().removeTaskActor(task.getId(), actors);
+	}
+	
+	@Override
 	public Task withdrawTask(String taskId, String operator) {
 		List<Task> tasks = access().getTasks(taskId);
 		if(tasks == null || tasks.isEmpty()) {

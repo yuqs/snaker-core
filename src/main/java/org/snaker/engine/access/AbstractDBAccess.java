@@ -67,6 +67,7 @@ public abstract class AbstractDBAccess implements DBAccess {
 	protected static final String TASK_ACTOR_INSERT = "insert into wf_task_actor (task_Id, actor_Id) values (?, ?)";
 	protected static final String TASK_ACTOR_HISTORY_INSERT = "insert into wf_hist_task_actor (task_Id, actor_Id) values (?, ?)";
 	protected static final String TASK_ACTOR_DELETE = "delete from wf_task_actor where task_Id = ?";
+	protected static final String TASK_ACTOR_REDUCE = "delete from wf_task_actor where task_Id = ? and actor_Id = ?";
 	
 	protected static final String QUERY_PROCESS = "select id,parent_Id,name,display_Name,type,instance_Url,query_Url,state, content, version from wf_process ";
 	protected static final String QUERY_ORDER = "select id,process_Id,creator,create_Time,parent_Id,parent_Node_Name,expire_Time,last_Update_Time,last_Updator,priority,order_No,variable, version from wf_order ";
@@ -75,6 +76,7 @@ public abstract class AbstractDBAccess implements DBAccess {
 	
 	protected static final String QUERY_HIST_ORDER = "select id,process_Id,order_State,priority,creator,create_Time,end_Time,parent_Id,expire_Time,order_No,variable from wf_hist_order ";
 	protected static final String QUERY_HIST_TASK = "select id,order_Id,task_Name,display_Name,task_Type,perform_Type,task_State,operator,create_Time,finish_Time,expire_Time,action_Url,parent_Task_Id,variable from wf_hist_task ";
+	protected static final String QUERY_HIST_TASK_ACTOR = "select task_Id, actor_Id from wf_hist_task_actor ";
 	
 	/**
 	 * 是否为ORM框架，用以标识对象直接持久化
@@ -261,6 +263,16 @@ public abstract class AbstractDBAccess implements DBAccess {
 			saveOrUpdate(buildMap(ORDER_DELETE, new Object[]{order.getId()}, type));
 		}
 	}
+	
+	@Override
+	public void removeTaskActor(String taskId, String... actors) {
+		if(!isORM()) {
+			for(String actorId : actors) {
+				int[] type = new int[]{Types.VARCHAR, Types.VARCHAR};
+				saveOrUpdate(buildMap(TASK_ACTOR_REDUCE, new Object[]{taskId, actorId}, type));
+			}
+		}
+	}
 
 	@Override
 	public void saveHistory(HistoryOrder order) {
@@ -337,6 +349,12 @@ public abstract class AbstractDBAccess implements DBAccess {
 	public List<TaskActor> getTaskActorsByTaskId(String taskId) {
 		String where = " where task_Id = ?";
 		return queryList(TaskActor.class, QUERY_TASK_ACTOR + where, taskId);
+	}
+	
+	@Override
+	public List<HistoryTaskActor> getHistTaskActorsByTaskId(String taskId) {
+		String where = " where task_Id = ?";
+		return queryList(HistoryTaskActor.class, QUERY_HIST_TASK_ACTOR + where, taskId);
 	}
 
 	@Override

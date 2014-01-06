@@ -24,6 +24,7 @@ import org.snaker.engine.access.AbstractDBAccess;
 import org.snaker.engine.access.Page;
 import org.snaker.engine.entity.HistoryOrder;
 import org.snaker.engine.entity.HistoryTask;
+import org.snaker.engine.entity.HistoryTaskActor;
 import org.snaker.engine.entity.Order;
 import org.snaker.engine.entity.Process;
 import org.snaker.engine.entity.Task;
@@ -101,6 +102,14 @@ public class MybatisAccess extends AbstractDBAccess {
 	public void deleteOrder(Order order) {
 		getSession().update("Order.DELETE", order);
 	}
+	
+	@Override
+	public void removeTaskActor(String taskId, String... actors) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("taskId", taskId);
+		params.put("actorIds", actors);
+		getSession().delete("TaskActor.REDUCE", params);
+	}
 
 	@Override
 	public Task getTask(String taskId) {
@@ -125,6 +134,11 @@ public class MybatisAccess extends AbstractDBAccess {
 	@Override
 	public List<TaskActor> getTaskActorsByTaskId(String taskId) {
 		return getSession().selectList("TaskActor.SELECTLIST", taskId);
+	}
+
+	@Override
+	public List<HistoryTaskActor> getHistTaskActorsByTaskId(String taskId) {
+		return getSession().selectList("HistoryTaskActor.SELECTLIST", taskId);
 	}
 
 	@Override
@@ -302,5 +316,4 @@ public class MybatisAccess extends AbstractDBAccess {
 		// not needed in this version
 		return null;
 	}
-
 }

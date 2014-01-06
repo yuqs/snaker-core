@@ -50,6 +50,7 @@ public abstract class TransactionInterceptor implements MethodInterceptor {
 		txMethods.add("create*");
 		txMethods.add("save*");
 		txMethods.add("delete*");
+		txMethods.add("remove*");
 		txMethods.add("update*");
 		txMethods.add("deploy*");
 		txMethods.add("undeploy*");
