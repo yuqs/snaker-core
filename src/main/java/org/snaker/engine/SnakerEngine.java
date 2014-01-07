@@ -29,6 +29,7 @@ import org.snaker.engine.model.WorkModel;
  * @version 1.0
  */
 public interface SnakerEngine {
+	public static final String ADMIN = "snaker.admin";
 	/**
 	 * 根据Configuration对象配置实现类
 	 * @param context

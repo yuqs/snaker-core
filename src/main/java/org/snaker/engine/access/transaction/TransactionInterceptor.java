@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snaker.engine.SnakerException;
 import org.snaker.engine.helper.AssertHelper;
-import org.snaker.engine.helper.ConfigHelper;
 import org.snaker.engine.helper.StringHelper;
 
 import net.sf.cglib.proxy.Enhancer;
@@ -40,7 +39,6 @@ public abstract class TransactionInterceptor implements MethodInterceptor {
 	 * 需要拦截的事务方法集合
 	 */
 	private static final List<String> txMethods = new ArrayList<String>();
-	private static boolean isSupportTx = true;
 	static {
 		txMethods.add("start*");
 		txMethods.add("execute*");
@@ -59,11 +57,6 @@ public abstract class TransactionInterceptor implements MethodInterceptor {
 		txMethods.add("withdrawTask*");
 		txMethods.add("add*");
 		txMethods.add("get*");
-		
-		String isSupport = ConfigHelper.getProperty("tx.support");
-		if(StringHelper.isNotEmpty(isSupport) && isSupport.equalsIgnoreCase("false")) {
-			isSupportTx = false;
-		}
 	}
 	
 	/**
@@ -95,13 +88,11 @@ public abstract class TransactionInterceptor implements MethodInterceptor {
 				//调用具体无事务支持的业务逻辑
 				result = proxy.invokeSuper(obj, args);
 				//如果整个执行过程无异常抛出，则提交TransactionStatus持有的transaction对象
-				if(isSupportTx && status.isNewTransaction()) {
+				if(status.isNewTransaction()) {
 					commit(status);
 				}
 			} catch (Exception e) {
-				if(isSupportTx) {
-					rollback(status);
-				}
+				rollback(status);
 				throw new SnakerException(e.getMessage(), e.getCause());
 			}
 		} else {

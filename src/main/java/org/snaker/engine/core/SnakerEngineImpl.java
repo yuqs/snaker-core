@@ -99,7 +99,9 @@ public class SnakerEngineImpl implements SnakerEngine {
 			TransactionInterceptor interceptor = context.find(TransactionInterceptor.class);
 			//如果初始化配置时提供了访问对象，就对DBAccess进行初始化
 			if(this.configuration.getAccessDBObject() != null) {
-				interceptor.initialize(this.configuration.getAccessDBObject());
+				if(interceptor != null) {
+					interceptor.initialize(this.configuration.getAccessDBObject());
+				}
 				access.initialize(this.configuration.getAccessDBObject());
 			}
 			setDBAccess(access);

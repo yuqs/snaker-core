@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.snaker.engine.ITaskService;
+import org.snaker.engine.SnakerEngine;
 import org.snaker.engine.SnakerException;
 import org.snaker.engine.entity.HistoryTask;
 import org.snaker.engine.entity.Task;
@@ -343,9 +344,13 @@ public class TaskService extends AccessService implements ITaskService {
 	 */
 	@Override
 	public boolean isAllowed(Task task, String operator) {
-		if(StringHelper.isNotEmpty(task.getOperator())
-				&& StringHelper.isNotEmpty(operator)) {
-			return operator.equals(task.getOperator());
+		if(StringHelper.isNotEmpty(operator)) {
+			if(SnakerEngine.ADMIN.equalsIgnoreCase(operator)) {
+				return true;
+			}
+			if(StringHelper.isNotEmpty(task.getOperator())) {
+				return operator.equals(task.getOperator());
+			}
 		}
 		List<TaskActor> actors = getTaskActorsByTaskId(task.getId());
 		if(actors == null || actors.isEmpty()) return true;
