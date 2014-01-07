@@ -284,6 +284,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 	@Override
 	public List<Task> createFreeTask(String orderId, String operator, Map<String, Object> args, WorkModel model) {
 		Order order = orderService.getOrder(orderId);
+		AssertHelper.notNull(order, "指定的流程实例[id=" + orderId + "]已完成或不存在");
 		order.setLastUpdator(operator);
 		order.setLastUpdateTime(DateHelper.getTime());
 		Process process = ModelContainer.getEntity(order.getProcessId());
@@ -303,6 +304,7 @@ public class SnakerEngineImpl implements SnakerEngine {
 		if(args == null) args = new HashMap<String, Object>();
 		Task task = finishTask(taskId, operator, args);
 		Order order = orderService.getOrder(task.getOrderId());
+		AssertHelper.notNull(order, "指定的流程实例[id=" + task.getOrderId() + "]已完成或不存在");
 		order.setLastUpdator(operator);
 		order.setLastUpdateTime(DateHelper.getTime());
 		Process process = ModelContainer.getEntity(order.getProcessId());
