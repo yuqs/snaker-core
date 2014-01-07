@@ -48,17 +48,23 @@ public interface IQueryService {
 	 */
 	Task getTask(String taskId);
 	/**
+	 * 根据任务ID获取历史任务对象
+	 * @param taskId
+	 * @return
+	 */
+	HistoryTask getHistTask(String taskId);
+	/**
 	 * 根据任务ID获取任务参与者数组
 	 * @param taskId
 	 * @return
 	 */
 	String[] getTaskActorsByTaskId(String taskId);
 	/**
-	 * 根据任务ID获取历史任务对象
+	 * 根据任务ID获取历史任务参与者数组
 	 * @param taskId
 	 * @return
 	 */
-	HistoryTask getHistTask(String taskId);
+	String[] getHistoryTaskActorsByTaskId(String taskId);
 	/**
 	 * 根据参与者获取任务集合
 	 * @param actorIds

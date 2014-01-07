@@ -21,6 +21,7 @@ import org.snaker.engine.SnakerException;
 import org.snaker.engine.access.Page;
 import org.snaker.engine.entity.HistoryOrder;
 import org.snaker.engine.entity.HistoryTask;
+import org.snaker.engine.entity.HistoryTaskActor;
 import org.snaker.engine.entity.Order;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.entity.TaskActor;
@@ -49,6 +50,18 @@ public class QueryService extends AccessService implements IQueryService {
 		String[] actorIds = new String[actors.size()];
 		for(int i = 0; i < actors.size(); i++) {
 			TaskActor ta = actors.get(i);
+			actorIds[i] = ta.getActorId();
+		}
+		return actorIds;
+	}
+	
+	@Override
+	public String[] getHistoryTaskActorsByTaskId(String taskId) {
+		List<HistoryTaskActor> actors = access().getHistTaskActorsByTaskId(taskId);
+		if(actors == null || actors.isEmpty()) return null;
+		String[] actorIds = new String[actors.size()];
+		for(int i = 0; i < actors.size(); i++) {
+			HistoryTaskActor ta = actors.get(i);
 			actorIds[i] = ta.getActorId();
 		}
 		return actorIds;
