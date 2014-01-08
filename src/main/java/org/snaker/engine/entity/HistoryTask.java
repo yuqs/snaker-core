@@ -122,6 +122,7 @@ public class HistoryTask implements Serializable {
     	this.actorIds = task.getActorIds();
     	this.parentTaskId = task.getParentTaskId();
     	this.variable = task.getVariable();
+    	this.performType = task.getPerformType();
     }
     
     /**

@@ -486,9 +486,9 @@ public abstract class AbstractDBAccess implements DBAccess {
 	public List<WorkItem> getWorkItems(Page<WorkItem> page, String processId, String... actorIds) {
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select o.process_Id, t.order_Id, t.id as task_Id, p.display_Name as process_Name, p.instance_Url, o.parent_Id, o.creator, ");
-		sql.append(" o.create_Time as order_Create_Time, o.expire_Time as order_Expire_Time, o.order_No, o.variable, ");
+		sql.append(" o.create_Time as order_Create_Time, o.expire_Time as order_Expire_Time, o.order_No, o.variable as order_Variable, ");
 		sql.append(" t.display_Name as task_Name, t.task_Type, t.perform_Type, t.operator, t.action_Url, ");
-		sql.append(" t.create_Time as task_Create_Time, t.finish_Time as task_End_Time, t.expire_Time as task_Expire_Time ");
+		sql.append(" t.create_Time as task_Create_Time, t.finish_Time as task_End_Time, t.expire_Time as task_Expire_Time, t.variable as task_Variable ");
 		sql.append(" from wf_task t ");
 		sql.append(" left join wf_order o on t.order_id = o.id ");
 		sql.append(" left join wf_task_actor ta on ta.task_id=t.id ");
@@ -582,9 +582,9 @@ public abstract class AbstractDBAccess implements DBAccess {
 			String processId, String... actorIds) {
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select o.process_Id, t.order_Id, t.id as task_Id, p.display_Name as process_Name, p.instance_Url, o.parent_Id, o.creator, ");
-		sql.append(" o.create_Time as order_Create_Time, o.expire_Time as order_Expire_Time, o.order_No, o.variable, ");
+		sql.append(" o.create_Time as order_Create_Time, o.expire_Time as order_Expire_Time, o.order_No, o.variable as order_Variable, ");
 		sql.append(" t.display_Name as task_Name, t.task_Type, t.perform_Type,t.operator, t.action_Url, ");
-		sql.append(" t.create_Time as task_Create_Time, t.finish_Time as task_End_Time, t.expire_Time as task_Expire_Time ");
+		sql.append(" t.create_Time as task_Create_Time, t.finish_Time as task_End_Time, t.expire_Time as task_Expire_Time, t.variable as task_Variable ");
 		sql.append(" from wf_hist_task t ");
 		sql.append(" left join wf_hist_order o on t.order_id = o.id ");
 		sql.append(" left join wf_process p on p.id = o.process_id ");

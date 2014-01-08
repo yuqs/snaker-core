@@ -253,6 +253,7 @@ public class TaskService extends AccessService implements ITaskService {
 		task.setActionUrl(taskModel.getUrl());
 		task.setExpireTime(expireTime);
 		task.setPerformType(performType);
+		task.setVariable(StringHelper.getStringByArray(actors));
 		saveTask(task);
 		assignTask(task.getId(), actors);
 		task.setActorIds(actors);
@@ -303,7 +304,7 @@ public class TaskService extends AccessService implements ITaskService {
 	 * @return
 	 */
 	private String[] getTaskActors(Object actors, String key) {
-		if(actors == null) return null;
+		if(actors == null) return new String[]{key};
 		String[] results = null;
 		if(actors instanceof String) {
 			//如果值为字符串类型，则使用逗号,分隔，并解析为Long类型

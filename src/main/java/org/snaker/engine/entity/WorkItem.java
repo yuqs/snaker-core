@@ -69,6 +69,14 @@ public class WorkItem implements Serializable {
      */
     private String orderExpireTime;
     /**
+     * 流程实例编号
+     */
+    private String orderNo;
+	/**
+     * 流程实例附属变量
+     */
+    private String orderVariable;
+    /**
      * 任务名称
      */
 	private String taskName;
@@ -96,6 +104,10 @@ public class WorkItem implements Serializable {
      * 期望任务完成时间
      */
     private String taskExpireTime;
+	/**
+     * 任务附属变量
+     */
+    private String taskVariable;
     /**
      * 任务处理者ID
      */
@@ -108,25 +120,12 @@ public class WorkItem implements Serializable {
      * 任务参与者列表
      */
     private String[] actorIds;
-    /**
-     * 流程实例编号
-     */
-    private String orderNo;
-	/**
-     * 流程实例附属变量
-     */
-    private String variable;
+
 	public String getOrderNo() {
 		return orderNo;
 	}
 	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
-	}
-	public String getVariable() {
-		return variable;
-	}
-	public void setVariable(String variable) {
-		this.variable = variable;
 	}
 	public String getProcessId() {
 		return processId;
@@ -248,7 +247,18 @@ public class WorkItem implements Serializable {
 	public void setActorIds(String[] actorIds) {
 		this.actorIds = actorIds;
 	}
-	
+	public String getOrderVariable() {
+		return orderVariable;
+	}
+	public void setOrderVariable(String orderVariable) {
+		this.orderVariable = orderVariable;
+	}
+	public String getTaskVariable() {
+		return taskVariable;
+	}
+	public void setTaskVariable(String taskVariable) {
+		this.taskVariable = taskVariable;
+	}
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);

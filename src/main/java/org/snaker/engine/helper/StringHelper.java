@@ -50,6 +50,20 @@ public class StringHelper {
 	}
 	
 	/**
+	 * 根据字符串数组返回逗号分隔的字符串值
+	 * @param strs
+	 * @return
+	 */
+	public static String getStringByArray(String... strs) {
+		StringBuffer buffer = new StringBuffer(strs.length * 10);
+		for(String str : strs) {
+			buffer.append(str).append(",");
+		}
+		buffer.deleteCharAt(buffer.length() - 1);
+		return buffer.toString();
+	}
+	
+	/**
 	 * xml内容特殊符号替换
 	 * @param xml
 	 * @return
