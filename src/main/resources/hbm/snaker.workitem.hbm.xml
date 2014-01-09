@@ -9,7 +9,6 @@
         <property name="processId" type="java.lang.String" column="process_Id" />
         <property name="orderId" type="java.lang.String" column="order_Id" />
         <property name="orderNo" type="java.lang.String" column="order_No" />
-        <property name="variable" type="java.lang.String" column="variable" />
 		<property name="processName" type="java.lang.String" column="process_Name"/>
 		<property name="instanceUrl" type="java.lang.String" column="instance_Url"/>
         <property name="parentId" type="java.lang.String" column="parent_Id"/>
