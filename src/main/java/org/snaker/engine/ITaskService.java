@@ -75,11 +75,12 @@ public interface ITaskService {
 	
 	/**
 	 * 根据任务主键id、操作人撤回任务
-	 * @param taskId 任务主键id
+	 * @param model 流程定义模型
+	 * @param hist 历史任务对象
 	 * @param operator 操作人
 	 * @return Task
 	 */
-	Task withdrawTask(String taskId, String operator);
+	Task withdrawTask(ProcessModel model, HistoryTask hist, String operator);
 	
 	/**
 	 * 根据当前任务对象驳回至上一步处理

@@ -77,6 +77,14 @@
 		</where>
     </select>
     
+    <select id="getNextActiveTasks" resultType="task" parameterType="hashmap">
+    	<include refid="selectActiveTasksPart"/>
+    	from wf_task where parent_Task_Id in (
+    	select ht.id from wf_hist_task ht 
+    	where ht.order_id=#{orderId} and ht.task_name=#{taskName} and ht.parent_task_id=#{parentTaskId}
+    	)
+    </select>
+    
     <sql id="fromActiveOrdersPart">
 		from wf_order
 		<where>

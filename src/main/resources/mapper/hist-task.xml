@@ -29,7 +29,7 @@
             parent_Task_Id as parentTaskId,
             variable
         from wf_hist_task 
-    	where order_Id = #{id, jdbcType=VARCHAR}
+    	where id = #{id, jdbcType=VARCHAR}
     </select>
     <select id="SELECTLIST" resultType="historytask">
         select 

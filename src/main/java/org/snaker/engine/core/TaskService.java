@@ -39,6 +39,7 @@ import org.snaker.engine.model.TaskModel.PerformType;
  * @version 1.0
  */
 public class TaskService extends AccessService implements ITaskService {
+	private static final String START = "start";
 	/**
 	 * 任务类型
 	 */
@@ -104,7 +105,7 @@ public class TaskService extends AccessService implements ITaskService {
 					assignTask(newTask.getId(), actor);
 				}
 			} catch(CloneNotSupportedException ex) {
-				throw new SnakerException("任务对象不支持复制");
+				throw new SnakerException("任务对象不支持复制", ex.getCause());
 			}
 			break;
 		}
@@ -116,19 +117,24 @@ public class TaskService extends AccessService implements ITaskService {
 	}
 	
 	@Override
-	public Task withdrawTask(String taskId, String operator) {
-		List<Task> tasks = access().getTasks(taskId);
+	public Task withdrawTask(ProcessModel model, HistoryTask hist, String operator) {
+		TaskModel histModel = (TaskModel)model.getNode(hist.getTaskName());
+		List<Task> tasks = null;
+		if(TaskModel.TYPE_ANY.equalsIgnoreCase(histModel.getPerformType())) {
+			tasks = access().getNextActiveTasks(hist.getId());
+		} else if(TaskModel.TYPE_ALL.equalsIgnoreCase(histModel.getPerformType())) {
+			tasks = access().getNextActiveTasks(hist.getOrderId(), hist.getTaskName(), hist.getParentTaskId());
+		}
 		if(tasks == null || tasks.isEmpty()) {
-			return null;
+			throw new SnakerException("后续活动任务已完成或不存在，无法撤回.");
 		}
 		for(Task task : tasks) {
 			access().deleteTask(task);
 		}
-		HistoryTask history = access().getHistTask(taskId);
-		Task task = history.undoTask();
+		
+		Task task = hist.undoTask();
 		task.setId(StringHelper.getPrimaryKey());
 		task.setCreateTime(DateHelper.getTime());
-		task.setOperator(operator);
 		saveTask(task);
 		assignTask(task.getId(), task.getOperator());
 		return task;
@@ -274,7 +280,7 @@ public class TaskService extends AccessService implements ITaskService {
 		task.setDisplayName(model.getDisplayName());
 		task.setCreateTime(DateHelper.getTime());
 		task.setTaskType(taskType);
-		task.setParentTaskId(execution.getTask() == null ? null : execution.getTask().getId());
+		task.setParentTaskId(execution.getTask() == null ? START : execution.getTask().getId());
 		return task;
 	}
 	

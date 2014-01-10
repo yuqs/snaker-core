@@ -328,9 +328,18 @@ public abstract class AbstractDBAccess implements DBAccess {
 	}
 	
 	@Override
-	public List<Task> getTasks(String parentTaskId) {
+	public List<Task> getNextActiveTasks(String parentTaskId) {
 		String where = " where parent_Task_Id = ?";
 		return queryList(Task.class, QUERY_TASK + where, parentTaskId);
+	}
+	
+	@Override
+	public List<Task> getNextActiveTasks(String orderId, String taskName, String parentTaskId) {
+		StringBuffer sql = new StringBuffer(QUERY_TASK);
+		sql.append(" where parent_task_id in ( ");
+		sql.append("select ht.id from wf_hist_task ht where ht.order_id=? and ht.task_name=? and ht.parent_task_id=? ");
+		sql.append(")");
+		return queryList(Task.class, sql.toString(), orderId, taskName, parentTaskId);
 	}
 	
 	@Override

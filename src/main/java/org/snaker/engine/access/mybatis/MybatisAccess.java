@@ -117,8 +117,17 @@ public class MybatisAccess extends AbstractDBAccess {
 	}
 	
 	@Override
-	public List<Task> getTasks(String parentTaskId) {
+	public List<Task> getNextActiveTasks(String parentTaskId) {
 		return getSession().selectList("Task.SELECTBYPARENT", parentTaskId);
+	}
+	
+	@Override
+	public List<Task> getNextActiveTasks(String orderId, String taskName, String parentTaskId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orderId", orderId);
+		params.put("taskName", taskName);
+		params.put("parentTaskId", parentTaskId);
+		return getSession().selectList("Query.getNextActiveTasks", params);
 	}
 	
 	@Override

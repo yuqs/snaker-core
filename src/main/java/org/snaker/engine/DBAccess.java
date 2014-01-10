@@ -136,7 +136,16 @@ public interface DBAccess {
 	 * @param parentTaskId
 	 * @return
 	 */
-	public List<Task> getTasks(String parentTaskId);
+	public List<Task> getNextActiveTasks(String parentTaskId);
+	
+	/**
+	 * 根据流程实例id、任务名称获取
+	 * @param orderId
+	 * @param taskName
+	 * @param parentTaskId
+	 * @return
+	 */
+	public List<Task> getNextActiveTasks(String orderId, String taskName, String parentTaskId);
 	
 	/**
 	 * 根据任务id查询所有活动任务参与者集合

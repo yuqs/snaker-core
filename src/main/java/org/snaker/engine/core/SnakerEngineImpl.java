@@ -31,6 +31,7 @@ import org.snaker.engine.SnakerException;
 import org.snaker.engine.access.transaction.TransactionInterceptor;
 import org.snaker.engine.cfg.Configuration;
 import org.snaker.engine.core.TaskService.TaskType;
+import org.snaker.engine.entity.HistoryTask;
 import org.snaker.engine.entity.Order;
 import org.snaker.engine.entity.Process;
 import org.snaker.engine.entity.Task;
@@ -333,7 +334,12 @@ public class SnakerEngineImpl implements SnakerEngine {
 	
 	@Override
 	public Task withdrawTask(String taskId, String operator) {
-		return taskService.withdrawTask(taskId, operator);
+		HistoryTask hist = taskService.getHistoryTask(taskId);
+		AssertHelper.notNull(hist, "指定的历史任务[id=" + taskId + "]不存在");
+		Order order = orderService.getOrder(hist.getOrderId());
+		AssertHelper.notNull(order, "指定的流程实例[id=" + hist.getOrderId() + "]已完成或不存在");
+		Process process = ModelContainer.getEntity(order.getProcessId());
+		return taskService.withdrawTask(process.getModel(), hist, operator);
 	}
 
 	@Override
