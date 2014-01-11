@@ -122,7 +122,7 @@ public class TaskService extends AccessService implements ITaskService {
 		List<Task> tasks = null;
 		if(TaskModel.TYPE_ANY.equalsIgnoreCase(histModel.getPerformType())) {
 			tasks = access().getNextActiveTasks(hist.getId());
-		} else if(TaskModel.TYPE_ALL.equalsIgnoreCase(histModel.getPerformType())) {
+		} else {
 			tasks = access().getNextActiveTasks(hist.getOrderId(), hist.getTaskName(), hist.getParentTaskId());
 		}
 		if(tasks == null || tasks.isEmpty()) {
