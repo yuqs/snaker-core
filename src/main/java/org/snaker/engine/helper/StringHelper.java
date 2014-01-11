@@ -55,6 +55,7 @@ public class StringHelper {
 	 * @return
 	 */
 	public static String getStringByArray(String... strs) {
+		if(strs == null) return null;
 		StringBuffer buffer = new StringBuffer(strs.length * 10);
 		for(String str : strs) {
 			buffer.append(str).append(",");
